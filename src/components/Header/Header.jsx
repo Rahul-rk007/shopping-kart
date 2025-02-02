@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 
 import "./Header.css";
 import LOGO from "../../assets/core-img/logo.png";
+import product10 from "../../assets/product-img/product-10.jpg";
+import product11 from "../../assets/product-img/product-11.jpg";
 
 const Header = ({ onToggleMenu }) => {
   const [showCart, setShowCart] = useState(false);
@@ -128,11 +130,7 @@ const Header = ({ onToggleMenu }) => {
                     <ul className="cart-list">
                       <li>
                         <a href="#" className="image">
-                          <img
-                            src="img/product-img/product-10.jpg"
-                            className="cart-thumb"
-                            alt=""
-                          />
+                          <img src={product10} className="cart-thumb" alt="" />
                         </a>
                         <div className="cart-item-desc">
                           <h6>
@@ -148,11 +146,7 @@ const Header = ({ onToggleMenu }) => {
                       </li>
                       <li>
                         <a href="#" className="image">
-                          <img
-                            src="img/product-img/product-11.jpg"
-                            className="cart-thumb"
-                            alt=""
-                          />
+                          <img src={product11} className="cart-thumb" alt="" />
                         </a>
                         <div className="cart-item-desc">
                           <h6>
