@@ -1,0 +1,302 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800");
+
+@import "../src/css/bootstrap.min.css";
+@import "../src/css/owl.carousel.css";
+@import "../src/css/font-awesome.min.css";
+@import "../src/css/themify-icons.css";
+@import "../src/css/magnific-popup.css";
+@import "../src/css/animate.css";
+@import "../src/css/jquery-ui.min.css";
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #3a3a3a;
+  line-height: 1.2;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+}
+
+p {
+  color: #3a3a3a;
+  font-size: 1em;
+  line-height: 1.5;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+}
+
+a:focus {
+  outline: 0 solid;
+}
+
+a,
+a:hover,
+a:focus {
+  -webkit-transition: all 500ms ease 0s;
+  transition: all 500ms ease 0s;
+  text-decoration: none;
+  outline: none;
+  color: #000000;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+}
+
+ul,
+ol {
+  margin: 0;
+}
+
+ol li,
+ul li {
+  list-style: outside none none;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+}
+
+.background-overlay,
+.background-overlay-white {
+  position: relative;
+  z-index: 2;
+  background-position: center center;
+  background-size: cover;
+}
+
+.background-overlay:before,
+.background-overlay-white:before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: "";
+}
+
+.background-overlay:before {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.background-overlay-white:before {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.karl-table {
+  display: table;
+  z-index: 9;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.karl-table-cell {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.mt-15 {
+  margin-top: 15px;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.mt-50 {
+  margin-top: 50px;
+}
+
+.mt-70 {
+  margin-top: 70px;
+}
+
+.mt-100 {
+  margin-top: 100px;
+}
+
+.mb-15 {
+  margin-bottom: 15px;
+}
+
+.mb-30 {
+  margin-bottom: 30px;
+}
+
+.mb-50 {
+  margin-bottom: 50px;
+}
+
+.ml-15 {
+  margin-left: 15px;
+}
+
+.ml-30 {
+  margin-left: 30px;
+}
+
+.mr-15 {
+  margin-right: 15px;
+}
+
+.mr-30 {
+  margin-right: 30px;
+}
+
+.mb-70 {
+  margin-bottom: 70px;
+}
+
+.mb-100 {
+  margin-bottom: 100px;
+}
+
+.bg-img {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.bg-dark {
+  background-color: #000;
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
+.bg-transparent-dark {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.bg-transparent-light {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.bg-dark3 {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+.bg-dark2 {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.line,
+.line-mtb15 {
+  width: 100%;
+  height: 1px;
+  background-color: #ddd;
+  margin: 30px 0;
+}
+
+.line-mtb15 {
+  margin: 15px 0;
+}
+
+.height-500 {
+  height: 500px !important;
+}
+
+.height-600 {
+  height: 600px !important;
+}
+
+.height-700 {
+  height: 700px !important;
+}
+
+.height-800 {
+  height: 800px !important;
+}
+
+#scrollUp {
+  background-color: #ff084e;
+  border-radius: 0;
+  bottom: 0;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 24px;
+  height: 40px;
+  line-height: 40px;
+  right: 60px;
+  text-align: center;
+  width: 40px;
+}
+
+.section_padding_100 {
+  padding: 100px 0;
+}
+
+.section_padding_100_0 {
+  padding: 100px 0 0;
+}
+
+.section_padding_0_100 {
+  padding: 0 0 100px;
+}
+
+.section_heading {
+  margin-bottom: 50px;
+  position: relative;
+  z-index: 1;
+}
+
+.section_heading h2 {
+  font-size: 48px;
+  margin-bottom: 0;
+  text-transform: uppercase;
+}
+
+.section_heading.text-left {
+  text-align: left !important;
+}
+
+.karl-btn {
+  display: inline-block;
+  min-width: 170px;
+  height: 55px;
+  color: #fff;
+  border: 3px solid #fff;
+  border-radius: 2px;
+  padding: 0 30px;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 49px;
+}
+
+.karl-btn:hover,
+.karl-btn:focus {
+  font-weight: 700;
+  color: #fff;
+  background-color: #ff084e;
+  border-color: #ff084e;
+}

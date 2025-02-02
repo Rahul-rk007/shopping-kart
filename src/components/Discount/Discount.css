@@ -1,0 +1,37 @@
+/* -------------------
+  :: 7.0 Top Discount CSS
+  ------------------- */
+
+.top-discount-area .single-discount-area {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 33.333333%;
+  flex: 0 0 33.333333%;
+  max-width: 33.333333%;
+  padding: 40px 15px;
+  background-color: #b8b8b8;
+  text-align: center;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+}
+
+.top-discount-area .single-discount-area:nth-child(2) {
+  background-color: #ff084e;
+}
+
+.top-discount-area .single-discount-area:last-child {
+  background-color: #3a3a3a;
+}
+
+.top-discount-area .single-discount-area h5 {
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.top-discount-area .single-discount-area h6,
+.top-discount-area .single-discount-area a {
+  font-size: 12px;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 0;
+}

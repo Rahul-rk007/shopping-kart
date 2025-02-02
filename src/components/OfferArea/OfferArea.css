@@ -1,0 +1,69 @@
+/* -------------------
+  :: 12.0 Offer Area CSS
+  ------------------- */
+
+.offer_area {
+  position: relative;
+  z-index: 1;
+}
+
+.offer-content-area {
+  background-color: rgba(58, 58, 58, 0.7);
+  padding: 100px 50px 50px;
+  position: relative;
+  z-index: 1;
+}
+
+.offer-content-area h2 {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  font-size: 48px;
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+.karl-level {
+  position: absolute;
+  z-index: 2;
+  color: #fff;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 700;
+  background-color: #ff084e;
+  padding: 3px 10px;
+  top: -30px;
+  left: 10px;
+}
+
+.karl-level:after {
+  position: absolute;
+  z-index: 2;
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 9px 9px 9px;
+  border-color: transparent transparent #ff084e transparent;
+  bottom: -2px;
+  left: -6px;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.offer-content-area p {
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.offer-product-price h3 {
+  color: #ff084e;
+}
+
+.offer-product-price h3 span {
+  margin-right: 15px;
+  font-weight: 400;
+  text-decoration: line-through;
+  color: #fff;
+}

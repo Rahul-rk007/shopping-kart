@@ -1,0 +1,60 @@
+/* ---------------------
+  :: 8.0 Welcome Area CSS
+  --------------------- */
+
+.single_slide {
+  background-position: center top;
+  background-size: cover;
+  position: relative;
+  z-index: 1;
+}
+
+.welcome_slide_text {
+  position: relative;
+  z-index: 1;
+}
+
+.welcome_slide_text > h2,
+.single_catagory_area h2 {
+  font-size: 92px;
+  letter-spacing: 0;
+  margin-left: -5px;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.welcome_slide_text h6,
+.single_catagory_area h6 {
+  color: #fff;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.welcome_slides.owl-carousel .owl-dots {
+  position: absolute;
+  top: 50%;
+  left: 1%;
+  z-index: 5;
+  width: 30px;
+  background-color: transparent;
+  height: auto;
+  text-align: center;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.welcome_slides.owl-carousel .owl-dot {
+  background-color: #fff;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  display: block;
+  height: 9px;
+  margin: 15px 10px;
+  width: 9px;
+}
+
+.welcome_slides.owl-carousel .owl-dot.active {
+  background-color: #ff084e;
+  border-color: #ff084e;
+}

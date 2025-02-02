@@ -1,0 +1,149 @@
+/* -------------------
+  :: 6.0 Side Menu Area CSS
+  ------------------- */
+
+.catagories-side-menu {
+  background-color: #fff;
+  width: 300px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 1;
+}
+
+#sideMenuClose {
+  color: #fff;
+  width: 20%;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  text-align: center;
+  border-radius: 0;
+  cursor: pointer;
+  z-index: 99;
+  position: absolute;
+  top: 0;
+  right: 0;
+  -webkit-transition-duration: 500ms;
+  transition-duration: 500ms;
+  background-color: #3a3a3a;
+}
+
+#sideMenuClose:hover {
+  background-color: #ff084e;
+}
+
+.menu-list {
+  margin-top: 50px;
+}
+
+.menu-list h6 {
+  padding: 30px 15px;
+  margin-bottom: 0;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.menu-content ul,
+.menu-content li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.menu-content ul :not(collapsed) .arrow:before,
+.menu-content li :not(collapsed) .arrow:before {
+  font-family: FontAwesome;
+  content: "\f078";
+  display: inline-block;
+  padding-left: 10px;
+  padding-right: 15px;
+  vertical-align: middle;
+  float: right;
+  color: #9f9f9f;
+}
+
+.menu-content ul .sub-menu li,
+.menu-content li .sub-menu li {
+  border: none;
+  border-bottom: 1px solid #ebebeb;
+  margin-left: 0;
+  padding-left: 5px;
+}
+
+.menu-content li {
+  padding-left: 0px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.menu-content li a {
+  position: relative;
+  z-index: 1;
+  text-decoration: none;
+  color: #3a3a3a;
+  height: 45px;
+  display: block;
+  line-height: 45px;
+  padding-left: 30px;
+  font-size: 13px;
+}
+
+.menu-content .sub-menu li a {
+  position: relative;
+  z-index: 1;
+  text-decoration: none;
+  color: #3a3a3a;
+  height: 40px;
+  display: inline-block;
+  line-height: 40px;
+}
+
+.menu-content li .sub-menu li a:before {
+  width: 10px;
+  height: 10px;
+  border: 1px solid #858585;
+  background-color: transparent;
+  border-radius: 2px;
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 10px;
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 0;
+}
+
+.menu-content > li > a:before {
+  width: 10px;
+  height: 10px;
+  border: 1px solid #ff084e;
+  background-color: #ff084e;
+  border-radius: 2px;
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 10px;
+  content: "";
+  position: absolute;
+  top: 18px;
+  left: 0;
+}
+
+.menu-content > li.collapsed > a:before {
+  width: 10px;
+  height: 10px;
+  border: 1px solid #858585;
+  background-color: transparent;
+  border-radius: 2px;
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 10px;
+  content: "";
+  position: absolute;
+  top: 18px;
+  left: 0;
+}
+
+.menu-list .menu-content {
+  display: block;
+}
