@@ -17,6 +17,7 @@ import NewArrivals from "../NewArrivals/NewArrivals";
 import OfferArea from "../OfferArea/OfferArea";
 import Footer from "../Footer/Footer";
 import CategoriesMenu from "../CategoriesMenu/CategoriesMenu";
+import Layout from "../Layout/Layout";
 
 const Home = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -100,11 +101,7 @@ const Home = () => {
 
   return (
     <>
-      <CategoriesMenu isOpen={isMenuOpen} onClose={() => setMenuOpen(false)} />
-
-      <div id="wrapper" className={isMenuOpen ? "karl-side-menu-open" : ""}>
-        <Header onToggleMenu={toggleMenu} />
-
+      <Layout>
         <Discount />
 
         <Welcome />
@@ -122,7 +119,7 @@ const Home = () => {
         <OfferArea />
 
         <Footer />
-      </div>
+      </Layout>
     </>
   );
 };
