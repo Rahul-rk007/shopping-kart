@@ -8,7 +8,6 @@ import product4 from "../../assets/product-img/product-4.jpg";
 import product5 from "../../assets/product-img/product-5.jpg";
 import product6 from "../../assets/product-img/product-6.jpg";
 
-import Header from "../Header/Header";
 import Discount from "../Discount/Discount";
 import Welcome from "../Welcome/Welcome";
 import CategoryArea from "../CategoryArea/CategoryArea";
@@ -16,7 +15,6 @@ import QuickViewModal from "../QuickViewModal/QuickViewModal";
 import NewArrivals from "../NewArrivals/NewArrivals";
 import OfferArea from "../OfferArea/OfferArea";
 import Footer from "../Footer/Footer";
-import CategoriesMenu from "../CategoriesMenu/CategoriesMenu";
 import Layout from "../Layout/Layout";
 
 const Home = () => {
@@ -102,12 +100,8 @@ const Home = () => {
   return (
     <>
       <Layout>
-        <Discount />
-
         <Welcome />
-
         <CategoryArea />
-
         <NewArrivals products={products} onQuickView={handleQuickViewOpen} />
         <QuickViewModal
           isOpen={isModalOpen}
@@ -115,10 +109,7 @@ const Home = () => {
           product={selectedProduct}
           scrollPosition={scrollPosition}
         />
-
         <OfferArea />
-
-        <Footer />
       </Layout>
     </>
   );
