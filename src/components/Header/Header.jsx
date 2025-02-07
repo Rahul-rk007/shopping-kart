@@ -95,7 +95,7 @@ const Header = ({ onToggleMenu }) => {
                             Cart
                           </a>
                           <a className="dropdown-item" href="checkout.html">
-                            Checkout
+                            Check out
                           </a>
                         </div>
                       </li>
