@@ -7,6 +7,7 @@ import ProductDetails from "./components/Product-Details/ProductDetails";
 import Cart from "./components/Cart/Cart";
 import Checkout from "./components/Checkout/Checkout";
 import Aboutus from "./components/Aboutus/Aboutus";
+import Contactus from "./components/Contactus/Contactus";
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
       {/* <ProductDetails /> */}
       {/* <Cart /> */}
       {/* <Checkout /> */}
-      <Aboutus />
+      {/* <Aboutus /> */}
+      <Contactus />
     </>
   );
 }
