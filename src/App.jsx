@@ -8,17 +8,12 @@ import Cart from "./components/Cart/Cart";
 import Checkout from "./components/Checkout/Checkout";
 import Aboutus from "./components/Aboutus/Aboutus";
 import Contactus from "./components/Contactus/Contactus";
+import Routes from "./components/Routes/Routing";
 
 function App() {
   return (
     <>
-      {/* <Home /> */}
-      {/* <Shop /> */}
-      {/* <ProductDetails /> */}
-      {/* <Cart /> */}
-      {/* <Checkout /> */}
-      {/* <Aboutus /> */}
-      <Contactus />
+      <Routes />
     </>
   );
 }

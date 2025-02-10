@@ -131,8 +131,13 @@
   margin-bottom: 5px;
 }
 
+.total{
+  display: flex;
+  justify-content: space-around;
+}
+
 .cart-list li .btn-checkout,
-.cart-list li .btn-cart {
+.cart-list li .btn-cart {                  
   background-color: #ff084e;
   border-radius: 0;
   color: #fff;

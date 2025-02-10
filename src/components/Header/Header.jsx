@@ -4,6 +4,7 @@ import "./Header.css";
 import LOGO from "../../assets/core-img/logo.png";
 import product10 from "../../assets/product-img/product-10.jpg";
 import product11 from "../../assets/product-img/product-11.jpg";
+import { NavLink } from "react-router-dom";
 
 const Header = ({ onToggleMenu }) => {
   const [showCart, setShowCart] = useState(false);
@@ -59,9 +60,9 @@ const Header = ({ onToggleMenu }) => {
                   >
                     <ul className="navbar-nav animated" id="nav">
                       <li className="nav-item active">
-                        <a className="nav-link" href="index.html">
+                        <NavLink className="nav-link" to="/">
                           Home
-                        </a>
+                        </NavLink>
                       </li>
                       <li className="nav-item dropdown">
                         <a
@@ -100,19 +101,19 @@ const Header = ({ onToggleMenu }) => {
                         </div>
                       </li>
                       <li className="nav-item">
-                        <a className="nav-link" href="#">
-                          Dresses
-                        </a>
+                        <NavLink className="nav-link" to="/products">
+                          Shop
+                        </NavLink>
                       </li>
                       <li className="nav-item">
-                        <a className="nav-link" href="#">
-                          <span className="karl-level">hot</span> Shoes
-                        </a>
+                      <NavLink className="nav-link" to="/aboutus">
+                          About Us
+                        </NavLink>
                       </li>
                       <li className="nav-item">
-                        <a className="nav-link" href="#">
-                          Contact
-                        </a>
+                      <NavLink className="nav-link" to="/contactus">
+                          Contact Us
+                        </NavLink>
                       </li>
                     </ul>
                   </div>
@@ -121,10 +122,10 @@ const Header = ({ onToggleMenu }) => {
 
               <div className="header-cart-menu d-flex align-items-center">
                 <div className="cart">
-                  <a href="#" id="header-cart-btn" onClick={handleCartClick}>
+                  <NavLink href="#" id="header-cart-btn" onClick={handleCartClick}>
                     <span className="cart_quantity">2</span>
                     <i className="ti-bag"></i> Your Bag $20
-                  </a>
+                  </NavLink>
 
                   {showCart && (
                     <ul className="cart-list">
@@ -161,16 +162,16 @@ const Header = ({ onToggleMenu }) => {
                         </span>
                       </li>
                       <li className="total">
-                        <span className="pull-right">Total: $20.00</span>
-                        <a href="cart.html" className="btn btn-sm btn-cart">
+                        <NavLink to="/cart" className="btn btn-sm btn-cart">
                           Cart
-                        </a>
-                        <a
-                          href="checkout-1.html"
+                        </NavLink>
+                        <NavLink
+                          to="/checkout"
                           className="btn btn-sm btn-checkout"
                         >
                           Checkout
-                        </a>
+                        </NavLink>
+                        <span className="pull-right">Total: $20.00</span>
                       </li>
                     </ul>
                   )}
