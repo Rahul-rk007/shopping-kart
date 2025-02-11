@@ -46,11 +46,11 @@ const Contactus = () => {
           </p>
         </section>
         <section className="d-flex flex-column flex-md-row justify-content-center align-items-center py-5 contactus-cards">
-          <div className="card text-center shadow-lg mb-4 mb-md-0 mx-2 card-1">
+          <div className="card text-center shadow-lg mb-4 mb-md-0 mx-2 contactus-card-1">
             <div className="card-body">
-              <img src={PhoneImg} class="icon" />
+              <img src={PhoneImg} class="contactus-icon" />
               <h5 className="card-title">Talk to Sales</h5>
-              <p className="card-text card_text">
+              <p className="card-text contactus-card-text">
                 Interested in HubSpot’s software? Just pick up the phone to chat
                 with a member of our sales team.
               </p>
@@ -59,14 +59,14 @@ const Contactus = () => {
               </a>
             </div>
           </div>
-          <div className="card text-center shadow-lg mx-2 card-2">
+          <div className="card text-center shadow-lg mx-2 contactus-card-2">
             <div>
               {/* <img src={TextImg} class="icon" /> */}
               <div className="contact-us">
                 <h2>Contact Us</h2>
                 {submitted && <p>Thank you for your message!</p>}
                 <form onSubmit={handleSubmit}>
-                  <div className="form-group d-flex">
+                  <div className="contactus-form-group d-flex">
                     <label htmlFor="name">Name:</label>
                     <input
                       type="text"
@@ -77,7 +77,7 @@ const Contactus = () => {
                       required
                     />
                   </div>
-                  <div className="form-group d-flex">
+                  <div className="contactus-form-group d-flex">
                     <label htmlFor="email">Email:</label>
                     <input
                       type="email"
@@ -88,7 +88,7 @@ const Contactus = () => {
                       required
                     />
                   </div>
-                  <div className="form-group d-flex">
+                  <div className="contactus-form-group d-flex">
                     <label htmlFor="message">Message:</label>
                     <textarea
                       id="message"
@@ -98,7 +98,7 @@ const Contactus = () => {
                       required
                     ></textarea>
                   </div>
-                  <button type="submit">Send Message</button>
+                  <button class="contactus-btn"type="submit">Send Message</button>
                 </form>
               </div>
             </div>

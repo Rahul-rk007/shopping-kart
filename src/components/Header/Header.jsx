@@ -166,7 +166,7 @@ const Header = ({ onToggleMenu }) => {
                           <i className="icon-cross"></i>
                         </span>
                       </li>
-                      <li className="total">
+                      <li className="total total-price">
                         <NavLink to="/cart" className="btn btn-sm btn-cart">
                           Cart
                         </NavLink>
