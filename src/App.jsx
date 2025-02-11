@@ -9,13 +9,11 @@ import Checkout from "./components/Checkout/Checkout";
 import Aboutus from "./components/Aboutus/Aboutus";
 import Contactus from "./components/Contactus/Contactus";
 import Routes from "./components/Routes/Routing";
-import Login from "./components/Login/Login";
 
 function App() {
   return (
     <>
-      {/* <Routes /> */}
-      <Login />
+      <Routes />
     </>
   );
 }

@@ -321,7 +321,7 @@ const Checkout = () => {
                   </div>
                 </div>
 
-                <a href="#" className="btn karl-checkout-btn">
+                <a href="#" className="btn karl-checkout-btn btnPlaceOrder">
                   Place Order
                 </a>
               </div>

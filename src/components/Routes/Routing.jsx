@@ -7,6 +7,8 @@ import Cart from '../Cart/Cart'
 import Checkout from '../Checkout/Checkout'
 import Aboutus from '../Aboutus/Aboutus'
 import Contactus from '../Contactus/Contactus'
+import Login from '../Login/Login'
+import Signup from '../Signup/Signup'
 
 const Routing = () => {
     return (
@@ -18,8 +20,8 @@ const Routing = () => {
         <Route path='/checkout' element={<Checkout />} />
         <Route path='/aboutus' element={<Aboutus />} />
         <Route path='/contactus' element={<Contactus />} />
-        <Route path='/login' element={<Contactus />} />
-        <Route path='/signup' element={<Contactus />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
         <Route path='/myorder' element={<Contactus />} />
         <Route path='/profile' element={<Contactus />} />
         <Route path='/wishlist' element={<Contactus />} />

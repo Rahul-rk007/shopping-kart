@@ -1,14 +1,23 @@
-body {
-    background-color: #f8f9fa;
-}
 
+.login-main{
+    background-color:#ebdbe0;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .login-container {
-    max-width: 400px;
-    margin: 100px auto;
+    width: 25%;
     padding: 20px;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.btnSignUp{
+    color: #ff084e;
+        &:hover{
+            color: #3a3a3a;
+        }
 }
 
 .btnLogin{
@@ -25,4 +34,5 @@ body {
     display: flex;
     justify-content: space-between;   
     align-items: center; 
+    margin-top: 10px;
 }

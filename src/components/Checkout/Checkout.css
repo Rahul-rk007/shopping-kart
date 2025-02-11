@@ -63,3 +63,14 @@
     line-height: 2;
     color: #9f9f9f;
 }
+.btnPlaceOrder{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #3a3a3a;
+    border-color: #3a3a3a;
+}
+.btnPlaceOrder:hover{
+    background-color: #ff084e;
+    border-color:#ff084e ;
+}
