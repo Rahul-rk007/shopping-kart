@@ -64,60 +64,29 @@ const Header = ({ onToggleMenu }) => {
                           Home
                         </NavLink>
                       </li>
-                      <li className="nav-item dropdown">
-                        <a
-                          className="nav-link dropdown-toggle"
-                          href="#"
-                          id="karlDropdown"
-                          role="button"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          Pages
-                        </a>
-                        <div
-                          className="dropdown-menu"
-                          aria-labelledby="karlDropdown"
-                        >
-                          <a className="dropdown-item" href="index.html">
-                            Home
-                          </a>
-                          <a className="dropdown-item" href="shop.html">
-                            Shop
-                          </a>
-                          <a
-                            className="dropdown-item"
-                            href="product-details.html"
-                          >
-                            Product Details
-                          </a>
-                          <a className="dropdown-item" href="cart.html">
-                            Cart
-                          </a>
-                          <a className="dropdown-item" href="checkout.html">
-                            Check out
-                          </a>
-                        </div>
-                      </li>
                       <li className="nav-item">
                         <NavLink className="nav-link" to="/products">
                           Shop
                         </NavLink>
                       </li>
                       <li className="nav-item">
-                      <NavLink className="nav-link" to="/aboutus">
+                        <NavLink className="nav-link" to="/aboutus">
                           About Us
                         </NavLink>
                       </li>
                       <li className="nav-item">
-                      <NavLink className="nav-link" to="/contactus">
+                        <NavLink className="nav-link" to="/contactus">
                           Contact Us
                         </NavLink>
                       </li>
                       <li className="nav-item">
-                      <NavLink className="nav-link" to="/login">
+                        <NavLink className="nav-link" to="/login">
                           Login
+                        </NavLink>
+                      </li>
+                      <li className="nav-item">
+                        <NavLink className="nav-link" to="/myaccount/profile">
+                          My Account
                         </NavLink>
                       </li>
                     </ul>
@@ -127,7 +96,11 @@ const Header = ({ onToggleMenu }) => {
 
               <div className="header-cart-menu d-flex align-items-center">
                 <div className="cart">
-                  <NavLink href="#" id="header-cart-btn" onClick={handleCartClick}>
+                  <NavLink
+                    href="#"
+                    id="header-cart-btn"
+                    onClick={handleCartClick}
+                  >
                     <span className="cart_quantity">2</span>
                     <i className="ti-bag"></i> Your Bag $20
                   </NavLink>
