@@ -1,0 +1,20 @@
+.account-container {
+  display: flex; /* Use flexbox for layout */
+  height: 100vh; /* Full height of the viewport */
+}
+
+.content {
+  margin-left: 220px; /* Space for the sidebar */
+  padding: 20px; /* Padding around the content */
+  flex-grow: 1; /* Allow content to grow and fill available space */
+  background-color: #fff; /* White background for content area */
+  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+}
+
+h2 {
+  color: #333; /* Dark text color for headings */
+}
+
+p {
+  color: #666; /* Lighter text color for paragraphs */
+}
