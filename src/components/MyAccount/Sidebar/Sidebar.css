@@ -1,5 +1,5 @@
 /* Sidebar.css */
-.sidebar {
+.myaccount-sidebar {
   width: 200px; /* Fixed width for the sidebar */
   background-color: #f4f4f4; /* Light gray background */
   padding: 20px; /* Padding around the content */
@@ -8,28 +8,26 @@
   position: absolute; /* Fixed position to stay in view */
 }
 
-.sidebar h2 {
-  margin-bottom: 20px; /* Space below the heading */
-}
-
-.sidebar ul {
+.myaccount-sidebar-container {
   list-style-type: none; /* Remove default list styling */
   padding: 0; /* Remove default padding */
 }
 
-.sidebar ul li {
+.myaccount-list {
   margin: 10px 0; /* Space between list items */
 }
 
-.sidebar ul li a {
+.myaccount-list-link {
   text-decoration: none; /* Remove underline from links */
   color: #333; /* Dark text color */
-  display: block; /* Make the link fill the list item */
+  display: flex; /* Make the link fill the list item */
+  justify-content: center;
+  align-items: center;
   padding: 10px; /* Padding for clickable area */
   border-radius: 4px; /* Rounded corners */
 }
 
-.sidebar ul li a:hover {
-  background-color: #007bff; /* Change background on hover */
+.myaccount-list-link:hover{
+  background-color:  #ff084e; /* Change background on hover */
   color: white; /* Change text color on hover */
 }

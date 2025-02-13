@@ -6,9 +6,9 @@ import Sidebar from "./Sidebar/Sidebar";
 const MyAccount = ({ children }) => {
   return (
     <Layout>
-      <div className="account-container">
+      <div className="myaccount-container">
         <Sidebar />
-        <div className="content">{children}</div>
+        <div className="myaccount-content">{children}</div>
       </div>
     </Layout>
   );

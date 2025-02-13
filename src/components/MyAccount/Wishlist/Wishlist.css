@@ -1,0 +1,33 @@
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
+
+.card {
+  margin-top: 20px;
+}
+
+h2 {
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.editable-field {
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.editable-field:hover {
+  background-color: #e9ecef;
+}
+
+.btn {
+  width: 100%;
+}

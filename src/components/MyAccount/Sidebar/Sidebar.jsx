@@ -4,19 +4,19 @@ import "./Sidebar.css";
 
 const Sidebar = () => {
   return (
-    <div className="sidebar">
-      <ul>
-        <li>
-          <Link to="/myaccount/profile">Profile</Link>
+    <div className="myaccount-sidebar">
+      <ul className="myaccount-sidebar-container">
+        <li className="myaccount-list">
+          <Link className="myaccount-list-link" to="/myaccount/profile">Profile</Link>
         </li>
-        <li>
-          <Link to="/myaccount/myorders">My Orders</Link>
+        <li className="myaccount-list">
+          <Link className="myaccount-list-link" to="/myaccount/myorders">My Orders</Link>
         </li>
-        <li>
-          <Link to="/myaccount/address">Address</Link>
+        <li className="myaccount-list">
+          <Link className="myaccount-list-link" to="/myaccount/address">Address</Link>
         </li>
-        <li>
-          <Link to="/myaccount/wishlist">Wishlist</Link>
+        <li className="myaccount-list">
+          <Link className="myaccount-list-link" to="/myaccount/wishlist">Wishlist</Link>
         </li>
       </ul>
     </div>
@@ -24,3 +24,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
