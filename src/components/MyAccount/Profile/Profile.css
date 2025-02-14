@@ -1,17 +1,22 @@
-.container {
+.profile-container {
   max-width: 600px;
   margin: auto;
 }
 
-.card {
+.profile-card {
   margin-top: 20px;
+  border: 0.5px solid gray;
+  box-shadow: 3px 3px 5px rgb(161, 158, 158);
 }
 
-.card-header {
+.profile-card-header {
   background-color: #f8f9fa;
+  text-align: center;
+  margin-top: 10px;
 }
 
 .profile-edit-btn {
+  cursor: pointer;
   margin-top: 10px;
   margin-bottom: 10px;
   width: 40%;

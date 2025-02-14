@@ -30,10 +30,10 @@ const Profile = () => {
   return (
     <MyAccount>
       <div>
-        <div className="container mt-5">
-          <div className="card">
-            <div className="card-header">
-              <h5>User Profile</h5>
+        <div className="profile-container mt-5">
+          <div className="profile-card">
+            <div className="profile-card-header">
+              <h3>User Profile</h3>
             </div>
             <div className="card-body">
               {isEditing ? (
