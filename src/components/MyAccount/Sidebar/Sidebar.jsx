@@ -5,6 +5,7 @@ import Profile from "../../../assets/icon/profile.webp"
 import MyOrder from "../../../assets/icon/myorder.png"
 import Address from "../../../assets/icon/address.jpg"
 import Wishlist from "../../../assets/icon/wishlist.png"
+import ChangePassword from "../../../assets/icon/changepassword.png"
 
 
 const Sidebar = () => {
@@ -29,6 +30,11 @@ const Sidebar = () => {
         <li className="myaccount-list myaccount-list-link">
         <img className="myaccount-list-img" src={Wishlist} />
           <Link className="myaccount-link" to="/myaccount/wishlist">Wishlist</Link>
+        </li>
+        <hr />
+        <li className="myaccount-list myaccount-list-link">
+        <img className="myaccount-list-img" src={ChangePassword} />
+          <Link className="myaccount-link" to="/myaccount/changepassword">Change Password</Link>
         </li>
         <hr />
       </ul>

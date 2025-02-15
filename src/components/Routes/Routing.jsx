@@ -13,6 +13,8 @@ import MyOrders from "../MyAccount/MyOrders/MyOrders";
 import Profile from "../MyAccount/Profile/Profile";
 import Wishlist from "../MyAccount/Wishlist/Wishlist";
 import Address from "../MyAccount/Address/Address";
+import ChangePassword from "../MyAccount/ChangePassword/ChangePassword";
+
 
 const Routing = () => {
   return (
@@ -30,8 +32,10 @@ const Routing = () => {
       <Route path="/myaccount/profile" element={<Profile />} />
       <Route path="/myaccount/wishlist" element={<Wishlist />} />
       <Route path="/myaccount/address" element={<Address />} />
+      <Route path="/myaccount/changepassword" element={<ChangePassword />} />   
     </Routes>
   );
 };
+
 
 export default Routing;
