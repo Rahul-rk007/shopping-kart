@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import MyAccount from "../MyAccount";
+import { Link } from "react-router-dom";
 import "./MyOrders.css";
 
 const MyOrders = () => {
@@ -59,7 +60,8 @@ const MyOrders = () => {
               </div>
               <div className="col-md-1">
                 <button className="btn btn-primary myorder-arrow-btn">
-                  &gt;
+                <Link to="/myaccount/orderdetails" className="">&gt;</Link>
+                  
                 </button>
               </div>
             </div>
