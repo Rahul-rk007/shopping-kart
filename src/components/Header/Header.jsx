@@ -10,6 +10,14 @@ const Header = ({ onToggleMenu }) => {
   const [showCart, setShowCart] = useState(false);
   const cartRef = useRef(null);
 
+  const handleMouseEnter = () => {
+    setShowCart(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowCart(false);
+  };
+
   const handleCartClick = () => {
     setShowCart((prevShowCart) => !prevShowCart);
   };
@@ -95,7 +103,12 @@ const Header = ({ onToggleMenu }) => {
               </div>
 
               <div className="header-cart-menu d-flex align-items-center">
-                <div className="cart">
+              <div
+                  className="cart"
+                  ref={cartRef}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
                   <NavLink
                     href="#"
                     id="header-cart-btn"

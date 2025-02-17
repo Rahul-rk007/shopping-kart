@@ -1,8 +1,35 @@
-import React from "react";
+import React,{useState} from "react";
 import "./Checkout.css";
 import Layout from "../Layout/Layout";
+import { Link } from "react-router-dom";
 
 const Checkout = () => {
+  const [selectedAddress, setSelectedAddress] = useState("");
+
+  const shippingAddresses = [
+    {
+      id: 1,
+      name: "John Doe",
+      address: "123 Main St, Springfield, USA",
+      phone: "123-456-7890",
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      address: "456 Elm St, Springfield, USA",
+      phone: "987-654-3210",
+    },
+    {
+      id: 3,
+      name: "Alice Johnson",
+      address: "789 Oak St, Springfield, USA",
+      phone: "555-555-5555",
+    },
+  ];
+
+  const handleAddressChange = (event) => {
+    setSelectedAddress(event.target.value);
+  };
   return (
     <Layout>
       <div className="checkout_area section_padding_100">
@@ -11,160 +38,37 @@ const Checkout = () => {
             <div className="col-12 col-md-6">
               <div className="checkout_details_area mt-50 clearfix">
                 <div className="cart-page-heading">
-                  <h5>Billing Address</h5>
-                  <p>Enter your coupon code</p>
+                  <h5>Shipping Address</h5>
+                  <p>Select Your Shipping Address</p>
                 </div>
-
+                <Link to="/myaccount/address" className="btn btn-primary mt-3">
+                  Add New Shipping Address
+                </Link>
                 <form action="#" method="post">
                   <div className="row">
-                    <div className="col-md-6 mb-3">
-                      <label htmlFor="first_name">
-                        First Name <span>*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="first_name"
-                        required
-                      />
-                    </div>
-                    <div className="col-md-6 mb-3">
-                      <label htmlFor="last_name">
-                        Last Name <span>*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="last_name"
-                        required
-                      />
-                    </div>
-                    <div className="col-12 mb-3">
-                      <label htmlFor="company">Company Name</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="company"
-                      />
-                    </div>
-                    <div className="col-12 mb-3">
-                      <label htmlFor="country">
-                        Country <span>*</span>
-                      </label>
-                      <select
-                        className="custom-select d-block w-100"
-                        id="country"
-                      >
-                        <option value="usa">United States</option>
-                        <option value="uk">United Kingdom</option>
-                        <option value="ger">Germany</option>
-                        <option value="fra">France</option>
-                        <option value="ind">India</option>
-                        <option value="aus">Australia</option>
-                        <option value="bra">Brazil</option>
-                        <option value="cana">Canada</option>
-                      </select>
-                    </div>
-                    <div className="col-12 mb-3">
-                      <label htmlFor="street_address">
-                        Address <span>*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control mb-3"
-                        id="street_address"
-                      />
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="street_address2"
-                      />
-                    </div>
-                    <div className="col-12 mb-3">
-                      <label htmlFor="postcode">
-                        Postcode <span>*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="postcode"
-                      />
-                    </div>
-                    <div className="col-12 mb-3">
-                      <label htmlFor="city">
-                        Town/City <span>*</span>
-                      </label>
-                      <input type="text" className="form-control" id="city" />
-                    </div>
-                    <div className="col-12 mb-3">
-                      <label htmlFor="state">
-                        Province <span>*</span>
-                      </label>
-                      <input type="text" className="form-control" id="state" />
-                    </div>
-                    <div className="col-12 mb-3">
-                      <label htmlFor="phone_number">
-                        Phone No <span>*</span>
-                      </label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        id="phone_number"
-                        min="0"
-                      />
-                    </div>
-                    <div className="col-12 mb-4">
-                      <label htmlFor="email_address">
-                        Email Address <span>*</span>
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        id="email_address"
-                      />
-                    </div>
-
-                    <div className="col-12">
-                      <div className="custom-control custom-checkbox d-block mb-2">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          id="customCheck1"
-                        />
-                        <label
-                          className="custom-control-label"
-                          htmlFor="customCheck1"
-                        >
-                          Terms and conditions
-                        </label>
+                    {shippingAddresses.map((address) => (
+                      <div className="col-12 mb-3" key={address.id}>
+                        <div className="custom-control custom-radio">
+                          <input
+                            type="radio"
+                            id={`address_${address.id}`}
+                            name="shippingAddress"
+                            className="custom-control-input"
+                            value={address.id}
+                            checked={selectedAddress === address.id.toString()}
+                            onChange={handleAddressChange}
+                          />
+                          <label
+                            className="custom-control-label"
+                            htmlFor={`address_${address.id}`}
+                          >
+                            <strong>{address.name}</strong><br />
+                            {address.address}<br />
+                            Phone: {address.phone}
+                          </label>
+                        </div>
                       </div>
-                      <div className="custom-control custom-checkbox d-block mb-2">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          id="customCheck2"
-                        />
-                        <label
-                          className="custom-control-label"
-                          htmlFor="customCheck2"
-                        >
-                          Create an account
-                        </label>
-                      </div>
-                      <div className="custom-control custom-checkbox d-block">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          id="customCheck3"
-                        />
-                        <label
-                          className="custom-control-label"
-                          htmlFor="customCheck3"
-                        >
-                          Subscribe to our newsletter
-                        </label>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </form>
               </div>

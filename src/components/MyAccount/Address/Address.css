@@ -1,0 +1,44 @@
+.adderss-page-container {
+  max-width: 700px;
+}
+
+.address-page-form {
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.address-page-list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.address-page-scrollable-modal-body {
+  height: 500px; /* Adjust as needed */
+  overflow-y: auto; /* Enable scrolling */
+  padding: 0;
+}
+
+.address-page-modal-title {
+  font-weight: bold;
+}
+
+.address-page-btn-primary {
+  background-color: #ff084e; /* Bootstrap primary color */
+  border-color: #ff084e;
+}
+
+.address-page-btn-primary:hover {
+  background-color: #3a3a3a; /* Darker shade on hover */
+  border-color: #3a3a3a;
+}
+
+
+.address-page-list-section{
+  border: 0.5px solid gray;
+  border-radius: 10px;
+  box-shadow: 2px 2px 3px grey;
+  padding: 20px;
+}
