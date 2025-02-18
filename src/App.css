@@ -300,3 +300,9 @@ img {
   background-color: #ff084e;
   border-color: #ff084e;
 }
+
+.form-error {
+  color: red; /* Set the text color to red */
+  font-size: 0.875rem; /* Optional: Adjust font size */
+  margin-top: 0.25rem;
+}
