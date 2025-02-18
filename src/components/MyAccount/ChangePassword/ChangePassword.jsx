@@ -47,7 +47,7 @@ const ChangePassword = () => {
                   required
                 />
                 </div>
-              <button type="submit" className="btn btn-primary w-100 changepassword-btn">
+              <button type="submit" className="btn btn-primary w-100 changepassword-btn btn-red">
                 Change Password
               </button>
             </form>

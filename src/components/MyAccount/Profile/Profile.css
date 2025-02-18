@@ -10,9 +10,8 @@
 }
 
 .profile-card-header {
-  background-color: #f8f9fa;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 25px;
 }
 
 .profile-edit-btn {
@@ -22,29 +21,22 @@
   width: 40%;
   padding: 5px;
   margin-left: 30%;
-  background-color: #ff084e;
-  border:none;
-    &:hover{
-      background-color: #3a3a3a;
-      border: none;
-    }
+  border-radius: 8px;
 }
+
 .profile-save-btn {
+  cursor: pointer;
   margin-top: 10px;
-  margin-bottom: 10px;
-  width: 100%;
+  margin-bottom: 5px;
+  width: 80%;
   padding: 5px;
-  margin-left:50%; 
-  background-color: #ff084e;
-  border:none;
-   &:hover{
-    background-color: #3a3a3a;
-    border: none;
-  }
+  margin-left:65%; 
+  border-radius: 8px;
 }
  
 
 .profile-card-body{
+  margin-top: 10px;
   margin-bottom: 20px;
   width: 100%;
   display: grid;

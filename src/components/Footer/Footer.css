@@ -64,7 +64,6 @@
   }
   
   .subscribtion_form .submit {
-    background-color: #3a3a3a;
     border: none;
     border-radius: 0;
     color: #fff;
@@ -80,11 +79,6 @@
     padding: 0 30px;
     font-weight: 700;
     width: 30%;
-  }
-  
-  .subscribtion_form .submit:hover {
-    background-color: #ff084e;
-    color: #fff;
   }
   
   .copywrite_text > p {

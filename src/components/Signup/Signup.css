@@ -1,6 +1,5 @@
 
 .signup-main{
-    background-color:#ebdbe0;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -50,19 +49,12 @@
   .signup-btn {
     padding: 10px;
     width: 60% !important;
-    background-color:#3a3a3a ;
     color: white;
     border: none;
     border-radius: 4px;
-    border-color: #3a3a3a;
     cursor: pointer;
     margin: 20px 20%;
     font-size: 16px;
-      &:hover {
-        background-color:#ff084e ;
-        border-color: #ff084e;
-      }
-   
   }
   
   .error {

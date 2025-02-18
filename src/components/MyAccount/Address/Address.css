@@ -25,20 +25,14 @@
   font-weight: bold;
 }
 
-.address-page-btn-primary {
-  background-color: #ff084e; /* Bootstrap primary color */
-  border-color: #ff084e;
-}
-
-.address-page-btn-primary:hover {
-  background-color: #3a3a3a; /* Darker shade on hover */
-  border-color: #3a3a3a;
-}
-
-
 .address-page-list-section{
   border: 0.5px solid gray;
   border-radius: 10px;
   box-shadow: 2px 2px 3px grey;
   padding: 20px;
+}
+
+.address-list-icon{
+  width: 40px;
+  margin-right: 5px;
 }

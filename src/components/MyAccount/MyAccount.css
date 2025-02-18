@@ -7,6 +7,6 @@
   margin-left: 220px; /* Space for the sidebar */
   padding: 20px; /* Padding around the content */
   flex-grow: 1; /* Allow content to grow and fill available space */
-  background-color: #fff; /* White background for content area */
+   /* White background for content area */
   overflow-y: auto; /* Enable vertical scrolling if content overflows */
 }

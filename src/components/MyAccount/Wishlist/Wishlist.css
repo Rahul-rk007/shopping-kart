@@ -55,12 +55,6 @@
 
 .wishlist-btnaddtocart{
   cursor: pointer;
-  background-color: #3a3a3a;
-  border-color:#3a3a3a ;
-    &:hover{
-      background-color: #ff084e;
-      border-color: #ff084e;
-    }
 }
 .wishlist-table{
   margin-top: 40px;

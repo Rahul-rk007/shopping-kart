@@ -1,6 +1,5 @@
 
 .login-main{
-    background-color:#ebdbe0;
     height: 80vh;
     display: flex;
     align-items: center;
@@ -22,12 +21,6 @@
 
 .btnLogin{
     margin-left: 0%;
-    background-color: #3a3a3a;
-    border-color: #3a3a3a;
-    &:hover{
-        background-color: #ff084e;
-        border-color: #ff084e;
-    }
 }
 
 .loginFooter{

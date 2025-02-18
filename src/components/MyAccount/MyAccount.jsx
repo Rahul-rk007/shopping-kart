@@ -8,7 +8,7 @@ const MyAccount = ({ children }) => {
     <Layout>
       <div className="myaccount-container">
         <Sidebar />
-        <div className="myaccount-content">{children}</div>
+        <div className="myaccount-content bg-color">{children}</div>
       </div>
     </Layout>
   );

@@ -37,7 +37,7 @@ const Contactus = () => {
 
   return (
     <Layout>
-      <div>
+      <div className="bg-color">
         <section className="bg-dark text-white text-center py-5 contactus-main">
           <h1 className="display-4 font-weight-bold">Get in touch</h1>
           <p className="lead mt-5">
@@ -98,7 +98,7 @@ const Contactus = () => {
                       required
                     ></textarea>
                   </div>
-                  <button class="contactus-btn"type="submit">Send Message</button>
+                  <button class="contactus-btn btn-red"type="submit">Send Message</button>
                 </form>
               </div>
             </div>

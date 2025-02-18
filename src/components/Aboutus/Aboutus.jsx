@@ -5,7 +5,7 @@ import AboutusImg from "../../assets/aboutus.jpg";
 const Aboutus = () => {
   return (
     <Layout>
-      <section className="about-us">
+      <section className="about-us bg-color">
         <div className="container">
           <div className="row">
             <div className="col-lg-6">

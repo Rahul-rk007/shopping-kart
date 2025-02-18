@@ -300,3 +300,16 @@ img {
   background-color: #ff084e;
   border-color: #ff084e;
 }
+
+.btn-red{
+  background-color: #ff084e;
+  border-color: #ff084e;
+    &:hover{
+      background-color: #3a3a3a;
+      border-color: #3a3a3a;
+    }
+}
+
+.bg-color{
+  background-color: #fcf7f8;
+}

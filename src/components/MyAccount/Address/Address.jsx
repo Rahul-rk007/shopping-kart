@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import MyAccount from "../MyAccount";
 import "./Address.css";
+import Delete from "../../../assets/icon/delete.png"
+import Edit from "../../../assets/icon/edit.png"
 
 const Address = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -236,7 +238,7 @@ const Address = () => {
 
                     <button
                       type="submit"
-                      className="btn btn-primary btn-block mt-3 address-page-btn-primary"
+                      className="btn btn-primary btn-block mt-3 address-page-btn-primary btn-red"
                     >
                       Submit
                     </button>
@@ -249,7 +251,7 @@ const Address = () => {
 
         <div className="d-flex justify-content-end mb-3">
           <button
-            className="btn btn-success address-page-newaddress-btn"
+            className="btn btn-success address-page-newaddress-btn btn-red"
             onClick={() => {
               resetForm();
               setIsFormVisible(true);
@@ -285,16 +287,16 @@ const Address = () => {
                   </div>
                   <div>
                     <button
-                      className="btn btn-warning btn-sm"
+                      className="btn-sm address-list-icon"
                       onClick={() => handleEdit(index)}
                     >
-                      Edit
+                      <img src={Edit} />
                     </button>
                     <button
-                      className="btn btn-danger btn-sm ml-2"
+                      className="btn-sm ml-2 address-list-icon"
                       onClick={() => handleDelete(index)}
                     >
-                      Delete
+                      <img src={Delete} />
                     </button>
                   </div>
                 </li>

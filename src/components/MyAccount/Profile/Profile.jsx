@@ -30,11 +30,11 @@ const Profile = () => {
   return (
     <MyAccount>
       <div>
+      <div className="profile-card-header">
+              <h2>User Profile</h2>
+            </div>
         <div className="profile-container mt-5">
           <div className="profile-card">
-            <div className="profile-card-header">
-              <h3>User Profile</h3>
-            </div>
             <div className="card-body">
               {isEditing ? (
                 <form>
@@ -105,7 +105,7 @@ const Profile = () => {
 
                     <button
                       type="button"
-                      className="profile-save-btn btn-primary"
+                      className="profile-save-btn btn-primary btn-red"
                       onClick={handleSaveClick}
                     >
                       Save
@@ -155,7 +155,7 @@ const Profile = () => {
                     </div>
                   </form>
                   <button
-                    className="profile-edit-btn btn-primary"
+                    className="profile-edit-btn btn-primary btn-red"
                     onClick={handleEditClick}
                   >
                     Edit
