@@ -48,7 +48,7 @@ const Wishlist = () => {
                           <td className="col-md-2">
                             <a
                               href="#"
-                              className="wishlist-btn-upper btn btn-primary wishlist-btnaddtocart wishlist-btnaddtocart"
+                              className="wishlist-btn-upper btn btn-primary wishlist-btnaddtocart wishlist-btnaddtocart btn-red"
                             >
                               Add to cart
                             </a>
@@ -84,7 +84,7 @@ const Wishlist = () => {
                           <td className="col-md-2">
                             <a
                               href="#"
-                              className="wishlist-btn-upper btn  btn-primary wishlist-btnaddtocart"
+                              className="wishlist-btn-upper btn  btn-primary wishlist-btnaddtocart btn-red"
                             >
                               Add to cart
                             </a>

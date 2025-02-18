@@ -91,7 +91,7 @@ const Shop = () => {
 
   return (
     <Layout>
-      <section className="shop_grid_area section_padding_100">
+      <section className="shop_grid_area section_padding_100 bg-color">
         <div className="container">
           <div className="row">
             <div className="col-12 col-md-4 col-lg-3">

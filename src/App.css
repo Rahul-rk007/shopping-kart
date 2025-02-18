@@ -306,3 +306,16 @@ img {
   font-size: 0.875rem; /* Optional: Adjust font size */
   margin-top: 0.25rem;
 }
+
+.btn-red{
+  background-color: #ff084e;
+  border-color: #ff084e;
+    &:hover{
+      background-color: #3a3a3a;
+      border-color: #3a3a3a;
+    }
+}
+
+.bg-color{
+  background-color: #fcf7f8;
+}

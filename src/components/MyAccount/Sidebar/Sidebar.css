@@ -1,7 +1,7 @@
 /* Sidebar.css */
 .myaccount-sidebar {
   width: 220px; /* Fixed width for the sidebar */
-  background-color: #fcf8f8; /* Light gray background */
+  background-color: rgb(255, 252, 252); /* Light gray background */
   padding: 20px; /* Padding around the content */
   border-right: 1px solid #ccc; /* Right border for separation */
   height: 100vh; /* Full height of the viewport */

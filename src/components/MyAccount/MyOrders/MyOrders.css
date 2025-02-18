@@ -12,6 +12,7 @@
   border-radius: 50px;
   padding-top: 20px;
   padding-bottom:20px;
+  background-color: #fffbfb;
 }
 
 .myorder-details-part1{
@@ -25,31 +26,63 @@
   border-radius: 50px;
   color: aliceblue;
 }
+.status-placed {
+  background-color: #00695c; /* Light Cyan */
+  border: 2px solid #e0f7fa; /* Dark Teal */
+}
+
+.status-confirmed {
+  background-color: #1b5e20; /* Light Green */
+  border: 2px solid #c8e6c9; /* Dark Green */
+}
+
+.status-processing {
+  background-color: #f57f17; /* Light Yellow */
+  border: 2px solid #fff9c4 ; /* Dark Yellow */
+}
 
 .status-shipped {
-  background-color: #293ca9;
-  border-color: #293ca9;
+  background-color:#0d47a1 ; /* Light Blue */
+  border: 2px solid #bbdefb; /* Dark Blue */
 }
-.status-pending {
-  background-color: #ba9a0a;
-  border-color: #ba9a0a;
+
+.status-in-transit {
+  background-color:#e65100 ; /* Light Orange */
+  border: 2px solid #ffe0b2; /* Dark Orange */
 }
+
+.status-out-for-delivery {
+  background-color:#880e4f ; /* Light Pink */
+  border: 2px solid #f8bbd0; /* Dark Pink */
+}
+
 .status-delivered {
-  background-color: #1b6625;
-  border-color: #1b6625;
+  background-color: #33691e; /* Light Lime */
+  border: 2px solid #c5e1a5; /* Dark Lime */
+}
+
+.status-returned {
+  background-color:#b71c1c; /* Light Red */
+  border: 2px solid #ef9a9a;; /* Dark Red */
+}
+
+.status-canceled {
+  background-color:#424242 ; /* Light Grey */
+  border: 2px solid #e0e0e0; /* Dark Grey */
+}
+
+.status-refunded {
+  background-color: #827717; /* Light Olive */
+  border: 2px solid #f0f4c3; /* Dark Olive */
 }
 
 .myorder-arrow-btn{
-  background-color: aliceblue;
+  background-color: rgb(43, 43, 45);
   font-weight: bolder;
-  color: rgb(48, 47, 47);
   border: none;
-    &:hover{
-      background-color: aliceblue;
-      font-weight: bolder;
-      color: rgb(48, 47, 47);
-      border: none;
-    }
+}
+.myorder-arrow-btn-link{
+  color: rgb(255, 252, 252);
 }
 
 .myorder-part1-box{
@@ -68,6 +101,6 @@
   padding: 2px;
   width: 30%;
   display: flex;
-  
   justify-content: center;
 }
+

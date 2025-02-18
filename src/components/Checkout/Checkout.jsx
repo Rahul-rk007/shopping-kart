@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import "./Checkout.css";
 import Layout from "../Layout/Layout";
 import { Link } from "react-router-dom";
@@ -25,6 +25,12 @@ const Checkout = () => {
       address: "789 Oak St, Springfield, USA",
       phone: "555-555-5555",
     },
+    {
+      id: 1,
+      name: "John Doe",
+      address: "123 Main St, Springfield, USA",
+      phone: "123-456-7890",
+    },
   ];
 
   const handleAddressChange = (event) => {
@@ -32,49 +38,63 @@ const Checkout = () => {
   };
   return (
     <Layout>
-      <div className="checkout_area section_padding_100">
+      <div className="checkout_area section_padding_100 bg-color">
         <div className="container">
-          <div className="row">
-            <div className="col-12 col-md-6">
-              <div className="checkout_details_area mt-50 clearfix">
-                <div className="cart-page-heading">
-                  <h5>Shipping Address</h5>
-                  <p>Select Your Shipping Address</p>
-                </div>
-                <Link to="/myaccount/address" className="btn btn-primary mt-3">
-                  Add New Shipping Address
-                </Link>
-                <form action="#" method="post">
-                  <div className="row">
-                    {shippingAddresses.map((address) => (
-                      <div className="col-12 mb-3" key={address.id}>
-                        <div className="custom-control custom-radio">
-                          <input
-                            type="radio"
-                            id={`address_${address.id}`}
-                            name="shippingAddress"
-                            className="custom-control-input"
-                            value={address.id}
-                            checked={selectedAddress === address.id.toString()}
-                            onChange={handleAddressChange}
-                          />
-                          <label
-                            className="custom-control-label"
-                            htmlFor={`address_${address.id}`}
-                          >
-                            <strong>{address.name}</strong><br />
-                            {address.address}<br />
-                            Phone: {address.phone}
-                          </label>
-                        </div>
-                      </div>
-                    ))}
+          <div className="row justify-content-around ">
+            <div className="checkout-left-section">
+              <div className="col-12 col-md-12">
+                <div className="checkout_details_area mt-50 clearfix">
+                  <div className="justify-content-between d-flex">
+                    <div className="cart-page-heading">
+                      <h5>Shipping Address</h5>
+                      <p>Select Your Shipping Address</p>
+                    </div>
+                    <div className="d-flex justify-content-end ">
+                      <Link
+                        to="/myaccount/address"
+                        className="btn btn-primary checkout-add-address-btn btn-red"
+                      >
+                        &#43; New Address
+                      </Link>
+                    </div>
                   </div>
-                </form>
+                  <hr />
+                  <form action="#" method="post">
+                    <div className="row address-scrollable">
+                      {shippingAddresses.map((address) => (
+                        <div className="col-12 mb-3" key={address.id}>
+                          <div className="custom-control custom-radio">
+                            <input
+                              type="radio"
+                              id={`address_${address.id}`}
+                              name="shippingAddress"
+                              className="custom-control-input"
+                              value={address.id}
+                              checked={
+                                selectedAddress === address.id.toString()
+                              }
+                              onChange={handleAddressChange}
+                            />
+                            <label
+                              className="custom-control-label mb-3"
+                              htmlFor={`address_${address.id}`}
+                            >
+                              <strong>{address.name}</strong>
+                              <br />
+                              {address.address}
+                              <br />
+                              Phone: {address.phone}
+                            </label>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
 
-            <div className="col-12 col-md-6 col-lg-5 ml-lg-auto">
+            <div className="col-12 col-md-6 col-lg-5">
               <div className="order-details-confirmation">
                 <div className="cart-page-heading">
                   <h5>Your Order</h5>
@@ -225,7 +245,10 @@ const Checkout = () => {
                   </div>
                 </div>
 
-                <a href="#" className="btn karl-checkout-btn checkout-btnPlaceOrder">
+                <a
+                  href="#"
+                  className="btn karl-checkout-btn btn-red"
+                >
                   Place Order
                 </a>
               </div>

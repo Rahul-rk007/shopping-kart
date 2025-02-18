@@ -15,7 +15,7 @@ const Cart = () => {
   };
   return (
     <Layout>
-      <div className="cart_area section_padding_100 clearfix">
+      <div className="cart_area section_padding_100 clearfix bg-color">
         <div className="container">
           <div className="row">
             <div className="col-12">
@@ -95,7 +95,7 @@ const Cart = () => {
                 </div>
                 <form action="#">
                   <input type="search" name="search" placeholder="#569ab15" />
-                  <button type="submit">Apply</button>
+                  <button className="btn-red" type="submit">Apply</button>
                 </form>
               </div>
             </div>
@@ -178,7 +178,7 @@ const Cart = () => {
                     </span>
                   </li>
                 </ul>
-                <a href="checkout.html" className="btn karl-checkout-btn">
+                <a href="checkout.html" className="btn karl-checkout-btn btn-red">
                   Proceed to checkout
                 </a>
               </div>

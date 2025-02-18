@@ -63,13 +63,8 @@
   margin-top: 5px;
   width: 80%;
   padding: 10px;
-  background-color: #3a3a3a;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-}
-
-.contactus-btn:hover {
-  background-color: #ff084e;
 }

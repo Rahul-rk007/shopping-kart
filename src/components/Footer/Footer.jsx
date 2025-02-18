@@ -70,7 +70,7 @@ const Footer = () => {
                     placeholder="Your email here"
                     required
                   />
-                  <button type="submit" className="submit">
+                  <button type="submit" className="submit btn-red">
                     Subscribe
                   </button>
                 </form>

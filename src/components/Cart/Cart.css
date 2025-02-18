@@ -144,7 +144,6 @@
     height: 52px;
     border: none;
     text-transform: uppercase;
-    background-color: #ff084e;
     padding: 0 30px;
     font-size: 14px;
     position: absolute;
@@ -182,7 +181,6 @@
   .karl-checkout-btn {
     width: 100%;
     height: 60px;
-    background-color: #ff084e;
     border-radius: 0;
     color: #fff;
     text-transform: uppercase;

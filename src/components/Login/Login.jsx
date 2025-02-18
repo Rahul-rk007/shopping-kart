@@ -49,7 +49,7 @@ const Login = () => {
 
   return (
     <Layout>
-      <div className="login-main">
+      <div className="login-main bg-color">
         <div className="login-container">
           <h3 className="text-center">Login</h3>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -83,7 +83,7 @@ const Login = () => {
                 <div className="form-error">{errors.password.message}</div>
               )}
             </div>
-            <button type="submit" className="btn btn-primary w-100 btnLogin">
+            <button type="submit" className="btn btn-primary w-100 btnLogin btn-red">
               Login
             </button>
             <div className="loginFooter w-100">

@@ -5,24 +5,30 @@ import "./MyOrders.css";
 
 const MyOrders = () => {
   const ordersData = [
-    { id: 1, date: "2023-10-01", status: "Shipped", amount: 100 },
-    { id: 2, date: "2023-10-02", status: "Pending", amount: 50 },
-    { id: 3, date: "2023-10-03", status: "Delivered", amount: 75 },
+    { id: 1, date: "2023-10-01", status: "Order Placed", amount: 100 },
+    { id: 2, date: "2023-10-02", status: "Order Confirmed", amount: 50 },
+    { id: 3, date: "2023-10-03", status: "Out for Delivery", amount: 75 },
+    { id: 4, date: "2023-10-04", status: "Order Processing", amount: 75 },
   ];
 
   const getOrderStatusClass = (status) => {
-    const statusClass = "myorder-details-part2 ";
+    const statusClass = "myorder-details-part2 "; // Base class for order details
+
     switch (status) {
-      case "Shipped":
-        return statusClass + "status-shipped";
-      case "Pending":
-        return statusClass + "status-pending";
-      case "Delivered":
-        return statusClass + "status-delivered";
-      default:
-        return "myorder-details-part2";
+        case "Order Placed":
+            return statusClass + "status-placed";
+        case "Order Confirmed":
+            return statusClass + "status-confirmed";
+        case "Order Processing":
+            return statusClass + "status-processing";
+        case "Out for Delivery":
+            return statusClass + "status-out-for-delivery";
+        case "Delivered":
+            return statusClass + "status-delivered";
+        default:
+            return statusClass; // Return the base class for unknown status
     }
-  };
+};
   return (
     <MyAccount>
       <div>
@@ -59,8 +65,8 @@ const MyOrders = () => {
                 ${order.amount}
               </div>
               <div className="col-md-1">
-                <button className="btn btn-primary myorder-arrow-btn">
-                <Link to="/myaccount/orderdetails" className="">&gt;</Link>
+                <button className="btn myorder-arrow-btn">
+                <Link to="/myaccount/orderdetails" className="myorder-arrow-btn-link">&gt;</Link>
                   
                 </button>
               </div>
