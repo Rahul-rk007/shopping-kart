@@ -1,124 +1,126 @@
 import React, { useState } from "react";
 import "./Signup.css";
 import Layout from "../Layout/Layout";
+import { zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod"
+import { useForm } from "react-hook-form";
+import { signupUser } from "../../api/userApi";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+const schema = z.object({
+  firstName: z.string().nonempty("First Name is required."),
+  lastName: z.string().nonempty("Last Name is required."),
+  email: z
+    .string()
+    .nonempty("Email is required.")
+    .email("Invalid email address."),
+  password: z.string().min(6, "Password must be at least 8 characters long."),
+  confirmPassword: z.string(),
+  mobileNumber: z
+  .string()
+  .min(1, "Mobile Number is required")
+  .regex(/^\d{10}$/, "Mobile number must contain only digits"),
+}).refine((data) => data.password === data.confirmPassword,{
+  message:"Confirm password does not match",
+  path:['confirmPassword']
+})
 
 const Signup = () => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    mobileNumber: "",
-  });
-
-  const [error, setError] = useState("");
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { password, confirmPassword } = formData;
-
-    if (password !== confirmPassword) {
-      setError("Passwords don't match");
-      return;
+ const navigate = useNavigate()
+ const {register, handleSubmit, formState:{errors}} = useForm({resolver:zodResolver(schema)})
+  const onSubmit = async(formData) => {
+    try {
+      const response = await signupUser(formData); 
+      localStorage.setItem("token", response)
+      navigate("/");
+    } catch (error) {
+      toast.error("Something went wrong!")
     }
-
-    // Here you would typically send the data to your backend
-    console.log("User  signed up:", formData);
-    setError("");
-    alert("Sign up successful!");
-  };
+  }
   return (
     <Layout>
-       <div className="signup-main bg-color">
+      <div className="signup-main bg-color">
         <div className="signup-wrapper">
           <h3 className="text-center">Sign Up</h3>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit (onSubmit)}>
             <div className="row">
               <div className="col-md-6 signup-form-field mb-3">
-                <label>First Name:</label>
+                <label htmlFor="firstName">First Name:</label>
                 <input
                   type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  required
+                  id="firstName"
                   className="form-control"
                   placeholder="Enter your first name"
+                  {...register("firstName")}
                 />
+                {errors.firstName && <em className="form-error">{errors.firstName.message}</em>}
               </div>
               <div className="col-md-6 signup-form-field mb3">
-                <label>Last Name:</label>
+                <label htmlFor="lastName">Last Name:</label>
                 <input
                   type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  required
+                  id="lastName"
                   className="form-control"
                   placeholder="Enter your last name"
+                  {...register("lastName")}
                 />
+                {errors.lastName && <em className="form-error">{errors.lastName.message}</em>}
               </div>
             </div>
             <div className="row">
               <div className="col-md-6 signup-form-field mb-3">
-                <label>Email:</label>
+                <label htmlFor="email">Email:</label>
                 <input
                   type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
+                  id="email"
                   className="form-control"
                   placeholder="Enter your email"
+                  {...register("email")}
                 />
+                {errors.email && <em className="form-error">{errors.email.message}</em>}
               </div>
               <div className="col-md-6 signup-form-field mb-3">
-                <label>Mobile Number:</label>
+                <label htmlFor="mobileNumber">Mobile Number:</label>
                 <input
                   type="text"
-                  name="mobileNumber"
-                  value={formData.mobileNumber}
-                  onChange={handleChange}
-                  required
+                  id="mobileNumber"
                   className="form-control"
                   placeholder="Enter your mobile number"
+                  {...register("mobileNumber")}
                 />
+                {errors.mobileNumber && <em className="form-error">{errors.mobileNumber.message}</em>}
               </div>
             </div>
             <div className="row">
               <div className="col-md-6 signup-form-field mb-3">
-                <label>Password:</label>
+                <label htmlFor="password">Password:</label>
                 <input
                   type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
+                  id="password"
                   className="form-control"
                   placeholder="Enter your password"
+                  {...register("password")}
                 />
+                {errors.password && <em className="form-error">{errors.password.message}</em>}
               </div>
               <div className="col-md-6 signup-form-field">
-                <label>Confirm Password:</label>
+                <label htmlFor="confirmPassword">Confirm Password:</label>
                 <input
                   type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  required
+                  id="confirmPassword"
                   className="form-control"
                   placeholder="Confirm your password"
+                  {...register("confirmPassword")}
                 />
+                {errors.confirmPassword && <em className="form-error">{errors.confirmPassword.message}</em>}
               </div>
             </div>
-            {error && <p className="error">{error}</p>}
-            <button type="submit" className="btn btn-primary signup-btn btn-red">
+           
+            <button
+              type="submit"
+              className="btn btn-primary signup-btn btn-red"
+            >
               Sign Up
             </button>
           </form>
