@@ -40,7 +40,7 @@ const Login = () => {
       localStorage.setItem("token", token);
 
       // Redirect to the desired page after successful login
-      navigate("/"); // Change to your desired route
+      window.location = "/";
     } catch (err) {
       // Handle error (e.g., display error message)
       console.error(err);
@@ -83,7 +83,10 @@ const Login = () => {
                 <div className="form-error">{errors.password.message}</div>
               )}
             </div>
-            <button type="submit" className="btn btn-primary w-100 btnLogin btn-red">
+            <button
+              type="submit"
+              className="btn btn-primary w-100 btnLogin btn-red"
+            >
               Login
             </button>
             <div className="loginFooter w-100">

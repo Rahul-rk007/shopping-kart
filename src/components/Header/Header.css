@@ -131,14 +131,14 @@
   margin-bottom: 5px;
 }
 
-.total-price{
+.total-price {
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
 
 .cart-list li .btn-checkout,
-.cart-list li .btn-cart {                  
+.cart-list li .btn-cart {
   background-color: #ff084e;
   border-radius: 0;
   color: #fff;
@@ -161,7 +161,7 @@
 
 .main_header_area {
   height: 150px;
-  padding-top: 30px;
+  padding-top: 0px;
 }
 
 .header-social-area a {

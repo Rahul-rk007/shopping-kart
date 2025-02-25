@@ -48,7 +48,7 @@ const Contactus = () => {
         <section className="d-flex flex-column flex-md-row justify-content-center align-items-center py-5 contactus-cards">
           <div className="card text-center shadow-lg mb-4 mb-md-0 mx-2 contactus-card-1">
             <div className="card-body">
-              <img src={PhoneImg} class="contactus-icon" />
+              <img src={PhoneImg} className="contactus-icon" />
               <h5 className="card-title">Talk to Sales</h5>
               <p className="card-text contactus-card-text">
                 Interested in HubSpot’s software? Just pick up the phone to chat
@@ -98,7 +98,9 @@ const Contactus = () => {
                       required
                     ></textarea>
                   </div>
-                  <button class="contactus-btn btn-red"type="submit">Send Message</button>
+                  <button className="contactus-btn btn-red" type="submit">
+                    Send Message
+                  </button>
                 </form>
               </div>
             </div>

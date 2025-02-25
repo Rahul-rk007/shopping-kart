@@ -19,9 +19,11 @@
   margin-top: 10px;
   margin-bottom: 10px;
   width: 40%;
-  padding: 5px;
+  padding: 8px 5px;
   margin-left: 30%;
-  border-radius: 8px;
+  border-radius: 5px;
+  border-color: #ff084e;
+  border: 1px solid !important;
 }
 
 .profile-save-btn {
@@ -29,13 +31,14 @@
   margin-top: 10px;
   margin-bottom: 5px;
   width: 80%;
-  padding: 5px;
-  margin-left:65%; 
-  border-radius: 8px;
+  padding: 8px 5px;
+  margin-left: 65%;
+  border-radius: 5px;
+  border-color: #ff084e;
+  border: 1px solid !important;
 }
- 
 
-.profile-card-body{
+.profile-card-body {
   margin-top: 10px;
   margin-bottom: 20px;
   width: 100%;
@@ -45,11 +48,10 @@
   gap: 15px;
 }
 
-.profile-user-details{
+.profile-user-details {
   border: 1px solid #a2a2a2;
   box-sizing: border-box;
   border-radius: 5px;
   padding: 6px 12px;
   background-color: #f8f9fa;
- 
 }

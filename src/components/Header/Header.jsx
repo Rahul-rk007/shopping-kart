@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 
 import "./Header.css";
 import LOGO from "../../assets/core-img/logo.png";
 import product10 from "../../assets/product-img/product-10.jpg";
 import product11 from "../../assets/product-img/product-11.jpg";
 import { NavLink } from "react-router-dom";
+import UserContext from "../../context/UserContext";
 
 const Header = ({ onToggleMenu }) => {
+  const user = useContext(UserContext);
   const [showCart, setShowCart] = useState(false);
   const cartRef = useRef(null);
 
@@ -87,86 +89,100 @@ const Header = ({ onToggleMenu }) => {
                           Contact Us
                         </NavLink>
                       </li>
-                      <li className="nav-item">
-                        <NavLink className="nav-link" to="/login">
-                          Login
-                        </NavLink>
-                      </li>
-                      <li className="nav-item">
-                        <NavLink className="nav-link" to="/myaccount/profile">
-                          My Account
-                        </NavLink>
-                      </li>
+                      {!user && (
+                        <li className="nav-item">
+                          <NavLink className="nav-link" to="/login">
+                            Login
+                          </NavLink>
+                        </li>
+                      )}
+                      {user && (
+                        <li className="nav-item">
+                          <NavLink className="nav-link" to="/myaccount/profile">
+                            My Account
+                          </NavLink>
+                        </li>
+                      )}
                     </ul>
                   </div>
                 </nav>
               </div>
 
               <div className="header-cart-menu d-flex align-items-center">
-              <div
-                  className="cart"
-                  ref={cartRef}
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <NavLink
-                    href="#"
-                    id="header-cart-btn"
-                    onClick={handleCartClick}
+                {user && (
+                  <div
+                    className="cart"
+                    ref={cartRef}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                   >
-                    <span className="cart_quantity">2</span>
-                    <i className="ti-bag"></i> Your Bag $20
-                  </NavLink>
+                    <NavLink
+                      href="#"
+                      id="header-cart-btn"
+                      onClick={handleCartClick}
+                    >
+                      <span className="cart_quantity">2</span>
+                      <i className="ti-bag"></i> Your Bag $20
+                    </NavLink>
 
-                  {showCart && (
-                    <ul className="cart-list">
-                      <li>
-                        <a href="#" className="image">
-                          <img src={product10} className="cart-thumb" alt="" />
-                        </a>
-                        <div className="cart-item-desc">
-                          <h6>
-                            <a href="#">Women's Fashion</a>
-                          </h6>
-                          <p>
-                            1x - <span className="price">$10</span>
-                          </p>
-                        </div>
-                        <span className="dropdown-product-remove">
-                          <i className="icon-cross"></i>
-                        </span>
-                      </li>
-                      <li>
-                        <a href="#" className="image">
-                          <img src={product11} className="cart-thumb" alt="" />
-                        </a>
-                        <div className="cart-item-desc">
-                          <h6>
-                            <a href="#">Women's Fashion</a>
-                          </h6>
-                          <p>
-                            1x - <span className="price">$10</span>
-                          </p>
-                        </div>
-                        <span className="dropdown-product-remove">
-                          <i className="icon-cross"></i>
-                        </span>
-                      </li>
-                      <li className="total total-price">
-                        <NavLink to="/cart" className="btn btn-sm btn-cart">
-                          Cart
-                        </NavLink>
-                        <NavLink
-                          to="/checkout"
-                          className="btn btn-sm btn-checkout"
-                        >
-                          Checkout
-                        </NavLink>
-                        <span className="pull-right">Total: $20.00</span>
-                      </li>
-                    </ul>
-                  )}
-                </div>
+                    {showCart && (
+                      <ul className="cart-list">
+                        <li>
+                          <a href="#" className="image">
+                            <img
+                              src={product10}
+                              className="cart-thumb"
+                              alt=""
+                            />
+                          </a>
+                          <div className="cart-item-desc">
+                            <h6>
+                              <a href="#">Women's Fashion</a>
+                            </h6>
+                            <p>
+                              1x - <span className="price">$10</span>
+                            </p>
+                          </div>
+                          <span className="dropdown-product-remove">
+                            <i className="icon-cross"></i>
+                          </span>
+                        </li>
+                        <li>
+                          <a href="#" className="image">
+                            <img
+                              src={product11}
+                              className="cart-thumb"
+                              alt=""
+                            />
+                          </a>
+                          <div className="cart-item-desc">
+                            <h6>
+                              <a href="#">Women's Fashion</a>
+                            </h6>
+                            <p>
+                              1x - <span className="price">$10</span>
+                            </p>
+                          </div>
+                          <span className="dropdown-product-remove">
+                            <i className="icon-cross"></i>
+                          </span>
+                        </li>
+                        <li className="total total-price">
+                          <NavLink to="/cart" className="btn btn-sm btn-cart">
+                            Cart
+                          </NavLink>
+                          <NavLink
+                            to="/checkout"
+                            className="btn btn-sm btn-checkout"
+                          >
+                            Checkout
+                          </NavLink>
+                          <span className="pull-right">Total: $20.00</span>
+                        </li>
+                      </ul>
+                    )}
+                  </div>
+                )}
                 <div className="header-right-side-menu ml-15">
                   <a href="#" id="sideMenuBtn" onClick={onToggleMenu}>
                     <i className="ti-menu" aria-hidden="true"></i>

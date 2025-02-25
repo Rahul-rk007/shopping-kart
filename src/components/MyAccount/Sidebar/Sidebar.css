@@ -1,6 +1,6 @@
 /* Sidebar.css */
 .myaccount-sidebar {
-  width: 220px; /* Fixed width for the sidebar */
+  width: 250px; /* Fixed width for the sidebar */
   background-color: rgb(255, 252, 252); /* Light gray background */
   padding: 20px; /* Padding around the content */
   border-right: 1px solid #ccc; /* Right border for separation */
@@ -17,10 +17,10 @@
   margin: 10px 0; /* Space between list items */
   display: flex;
 }
-.myaccount-list-img{
- height: 27px;
- width: 27px;
- margin-right:8px;
+.myaccount-list-img {
+  height: 27px;
+  width: 27px;
+  margin-right: 8px;
 }
 
 .myaccount-list-link {
@@ -32,7 +32,21 @@
   padding: 10px; /* Padding for clickable area */
   border-radius: 4px; /* Rounded corners */
 }
- .myaccount-link:hover{
+.myaccount-link:hover {
   color: #ff084e;
- }
+}
 
+.myaccount-logout-btn {
+  display: flex; /* Make the link fill the list item */
+  justify-content: center;
+  align-items: center;
+}
+
+.myaccount-logout-btn > a {
+  padding: 7px 20px;
+}
+
+.myaccount-logout-btn > a:hover {
+  background-color: #3a3a3a;
+  border-color: #3a3a3a;
+}

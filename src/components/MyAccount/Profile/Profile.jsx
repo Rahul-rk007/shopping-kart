@@ -30,9 +30,9 @@ const Profile = () => {
   return (
     <MyAccount>
       <div>
-      <div className="profile-card-header">
-              <h2>User Profile</h2>
-            </div>
+        <div className="profile-card-header">
+          <h2>User Profile</h2>
+        </div>
         <div className="profile-container mt-5">
           <div className="profile-card">
             <div className="card-body">

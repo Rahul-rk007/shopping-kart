@@ -1,4 +1,6 @@
 import apiClient from './apiClient'; // Import the Axios instance
+import { jwtDecode } from 'jwt-decode';
+const tokenName = "token"
 
 // Function to handle user login
 export const loginUser  = async (email, password) => {
@@ -19,3 +21,24 @@ export const signupUser  = async (userData) => {
     throw error.response?.data || 'Signup failed. Please try again.'; // Handle errors
   }
 };
+
+export const getUser = () => {
+    const token = localStorage.getItem('token'); // Ensure you're getting the token from local storage
+    if (!token) {
+        return null; // Return null if no token is found
+    }
+    try {
+        return jwtDecode(token); // Decode the token
+    } catch (error) {
+        console.error("Error decoding token:", error);
+        return null; // Return null if there's an error decoding the token
+    }
+}
+
+export const getJwt = () => {
+  return localStorage.getItem(tokenName)
+}
+
+export function logout(){
+  localStorage.removeItem(tokenName);
+}
