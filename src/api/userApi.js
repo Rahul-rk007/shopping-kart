@@ -39,6 +39,6 @@ export const getJwt = () => {
   return localStorage.getItem(tokenName)
 }
 
-export function logout(){
+export const logout = () => {
   localStorage.removeItem(tokenName);
 }

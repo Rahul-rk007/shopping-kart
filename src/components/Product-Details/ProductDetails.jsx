@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "./ProductDetails.css";
 import Layout from "../Layout/Layout";
@@ -7,8 +7,13 @@ import Product3 from "../../assets/product-img/product-3.jpg";
 import Product4 from "../../assets/product-img/product-4.jpg";
 import Product1 from "../../assets/product-img/product-1.jpg";
 import Product5 from "../../assets/product-img/product-5.jpg";
+import { useParams } from "react-router-dom";
+import { getProductDetails } from "../../api/productApi";
 
 const ProductDetails = () => {
+  const { id } = useParams(); // Get the product ID from the URL
+  const [product, setProduct] = useState(null); // State to hold product details
+  const [loading, setLoading] = useState(true); // State to manage loading status
   const [quantity, setQuantity] = useState(1);
 
   const handleQuantityChange = (change) => {
@@ -17,6 +22,35 @@ const ProductDetails = () => {
       return newQuantity < 1 ? 1 : newQuantity > 12 ? 12 : newQuantity;
     });
   };
+
+  useEffect(() => {
+    console.log("Product ID:", id); // Log the ID to see if it's defined
+    const fetchProductDetails = async () => {
+      if (id) { // Check if id is defined
+        try {
+          const data = await getProductDetails(id); // Fetch product details by ID
+          setProduct(data); // Set the product details in state
+        } catch (error) {
+          console.error("Error fetching product details:", error);
+        } finally {
+          setLoading(false); // Set loading to false after fetching
+        }
+      } else {
+        console.error("Product ID is undefined");
+        setLoading(false);
+      }
+    };
+
+    fetchProductDetails();
+  }, [id]); // Fetch product details when the component mounts or when the ID changes
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading state
+  }
+
+  if (!product) {
+    return <div>No product found.</div>; // Handle case where product is not found
+  }
 
   return (
     <Layout>
@@ -29,9 +63,9 @@ const ProductDetails = () => {
                   <a href="#">Home</a>
                 </li>
                 <li className="breadcrumb-item">
-                  <a href="#">Dresses</a>
+                  <a href="#">{product.CategoryID.CategoryName}</a>
                 </li>
-                <li className="breadcrumb-item active">Long Dress</li>
+                <li className="breadcrumb-item active">{product.SubcategoryID.SubcategoryName}</li>
               </ol>
 
               <a href="#" className="backToHome d-block">
@@ -121,9 +155,9 @@ const ProductDetails = () => {
             <div className="col-12 col-md-6">
               <div className="single_product_desc">
                 <h4 className="title">
-                  <a href="#">Long Yellow Dress</a>
+                  <a href="#">{product.ProductName}</a>
                 </h4>
-                <h4 className="price">$39.99</h4>
+                <h4 className="price">${product.Price}</h4>
                 <p className="available">
                   Available: <span className="text-muted">In Stock</span>
                 </p>
@@ -306,7 +340,7 @@ const ProductDetails = () => {
         </div>
       </section>
 
-      <section className="you_may_like_area clearfix">
+      {/* <section className="you_may_like_area clearfix">
         <div className="container">
           <div className="row">
             <div className="col-12">
@@ -421,7 +455,7 @@ const ProductDetails = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </Layout>
   );
 };

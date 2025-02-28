@@ -7,7 +7,7 @@ const NewArrivalItem = ({ product, onQuickView }) => {
       data-wow-delay={product.delay}
     >
       <div className="product-img">
-        <img src={product.image} alt={product.name} />
+        <img src={product.ImageURLs[0]} alt={product.ProductName} />
         <div className="product-quicview">
           <a href="#" onClick={() => onQuickView(product)}>
             <i className="ti-plus"></i>
@@ -15,8 +15,8 @@ const NewArrivalItem = ({ product, onQuickView }) => {
         </div>
       </div>
       <div className="product-description">
-        <h4 className="product-price">${product.price}</h4>
-        <p>{product.description}</p>
+        <h4 className="product-price">${product.Price}</h4>
+        <p>{product.Description}</p>
         <a href="#" className="add-to-cart-btn">
           ADD TO CART
         </a>

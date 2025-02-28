@@ -45,12 +45,12 @@ const QuickViewModal = ({ isOpen, onClose, product }) => {
                 <div className="row">
                   <div className="col-12 col-lg-5">
                     <div className="quickview_pro_img">
-                      <img src={product.image} alt={product.name} />
+                      <img src={product.ImageURLs[0]} alt={product.ProductName} />
                     </div>
                   </div>
                   <div className="col-12 col-lg-7">
                     <div className="quickview_pro_des">
-                      <h4 className="title">{product.name}</h4>
+                      <h4 className="title">{product.ProductName}</h4>
                       <div className="top_seller_product_rating mb-15">
                         {[...Array(5)].map((_, index) => (
                           <i
@@ -61,10 +61,10 @@ const QuickViewModal = ({ isOpen, onClose, product }) => {
                         ))}
                       </div>
                       <h5 className="price">
-                        ${product.price} <span>${product.originalPrice}</span>
+                        ${product.Price} <span>${product.originalPrice}</span>
                       </h5>
-                      <p>{product.description}</p>
-                      <a href="#">View Full Product Details</a>
+                      <p>{product.Description}</p>
+                      <a href={`/product/${product._id}`}>View Full Product Details</a>
                     </div>
                     <form className="cart" method="post">
                       <div className="quantity">
