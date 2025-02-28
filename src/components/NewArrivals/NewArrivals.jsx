@@ -1,8 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./NewArrivals.css";
 import NewArrivalItem from "../NewArrivalItem/NewArrivalItem";
+import { newArrivalProductList, productList } from "../../api/productApi"; // Adjust the import path as necessary
 
-const NewArrivals = ({ products, onQuickView }) => {
+const NewArrivals = ({ onQuickView }) => {
+  const [newArrivalProducts, setNewArrivalProducts] = useState([]); // Renamed state for products
+  const [totalNewArrivals, setTotalNewArrivals] = useState(0); // Renamed state for total products
+  const [newArrivalLimit] = useState(6); // Renamed limit state
+  const [newArrivalOffset, setNewArrivalOffset] = useState(0); // Renamed offset state
+  const [newArrivalCategory, setNewArrivalCategory] = useState("All"); // Renamed category state
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  useEffect(() => {
+    const fetchNewArrivals = async () => {
+      try {
+        const response = await newArrivalProductList(
+          newArrivalLimit,
+          newArrivalOffset,
+          newArrivalCategory
+        );
+
+        setNewArrivalProducts(response.newArrivals);
+        setTotalNewArrivals(response.total);
+      } catch (error) {
+        console.error("Error fetching new arrivals:", error);
+      }
+    };
+
+    fetchNewArrivals();
+  }, [newArrivalCategory]);
+
+  const handleCategoryChange = (newCategory) => {
+    setNewArrivalCategory(newCategory);
+    setNewArrivalOffset(0); // Reset offset when category changes
+    setActiveCategory(newCategory);
+  };
+
   return (
     <section className="new_arrivals_area section_padding_100_0 clearfix">
       <div className="container">
@@ -17,30 +50,36 @@ const NewArrivals = ({ products, onQuickView }) => {
 
       <div className="karl-projects-menu mb-100">
         <div className="text-center portfolio-menu">
-          <button className="btn active" data-filter="*">
+          <button
+            className={`btn ${activeCategory === "All" ? "active" : ""}`}
+            onClick={() => handleCategoryChange("All")}
+          >
             ALL
           </button>
-          <button className="btn" data-filter=".women">
+          <button
+            className={`btn ${activeCategory === "Men" ? "active" : ""}`}
+            onClick={() => handleCategoryChange("Men")}
+          >
+            MEN
+          </button>
+          <button
+            className={`btn ${activeCategory === "Women" ? "active" : ""}`}
+            onClick={() => handleCategoryChange("Women")}
+          >
             WOMAN
           </button>
-          <button className="btn" data-filter=".man">
-            MAN
-          </button>
-          <button className="btn" data-filter=".access">
-            ACCESSORIES
-          </button>
-          <button className="btn" data-filter=".shoes">
-            SHOES
-          </button>
-          <button className="btn" data-filter=".kids">
-            KIDS
+          <button
+            className={`btn ${activeCategory === "Children" ? "active" : ""}`}
+            onClick={() => handleCategoryChange("Children")}
+          >
+            CHILDREN
           </button>
         </div>
       </div>
 
       <div className="container">
         <div className="row karl-new-arrivals">
-          {products.map((product, index) => (
+          {newArrivalProducts.map((product, index) => (
             <NewArrivalItem
               key={index}
               product={product}
