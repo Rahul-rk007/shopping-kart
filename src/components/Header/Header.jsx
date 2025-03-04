@@ -183,11 +183,18 @@ const Header = ({ onToggleMenu }) => {
                     )}
                   </div>
                 )}
-                <div className="header-right-side-menu ml-15">
-                  <a href="#" id="sideMenuBtn" onClick={onToggleMenu}>
+                {/* <div className="header-right-side-menu ml-15">
+                  <a
+                    href="javascript:void(0)" // Prevents # from being appended
+                    id="sideMenuBtn"
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent default anchor behavior
+                      onToggleMenu();
+                    }}
+                  >
                     <i className="ti-menu" aria-hidden="true"></i>
                   </a>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

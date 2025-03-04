@@ -190,13 +190,25 @@
 }
 
 .navbar-expand-lg .navbar-nav .nav-link {
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 20px;
+  padding-left: 20px;
   position: relative;
   z-index: 1;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   text-transform: uppercase;
+}
+
+.navbar-expand-lg:hover .navbar-nav:hover .nav-link:hover {
+  padding-right: 20px;
+  padding-left: 20px;
+  position: relative;
+  z-index: 1;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: #f4cad6;
+  border-radius: 5px;
 }
 
 .main-menu-area .navbar {

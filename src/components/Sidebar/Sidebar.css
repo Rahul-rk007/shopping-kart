@@ -178,3 +178,9 @@
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
+
+/* Create a visual indicator using ::before */
+.sub-menu a.active::before {
+  background-color: #ff084e !important; /* Change to your desired color */
+  border-color: #ff084e !important;
+}

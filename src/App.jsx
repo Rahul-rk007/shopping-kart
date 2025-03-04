@@ -2,8 +2,11 @@ import React, { useState, useEffect, useRef, createContext } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "./App.css";
 import Routes from "./components/Routes/Routing";
-import { getUser } from "./api/userApi";
+import { getJwt, getUser } from "./api/userApi";
 import UserContext from "./context/UserContext";
+import setAuthToken from "./api/setAuthToken";
+
+setAuthToken(getJwt());
 
 function App() {
   const [user, setUser] = useState(null);

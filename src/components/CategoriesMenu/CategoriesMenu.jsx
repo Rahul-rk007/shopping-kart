@@ -1,8 +1,27 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
 import "./CategoriesMenu.css";
+import { fetchCategoriesWithSubcategories } from "../../api/productApi"; // Import the API function
 
-const CategoriesMenu = ({ isOpen, onClose }) => {
+const CategoriesMenu = ({ isOpen, onClose, onCategorySelect }) => {
+  const [categories, setCategories] = useState([]);
+
+  // Fetch categories and subcategories when the component mounts
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const data = await fetchCategoriesWithSubcategories();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    if (isOpen) {
+      // Only fetch categories if the menu is open
+      getCategories();
+    }
+  }, [isOpen]); // Dependency array includes isOpen
+
   if (!isOpen) return null; // Don't render if not open
 
   return (
@@ -16,122 +35,41 @@ const CategoriesMenu = ({ isOpen, onClose }) => {
         <div className="menu-list">
           <h6>Categories</h6>
           <ul id="menu-content" className="menu-content collapse out">
-            <li
-              data-toggle="collapse"
-              data-target="#women"
-              className="collapsed active"
-            >
-              <a href="#">
-                Woman wear <span className="arrow"></span>
-              </a>
-              <ul className="sub-menu collapse" id="women">
-                <li>
-                  <a href="#">Midi Dresses</a>
-                </li>
-                <li>
-                  <a href="#">Maxi Dresses</a>
-                </li>
-                <li>
-                  <a href="#">Prom Dresses</a>
-                </li>
-                <li>
-                  <a href="#">Little Black Dresses</a>
-                </li>
-                <li>
-                  <a href="#">Mini Dresses</a>
-                </li>
-              </ul>
-            </li>
-            <li data-toggle="collapse" data-target="#man" className="collapsed">
-              <a href="#">
-                Man Wear <span className="arrow"></span>
-              </a>
-              <ul className="sub-menu collapse" id="man">
-                <li>
-                  <a href="#">Man Dresses</a>
-                </li>
-                <li>
-                  <a href="#">Man Black Dresses</a>
-                </li>
-                <li>
-                  <a href="#">Man Mini Dresses</a>
-                </li>
-              </ul>
-            </li>
-            <li
-              data-toggle="collapse"
-              data-target="#kids"
-              className="collapsed"
-            >
-              <a href="#">
-                Children <span className="arrow"></span>
-              </a>
-              <ul className="sub-menu collapse" id="kids">
-                <li>
-                  <a href="#">Children Dresses</a>
-                </li>
-                <li>
-                  <a href="#">Mini Dresses</a>
-                </li>
-              </ul>
-            </li>
-            <li
-              data-toggle="collapse"
-              data-target="#bags"
-              className="collapsed"
-            >
-              <a href="#">
-                Bags &amp; Purses <span className="arrow"></span>
-              </a>
-              <ul className="sub-menu collapse" id="bags">
-                <li>
-                  <a href="#">Bags</a>
-                </li>
-                <li>
-                  <a href="#">Purses</a>
-                </li>
-              </ul>
-            </li>
-            <li
-              data-toggle="collapse"
-              data-target="#eyewear"
-              className="collapsed"
-            >
-              <a href="#">
-                Eyewear <span className="arrow"></span>
-              </a>
-              <ul className="sub-menu collapse" id="eyewear">
-                <li>
-                  <a href="#">Eyewear Style 1</a>
-                </li>
-                <li>
-                  <a href="#">Eyewear Style 2</a>
-                </li>
-                <li>
-                  <a href="#">Eyewear Style 3</a>
-                </li>
-              </ul>
-            </li>
-            <li
-              data-toggle="collapse"
-              data-target="#footwear"
-              className="collapsed"
-            >
-              <a href="#">
-                Footwear <span className="arrow"></span>
-              </a>
-              <ul className="sub-menu collapse" id="footwear">
-                <li>
-                  <a href="#">Footwear 1</a>
-                </li>
-                <li>
-                  <a href="#">Footwear 2</a>
-                </li>
-                <li>
-                  <a href="#">Footwear 3</a>
-                </li>
-              </ul>
-            </li>
+            {categories.map((category) => (
+              <li
+                key={category.id}
+                data-toggle="collapse"
+                data-target={`#category-${category.id}`}
+                className="collapsed"
+              >
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent default anchor behavior
+                  }}
+                >
+                  {category.name} <span className="arrow"></span>
+                </a>
+                <ul
+                  className="sub-menu collapse"
+                  id={`category-${category.id}`}
+                >
+                  {category.subcategories.map((subcategory) => (
+                    <li key={subcategory.id}>
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault(); // Prevent default anchor behavior
+                          onCategorySelect(subcategory.id); // Call the function to handle subcategory selection
+                        }}
+                      >
+                        {subcategory.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

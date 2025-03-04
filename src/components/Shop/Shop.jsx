@@ -8,26 +8,37 @@ import { productList } from "../../api/productApi";
 const Shop = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [products, setProducts] = useState({ total: 0, limit: 9, offset: 0, products: [] });
-  const [loading, setLoading] = useState(false); // State to manage loading status
-  const hasFetched = useRef(false); // Ref to track if data has been fetched
+  const [products, setProducts] = useState({
+    total: 0,
+    limit: 9,
+    offset: 0,
+    products: [],
+  });
+  const [loading, setLoading] = useState(false);
+  const hasFetched = useRef(false);
 
   // Function to fetch products
-  const fetchProducts = async () => {
-    setLoading(true); // Set loading to true when fetching
+  const fetchProducts = async (subcategoryId = null) => {
+    setLoading(true);
+    console.log(subcategoryId);
+
     try {
-      const response = await productList(products.limit, products.offset);
-      console.log("API Response:", response); // Log the response
-      setProducts(prev => ({
+      const response = await productList(
+        products.limit,
+        products.offset,
+        subcategoryId
+      );
+      console.log("API Response:", response);
+      setProducts((prev) => ({
         ...prev,
         total: response.total,
-        products: [...prev.products, ...response.products], // Append new products
-        offset: prev.offset + response.products.length // Update offset
+        products: [...prev.products, ...response.products],
+        offset: prev.offset + response.products.length,
       }));
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {
-      setLoading(false); // Set loading to false after fetching
+      setLoading(false);
     }
   };
 
@@ -35,9 +46,9 @@ const Shop = () => {
   useEffect(() => {
     if (!hasFetched.current) {
       fetchProducts();
-      hasFetched.current = true; // Set the ref to true after fetching
+      hasFetched.current = true;
     }
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
   const handleQuickView = (product) => {
     setSelectedProduct(product);
@@ -45,9 +56,13 @@ const Shop = () => {
   };
 
   const handleLoadMore = () => {
-    // Increment the offset by the limit to load more products
-    setProducts(prev => ({ ...prev, offset: prev.offset }));
-    fetchProducts(); // Fetch products when Load More is clicked
+    setProducts((prev) => ({ ...prev, offset: prev.offset }));
+    fetchProducts();
+  };
+
+  const handleCategorySelect = (subcategoryId) => {
+    setProducts({ total: 0, limit: 9, offset: 0, products: [] });
+    fetchProducts(subcategoryId);
   };
 
   return (
@@ -56,7 +71,7 @@ const Shop = () => {
         <div className="container">
           <div className="row">
             <div className="col-12 col-md-4 col-lg-3">
-              <Sidebar />
+              <Sidebar onCategorySelect={handleCategorySelect} />
             </div>
             <div className="col-12 col-md-8 col-lg-9">
               {products.total <= 0 ? (
@@ -66,13 +81,20 @@ const Shop = () => {
                 </div>
               ) : (
                 <>
-                  <ProductGrid products={products.products} onQuickView={handleQuickView} />
+                  <ProductGrid
+                    products={products.products}
+                    onQuickView={handleQuickView}
+                  />
                   {products.offset < products.total && (
-                    <div className="d-flex justify-content-center mt-3"> {/* Bootstrap classes for centering */}
-                    <button onClick={handleLoadMore} className="btn btn-danger load-more-button" disabled={loading}>
-                      {loading ? "Loading..." : "Load More"}
-                    </button>
-                  </div>
+                    <div className="d-flex justify-content-center mt-3">
+                      <button
+                        onClick={handleLoadMore}
+                        className="btn btn-danger load-more-button"
+                        disabled={loading}
+                      >
+                        {loading ? "Loading..." : "Load More"}
+                      </button>
+                    </div>
                   )}
                 </>
               )}
