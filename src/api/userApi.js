@@ -62,3 +62,13 @@ export const editUserProfile = async (userData) => {
     throw error.response?.data || "Something went wrong!"; // Handle errors
   }
 };
+
+// Function to update user password
+export const changePassword = async (userData) => {
+  try {
+    const response = await apiClient.post("/user/change-password", userData);
+    return response.data; // Return the response data
+  } catch (error) {
+    throw error.response?.data || "Something went wrong!"; // Handle errors
+  }
+};
