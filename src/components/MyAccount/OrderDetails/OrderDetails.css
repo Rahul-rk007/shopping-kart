@@ -1,12 +1,12 @@
-
-.orderdetails-top-most-container{
+.orderdetails-top-most-container {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.orderdetails-inner-container{
-  border: 1px solid grey;
-  border-radius: 5px;
+.orderdetails-inner-container {
+  border: 1px solid #fff;
+  border-radius: 6px;
+  background-color: #fff;
   width: 85%;
   padding: 20px;
   box-shadow: 2px 2px 3px gray;
@@ -18,31 +18,30 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.ordrdetails-top-header{
+.ordrdetails-top-header {
   margin-bottom: 40px;
 }
 
-.orderdetails-top-box{
+.orderdetails-top-box {
   display: flex;
   flex: 1fr;
   justify-content: space-between;
   width: 100%;
   margin-left: 3px;
-  
 }
 
-.orderdetails-sub-header{
+.orderdetails-sub-header {
   margin-top: 20px;
   border-bottom: 1px solid #dee2e6;
   padding-bottom: 10px;
 }
 
-.orderdetails-sub-box{
+.orderdetails-sub-box {
   max-width: 40%;
   width: 35%;
 }
 
-.orderdetails-uderinfo-section{
+.orderdetails-uderinfo-section {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }

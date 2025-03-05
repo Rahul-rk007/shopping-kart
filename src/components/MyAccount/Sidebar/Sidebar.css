@@ -17,6 +17,7 @@
   margin: 10px 0; /* Space between list items */
   display: flex;
 }
+
 .myaccount-list-img {
   height: 27px;
   width: 27px;
@@ -31,9 +32,17 @@
   align-items: center;
   padding: 10px; /* Padding for clickable area */
   border-radius: 4px; /* Rounded corners */
+  transition: background-color 0.3s; /* Smooth transition for background color */
 }
+
 .myaccount-link:hover {
-  color: #ff084e;
+  color: #ff084e; /* Change text color on hover */
+  background-color: rgba(255, 240, 240, 0.5); /* Light background on hover */
+}
+
+.myaccount-list-link.active {
+  background-color: #efbbca; /* Background color for active link */
+  color: #fff; /* Change text color for active link */
 }
 
 .myaccount-logout-btn {
@@ -44,9 +53,13 @@
 
 .myaccount-logout-btn > a {
   padding: 7px 20px;
+  color: white; /* Text color for logout button */
+  background-color: #dc3545; /* Bootstrap danger color */
+  border-radius: 4px; /* Rounded corners */
+  text-decoration: none; /* Remove underline from links */
 }
 
 .myaccount-logout-btn > a:hover {
-  background-color: #3a3a3a;
-  border-color: #3a3a3a;
+  background-color: #c82333; /* Darker shade on hover */
+  border-color: #c82333; /* Darker border on hover */
 }
