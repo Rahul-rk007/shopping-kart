@@ -7,11 +7,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { addShippingAddress, countryList, editAddress, stateList } from "../../../api/shippingAddressApi";
+import {
+  addShippingAddress,
+  countryList,
+  deleteAddress,
+  editAddress,
+  getAllShippingAddresses,
+  stateList,
+} from "../../../api/shippingAddressApi";
 
+// Validation schema using Zod
 const schema = z.object({
   fullName: z.string().nonempty("Full Name is Required."),
-  phoneNumber: z.string().min(1, "Mobile Number is Required").regex(/^\d{10}$/, "Mobile number must contain only digits"),
+  phoneNumber: z
+    .string()
+    .min(1, "Mobile Number is Required")
+    .regex(/^\d{10}$/, "Mobile number must contain only digits"),
   address1: z.string().nonempty("Address is Required"),
   address2: z.string().optional(),
   country: z.string().nonempty("Country is Required"),
@@ -22,8 +33,8 @@ const schema = z.object({
 
 const Address = () => {
   const [addresses, setAddresses] = useState([]);
-  const [countries, setCountries] = useState([]);
-  const [states, setStates] = useState([]);
+  const [countries, setCountries] = useState([]); // Initialize as empty array
+  const [states, setStates] = useState([]); // Initialize as empty array
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const {
@@ -36,25 +47,36 @@ const Address = () => {
 
   useEffect(() => {
     // Fetch countries on component mount
-    const fetchCountries = () => {
+    const fetchCountries = async () => {
       try {
-        const response = countryList();
-        setCountries(response.data);
-        
-        
+        const response = await countryList(); // Ensure this returns a promise
+        setCountries(response.data || []); // Set to empty array if response.data is undefined
       } catch (error) {
         console.error("Error fetching countries:", error);
       }
     };
 
     fetchCountries();
-    console.log(countries);
+  }, []);
+
+  // Fetch all shipping addresses on component mount
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const response = await getAllShippingAddresses(); // Call the API to get all addresses
+        setAddresses(response.data || []); // Set to empty array if response.data is undefined
+      } catch (error) {
+        console.error("Error fetching addresses:", error);
+      }
+    };
+
+    fetchAddresses();
   }, []);
 
   const fetchStates = async (countryId) => {
     try {
-      const response = stateList(countryId);
-      setStates(response.data);
+      const response = await stateList(countryId); // Call the API to get states for the selected country
+      setStates(response.data || []); // Set to empty array if response.data is undefined
     } catch (error) {
       console.error("Error fetching states:", error);
     }
@@ -62,16 +84,38 @@ const Address = () => {
 
   const onSubmit = async (data) => {
     try {
+      const addressData = {
+        fullName: data.fullName,
+        phoneNumber: data.phoneNumber,
+        address1: data.address1,
+        address2: data.address2,
+        country: {
+          _id: data.country,
+          name: countries.find((country) => country._id === data.country)
+            ?.countryName,
+        },
+        state: {
+          _id: data.state,
+          name: states.find((state) => state._id === data.state)?.stateName,
+        },
+        city: data.city,
+        zipCode: data.zipCode,
+      };
+
+      console.log(addressData);
+
       if (editIndex !== null) {
         // Edit existing address
-      editAddress(addresses[editIndex].id,data); 
-        const updatedAddresses = [...addresses];
-        updatedAddresses[editIndex] = data;
-        setAddresses(updatedAddresses);
+        await editAddress(addresses[editIndex]._id, addressData);
+        // Re-fetch addresses after editing
+        const updatedAddresses = await getAllShippingAddresses();
+        setAddresses(updatedAddresses.data || []);
       } else {
         // Add new address
-        const response = addShippingAddress(data);
-        setAddresses([...addresses, response.data]);
+        const response = await addShippingAddress(addressData);
+        console.log(response);
+        setAddresses((prevAddresses) => [...prevAddresses, response]);
+        console.log(addresses);
       }
       reset();
       setIsFormVisible(false);
@@ -82,14 +126,35 @@ const Address = () => {
   };
 
   const handleEdit = (index) => {
-    setEditIndex(index);
-    reset(addresses[index]);
-    setIsFormVisible(true);
+    const addressToEdit = addresses[index];
+
+    if (addressToEdit) {
+      setEditIndex(index); // Set the edit index
+
+      fetchStates(addressToEdit.country._id); // Fetch states for the selected country
+
+      reset({
+        fullName: addressToEdit.fullName,
+        phoneNumber: addressToEdit.phoneNumber,
+        address1: addressToEdit.address1,
+        address2: addressToEdit.address2,
+        country: addressToEdit.country._id, // Set the country ID
+        state: addressToEdit.state._id, // Set the state ID
+        city: addressToEdit.city,
+        zipCode: addressToEdit.zipCode,
+      });
+
+      setIsFormVisible(true);
+    } else {
+      console.error("No address found for editing");
+    }
   };
 
   const handleDelete = async (index) => {
     try {
-      await axios.delete(`/api/shipping-addresses/${addresses[index].id}`);
+      console.log(addresses[index]);
+
+      await deleteAddress(addresses[index]._id);
       const updatedAddresses = addresses.filter((_, i) => i !== index);
       setAddresses(updatedAddresses);
     } catch (error) {
@@ -125,26 +190,39 @@ const Address = () => {
                   </button>
                 </div>
                 <div className="modal-body address-page-scrollable-modal-body">
-                  <form className="address-page-form" onSubmit={handleSubmit(onSubmit)}>
-                    <div className="form-group">
-                      <label htmlFor="fullName">Full Name*</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="fullName"
-                        {...register("fullName")}
-                      />
-                      {errors.fullName && <em className="form-error">{errors.fullName.message}</em>}
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="phoneNumber">Phone Number*</label>
-                      <input
-                        type="tel"
-                        className="form-control"
-                        id="phoneNumber"
-                        {...register("phoneNumber")}
-                      />
-                      {errors.phoneNumber && <em className="form-error">{errors.phoneNumber.message}</em>}
+                  <form
+                    className="address-page-form"
+                    onSubmit={handleSubmit(onSubmit)}
+                  >
+                    <div className="form-row">
+                      <div className="form-group col-md-6">
+                        <label htmlFor="fullName">Full Name*</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="fullName"
+                          {...register("fullName")}
+                        />
+                        {errors.fullName && (
+                          <em className="form-error">
+                            {errors.fullName.message}
+                          </em>
+                        )}
+                      </div>
+                      <div className="form-group col-md-6">
+                        <label htmlFor="phoneNumber">Phone Number*</label>
+                        <input
+                          type="tel"
+                          className="form-control"
+                          id="phoneNumber"
+                          {...register("phoneNumber")}
+                        />
+                        {errors.phoneNumber && (
+                          <em className="form-error">
+                            {errors.phoneNumber.message}
+                          </em>
+                        )}
+                      </div>
                     </div>
                     <div className="form-group">
                       <label htmlFor="address1">Address-1*</label>
@@ -154,7 +232,11 @@ const Address = () => {
                         id="address1"
                         {...register("address1")}
                       />
-                      {errors.address1 && <em className="form-error">{errors.address1.message}</em>}
+                      {errors.address1 && (
+                        <em className="form-error">
+                          {errors.address1.message}
+                        </em>
+                      )}
                     </div>
                     <div className="form-group">
                       <label htmlFor="address2">Address-2 (optional)</label>
@@ -175,17 +257,21 @@ const Address = () => {
                           onChange={(e) => {
                             const countryId = e.target.value;
                             setValue("country", countryId);
-                            fetchStates(countryId);
+                            fetchStates(countryId); // Fetch states when country changes
                           }}
                         >
                           <option value="">Select a country...</option>
                           {countries.map((country) => (
-                            <option key={country.code} value={country.code}>
-                              {country.name}
+                            <option key={country._id} value={country._id}>
+                              {country.countryName}
                             </option>
                           ))}
                         </select>
-                        {errors.country && <em className="form-error">{errors.country.message}</em>}
+                        {errors.country && (
+                          <em className="form-error">
+                            {errors.country.message}
+                          </em>
+                        )}
                       </div>
                       <div className="form-group col-md-6">
                         <label htmlFor="state">State*</label>
@@ -196,12 +282,14 @@ const Address = () => {
                         >
                           <option value="">Choose...</option>
                           {states.map((state) => (
-                            <option key={state.id} value={state.name}>
-                              {state.name}
+                            <option key={state._id} value={state._id}>
+                              {state.stateName}
                             </option>
                           ))}
                         </select>
-                        {errors.state && <em className="form-error">{errors.state.message}</em>}
+                        {errors.state && (
+                          <em className="form-error">{errors.state.message}</em>
+                        )}
                       </div>
                     </div>
                     <div className="form-row">
@@ -213,7 +301,9 @@ const Address = () => {
                           id="city"
                           {...register("city")}
                         />
-                        {errors.city && <em className="form-error">{errors.city.message}</em>}
+                        {errors.city && (
+                          <em className="form-error">{errors.city.message}</em>
+                        )}
                       </div>
                       <div className="form-group col-md-6">
                         <label htmlFor="zipCode">Zip Code*</label>
@@ -223,7 +313,11 @@ const Address = () => {
                           id="zipCode"
                           {...register("zipCode")}
                         />
-                        {errors.zipCode && <em className="form-error">{errors.zipCode.message}</em>}
+                        {errors.zipCode && (
+                          <em className="form-error">
+                            {errors.zipCode.message}
+                          </em>
+                        )}
                       </div>
                     </div>
 
@@ -258,38 +352,39 @@ const Address = () => {
             </div>
           ) : (
             <ul className="list-group">
-              {addresses.map((address, index) => (
-                <li
-                  key={index}
-                  className="address-page-list-group-item d-flex justify-content-between align-items-center mb-2"
-                >
-                  <div>
-                    <strong>{address.fullName}</strong>
-                    <br />
-                    {address.address1} {address.address2 && `, ${address.address2}`}
-                    <br />
-                    {address.city}, {address.state} {address.zipCode}
-                    <br />
-                    {address.phoneNumber}
-                    <br />
-                    {address.country}
-                  </div>
-                  <div>
-                    <button
-                      className="btn-sm address-list-icon"
-                      onClick={() => handleEdit(index)}
-                    >
-                      <img src={Edit} alt="Edit" />
-                    </button>
-                    <button
-                      className="btn-sm ml-2 address-list-icon"
-                      onClick={() => handleDelete(index)}
-                    >
-                      <img src={Delete} alt="Delete" />
-                    </button>
-                  </div>
-                </li>
-              ))}
+              {addresses &&
+                addresses.map((address, index) => (
+                  <li
+                    key={index} // Use a unique identifier for the key
+                    className="address-page-list-group-item d-flex justify-content-between align-items-center mb-2"
+                  >
+                    <div>
+                      <strong>{address.fullName}</strong>
+                      <br />
+                      {address.address1}{" "}
+                      {address.address2 && `, ${address.address2}`}
+                      <br />
+                      {address.city}, {address.state.stateName}{" "}
+                      {address.zipCode}, {address.country.countryName}
+                      <br />
+                      {address.phoneNumber}
+                    </div>
+                    <div>
+                      <button
+                        className="btn-sm address-list-icon"
+                        onClick={() => handleEdit(index)} // Pass the unique id for editing
+                      >
+                        <img src={Edit} alt="Edit" />
+                      </button>
+                      <button
+                        className="btn-sm ml-2 address-list-icon"
+                        onClick={() => handleDelete(index)} // Pass the unique id for deleting
+                      >
+                        <img src={Delete} alt="Delete" />
+                      </button>
+                    </div>
+                  </li>
+                ))}
             </ul>
           )}
         </div>

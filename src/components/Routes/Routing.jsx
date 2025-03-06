@@ -7,7 +7,7 @@ import Cart from "../Cart/Cart";
 import Checkout from "../Checkout/Checkout";
 import Aboutus from "../Aboutus/Aboutus";
 import Contactus from "../Contactus/Contactus";
-import Login from "../Login/Login";
+import Login from "../Login/Login"; // Import Login
 import Signup from "../Signup/Signup";
 import MyOrders from "../MyAccount/MyOrders/MyOrders";
 import Profile from "../MyAccount/Profile/Profile";
@@ -16,8 +16,10 @@ import Address from "../MyAccount/Address/Address";
 import ChangePassword from "../MyAccount/ChangePassword/ChangePassword";
 import OrderDetails from "../MyAccount/OrderDetails/OrderDetails";
 import Logout from "../Logout/Logout";
+import PrivateRoute from "../PrivateRoute";
 
-const Routing = () => {
+const Routing = ({ setUser }) => {
+  // Accept setUser  as a prop
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -27,14 +29,33 @@ const Routing = () => {
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/aboutus" element={<Aboutus />} />
       <Route path="/contactus" element={<Contactus />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<Login setUser={setUser} />} />{" "}
+      {/* Pass setUser  to Login */}
       <Route path="/signup" element={<Signup />} />
-      <Route path="/myaccount/myorders" element={<MyOrders />} />
-      <Route path="/myaccount/profile" element={<Profile />} />
-      <Route path="/myaccount/wishlist" element={<Wishlist />} />
-      <Route path="/myaccount/address" element={<Address />} />
-      <Route path="/myaccount/changepassword" element={<ChangePassword />} />
-      <Route path="/myaccount/orderdetails" element={<OrderDetails />} />
+      <Route
+        path="/myaccount/myorders"
+        element={<PrivateRoute element={<MyOrders />} />}
+      />
+      <Route
+        path="/myaccount/profile"
+        element={<PrivateRoute element={<Profile />} />}
+      />
+      <Route
+        path="/myaccount/wishlist"
+        element={<PrivateRoute element={<Wishlist />} />}
+      />
+      <Route
+        path="/myaccount/address"
+        element={<PrivateRoute element={<Address />} />}
+      />
+      <Route
+        path="/myaccount/changepassword"
+        element={<PrivateRoute element={<ChangePassword />} />}
+      />
+      <Route
+        path="/myaccount/orderdetails"
+        element={<PrivateRoute element={<OrderDetails />} />}
+      />
       <Route path="/logout" element={<Logout />} />
     </Routes>
   );

@@ -6,6 +6,9 @@ import { loginUser } from "../../api/userApi"; // Import the loginUser  function
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { toast } from "react-toastify"; // Import toast
+import setAuthToken from "../../api/setAuthToken"; // Import setAuthToken
+import { getUser } from "../../api/userApi"; // Import getUser
 
 // Define the validation schema using Zod
 const schema = z.object({
@@ -16,10 +19,11 @@ const schema = z.object({
   password: z
     .string()
     .nonempty("Password is required.")
-    .min(6, "Password must be at least 8 characters long."),
+    .min(6, "Password must be at least 6 characters long."),
 });
 
-const Login = () => {
+const Login = ({ setUser }) => {
+  // Accept setUser  as a prop
   const navigate = useNavigate(); // Use useNavigate for navigation
   const {
     register,
@@ -36,14 +40,16 @@ const Login = () => {
 
       const { token } = response; // Assuming the response contains a token
 
-      // Store the token (e.g., in localStorage)
       localStorage.setItem("token", token);
+      setAuthToken(token);
 
-      // Redirect to the desired page after successful login
-      window.location = "/";
+      const jwtUser = getUser(); // Get user from token
+      setUser(jwtUser); // Update user state in App
+      navigate("/"); // Redirect to the desired page after successful login
     } catch (err) {
       // Handle error (e.g., display error message)
       console.error(err);
+      toast.error("Login failed. Please check your credentials."); // Show error toast message
     }
   };
 
