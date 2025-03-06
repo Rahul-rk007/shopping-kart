@@ -1,9 +1,9 @@
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom"; // Import NavLink and useLocation
 import "./Sidebar.css";
-import Profile from "../../../assets/icon/profile.webp";
+import Profile from "../../../assets/icon/profile.png";
 import MyOrder from "../../../assets/icon/myorder.png";
-import Address from "../../../assets/icon/address.jpg";
+import Address from "../../../assets/icon/address1.png";
 import Wishlist from "../../../assets/icon/wishlist.png";
 import ChangePassword from "../../../assets/icon/changepassword.png";
 

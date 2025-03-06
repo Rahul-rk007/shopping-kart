@@ -1,91 +1,111 @@
 import React, { useState, useEffect } from "react";
 import MyAccount from "../MyAccount";
 import "./Address.css";
-import Delete from "../../../assets/icon/delete.png"
-import Edit from "../../../assets/icon/edit.png"
+import Delete from "../../../assets/icon/delete.png";
+import Edit from "../../../assets/icon/edit.png";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { addShippingAddress, countryList, editAddress, stateList } from "../../../api/shippingAddressApi";
+
+const schema = z.object({
+  fullName: z.string().nonempty("Full Name is Required."),
+  phoneNumber: z.string().min(1, "Mobile Number is Required").regex(/^\d{10}$/, "Mobile number must contain only digits"),
+  address1: z.string().nonempty("Address is Required"),
+  address2: z.string().optional(),
+  country: z.string().nonempty("Country is Required"),
+  state: z.string().nonempty("State is Required"),
+  city: z.string().nonempty("City is Required"),
+  zipCode: z.string().nonempty("Zip Code is Required"),
+});
 
 const Address = () => {
-  const [isFormVisible, setIsFormVisible] = useState(false);
-  const [isFirstVisit, setIsFirstVisit] = useState(true);
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    streetAddress: "",
-    apt: "",
-    city: "",
-    state: "",
-    zip: "",
-    phoneNumber: "",
-    country: "",
-    defaultAddress: false,
-  });
   const [addresses, setAddresses] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [isFormVisible, setIsFormVisible] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm({ resolver: zodResolver(schema) });
 
   useEffect(() => {
-    if (addresses.length > 0) {
-      setIsFirstVisit(false);
-    }
-  }, [addresses]);
+    // Fetch countries on component mount
+    const fetchCountries = () => {
+      try {
+        const response = countryList();
+        setCountries(response.data);
+        
+        
+      } catch (error) {
+        console.error("Error fetching countries:", error);
+      }
+    };
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
+    fetchCountries();
+    console.log(countries);
+  }, []);
+
+  const fetchStates = async (countryId) => {
+    try {
+      const response = stateList(countryId);
+      setStates(response.data);
+    } catch (error) {
+      console.error("Error fetching states:", error);
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (editIndex !== null) {
-      const updatedAddresses = addresses.map((address, index) =>
-        index === editIndex ? formData : address
-      );
-      setAddresses(updatedAddresses);
-    } else {
-      setAddresses([...addresses, formData]);
+  const onSubmit = async (data) => {
+    try {
+      if (editIndex !== null) {
+        // Edit existing address
+      editAddress(addresses[editIndex].id,data); 
+        const updatedAddresses = [...addresses];
+        updatedAddresses[editIndex] = data;
+        setAddresses(updatedAddresses);
+      } else {
+        // Add new address
+        const response = addShippingAddress(data);
+        setAddresses([...addresses, response.data]);
+      }
+      reset();
+      setIsFormVisible(false);
+      setEditIndex(null);
+    } catch (error) {
+      console.error("Error saving address:", error);
     }
-    resetForm();
-  };
-
-  const resetForm = () => {
-    setFormData({
-      firstName: "",
-      lastName: "",
-      streetAddress: "",
-      apt: "",
-      city: "",
-      state: "",
-      zip: "",
-      phoneNumber: "",
-      country: "",
-      defaultAddress: false,
-    });
-    setIsFormVisible(false);
-    setEditIndex(null);
   };
 
   const handleEdit = (index) => {
     setEditIndex(index);
-    setFormData(addresses[index]);
+    reset(addresses[index]);
     setIsFormVisible(true);
   };
 
-  const handleDelete = (index) => {
-    const updatedAddresses = addresses.filter((_, i) => i !== index);
-    setAddresses(updatedAddresses);
+  const handleDelete = async (index) => {
+    try {
+      await axios.delete(`/api/shipping-addresses/${addresses[index].id}`);
+      const updatedAddresses = addresses.filter((_, i) => i !== index);
+      setAddresses(updatedAddresses);
+    } catch (error) {
+      console.error("Error deleting address:", error);
+    }
   };
 
-  const countries = [
-    { code: "US", name: "United States" },
-    { code: "CA", name: "Canada" },
-    { code: "GB", name: "United Kingdom" },
-    { code: "AU", name: "Australia" },
-    { code: "IN", name: "India" },
-  ];
+  const resetForm = () => {
+    reset();
+    setEditIndex(null);
+  };
 
   return (
     <MyAccount>
-      <div className="adderss-page-container container mt-5">
-        <h2 className="text-center">Shippin Address List</h2>
+      <div className="address-page-container container mt-5">
+        <h2 className="text-center">Shipping Address List</h2>
 
         {/* Modal for adding/editing address */}
         {isFormVisible && (
@@ -105,55 +125,84 @@ const Address = () => {
                   </button>
                 </div>
                 <div className="modal-body address-page-scrollable-modal-body">
-                  <form className="address-page-form" onSubmit={handleSubmit}>
+                  <form className="address-page-form" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="form-group">
+                      <label htmlFor="fullName">Full Name*</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="fullName"
+                        {...register("fullName")}
+                      />
+                      {errors.fullName && <em className="form-error">{errors.fullName.message}</em>}
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="phoneNumber">Phone Number*</label>
+                      <input
+                        type="tel"
+                        className="form-control"
+                        id="phoneNumber"
+                        {...register("phoneNumber")}
+                      />
+                      {errors.phoneNumber && <em className="form-error">{errors.phoneNumber.message}</em>}
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="address1">Address-1*</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="address1"
+                        {...register("address1")}
+                      />
+                      {errors.address1 && <em className="form-error">{errors.address1.message}</em>}
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="address2">Address-2 (optional)</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="address2"
+                        {...register("address2")}
+                      />
+                    </div>
                     <div className="form-row">
                       <div className="form-group col-md-6">
-                        <label htmlFor="firstName">Full name*</label>
-                        <input
-                          type="text"
+                        <label htmlFor="country">Country*</label>
+                        <select
+                          id="country"
                           className="form-control"
-                          id="firstName"
-                          name="firstName"
-                          value={formData.firstName}
-                          onChange={handleChange}
-                          required
-                        />
+                          {...register("country")}
+                          onChange={(e) => {
+                            const countryId = e.target.value;
+                            setValue("country", countryId);
+                            fetchStates(countryId);
+                          }}
+                        >
+                          <option value="">Select a country...</option>
+                          {countries.map((country) => (
+                            <option key={country.code} value={country.code}>
+                              {country.name}
+                            </option>
+                          ))}
+                        </select>
+                        {errors.country && <em className="form-error">{errors.country.message}</em>}
                       </div>
                       <div className="form-group col-md-6">
-                        <label htmlFor="phoneNumber">Phone number*</label>
-                        <input
-                          type="tel"
+                        <label htmlFor="state">State*</label>
+                        <select
+                          id="state"
                           className="form-control"
-                          id="phoneNumber"
-                          name="phoneNumber"
-                          value={formData.phoneNumber}
-                          onChange={handleChange}
-                          required
-                        />
+                          {...register("state")}
+                        >
+                          <option value="">Choose...</option>
+                          {states.map((state) => (
+                            <option key={state.id} value={state.name}>
+                              {state.name}
+                            </option>
+                          ))}
+                        </select>
+                        {errors.state && <em className="form-error">{errors.state.message}</em>}
                       </div>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="streetAddress">Address-1*</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="streetAddress"
-                        name="streetAddress"
-                        value={formData.streetAddress}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="apt">Address2 (optional)</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="apt"
-                        name="apt"
-                        value={formData.apt}
-                        onChange={handleChange}
-                      />
                     </div>
                     <div className="form-row">
                       <div className="form-group col-md-6">
@@ -162,77 +211,19 @@ const Address = () => {
                           type="text"
                           className="form-control"
                           id="city"
-                          name="city"
-                          value={formData.city}
-                          onChange={handleChange}
-                          required
+                          {...register("city")}
                         />
+                        {errors.city && <em className="form-error">{errors.city.message}</em>}
                       </div>
                       <div className="form-group col-md-6">
-                        <label htmlFor="zip">Zip code*</label>
+                        <label htmlFor="zipCode">Zip Code*</label>
                         <input
                           type="text"
                           className="form-control"
-                          id="zip"
-                          name="zip"
-                          value={formData.zip}
-                          onChange={handleChange}
-                          required
+                          id="zipCode"
+                          {...register("zipCode")}
                         />
-                      </div>
-                    </div>
-                    <div className="form-row">
-                      <div className="form-group col-md-6">
-                        <label htmlFor="state">State*</label>
-                        <select
-                          id="state"
-                          className="form-control"
-                          name="state"
-                          value={formData.state}
-                          onChange={handleChange}
-                          required
-                        >
-                          <option value="">Choose...</option>
-                          <option value="state1">State 1</option>
-                          <option value="state2">State 2</option>
-                        </select>
-                      </div>
-                      <div className="form-group col-md-6">
-                        <label htmlFor="country">Country*</label>
-                        <select
-                          id="country"
-                          className="form-control"
-                          name="country"
-                          value={formData.country}
-                          onChange={handleChange}
-                          required
-                        >
-                          <option value="">Select a country...</option>
-                          {countries.map((country) => (
-                            <option key={country.code} value={country.name}>
-                              {country.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="form-group">
-                      <div className="form-check">
-                        <input
-                          type="checkbox"
-                          className="form-check-input"
-                          id="defaultAddress"
-                          name="defaultAddress"
-                          checked={formData.defaultAddress}
-                          onChange={handleChange}
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="defaultAddress"
-                        >
-                          Set as default address
-                        </label>
+                        {errors.zipCode && <em className="form-error">{errors.zipCode.message}</em>}
                       </div>
                     </div>
 
@@ -273,13 +264,11 @@ const Address = () => {
                   className="address-page-list-group-item d-flex justify-content-between align-items-center mb-2"
                 >
                   <div>
-                    <strong>
-                      {address.firstName} {address.lastName}
-                    </strong>
+                    <strong>{address.fullName}</strong>
                     <br />
-                    {address.streetAddress} {address.apt && `, ${address.apt}`}
+                    {address.address1} {address.address2 && `, ${address.address2}`}
                     <br />
-                    {address.city}, {address.state} {address.zip}
+                    {address.city}, {address.state} {address.zipCode}
                     <br />
                     {address.phoneNumber}
                     <br />
@@ -290,13 +279,13 @@ const Address = () => {
                       className="btn-sm address-list-icon"
                       onClick={() => handleEdit(index)}
                     >
-                      <img src={Edit} />
+                      <img src={Edit} alt="Edit" />
                     </button>
                     <button
                       className="btn-sm ml-2 address-list-icon"
                       onClick={() => handleDelete(index)}
                     >
-                      <img src={Delete} />
+                      <img src={Delete} alt="Delete" />
                     </button>
                   </div>
                 </li>
