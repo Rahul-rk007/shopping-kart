@@ -94,66 +94,33 @@ const ProductDetails = () => {
                   data-ride="carousel"
                 >
                   <ol className="carousel-indicators">
-                    <li
-                      className="active"
-                      data-target="#product_details_slider"
-                      data-slide-to="0"
-                      style={{ backgroundImage: `url(${Product1})` }}
-                    ></li>
-                    <li
-                      data-target="#product_details_slider"
-                      data-slide-to="1"
-                      style={{ backgroundImage: `url(${Product2})` }}
-                    ></li>
-                    <li
-                      data-target="#product_details_slider"
-                      data-slide-to="2"
-                      style={{ backgroundImage: `url(${Product3})` }}
-                    ></li>
-                    <li
-                      data-target="#product_details_slider"
-                      data-slide-to="3"
-                      style={{ backgroundImage: `url(${Product4})` }}
-                    ></li>
+                    {product.ImageURLs.map((image, index) => (
+                      <li
+                        key={index}
+                        data-target="#product_details_slider"
+                        data-slide-to={index}
+                        style={{ backgroundImage: `url(${image})` }}
+                      ></li>
+                    ))}
                   </ol>
 
                   <div className="carousel-inner">
-                    <div className="carousel-item active">
-                      <a className="gallery_img" href={Product1}>
-                        <img
-                          className="d-block w-100"
-                          src={Product1}
-                          alt="First slide"
-                        />
-                      </a>
-                    </div>
-                    <div className="carousel-item">
-                      <a className="gallery_img" href={Product2}>
-                        <img
-                          className="d-block w-100"
-                          src={Product2}
-                          alt="Second slide"
-                        />
-                      </a>
-                    </div>
-                    <div className="carousel-item">
-                      <a className="gallery_img" href={Product3}>
-                        <img
-                          className="d-block w-100"
-                          src={Product3}
-                          alt="Third slide"
-                        />
-                      </a>
-                    </div>
-                    <div className="carousel-item">
-                      <a className="gallery_img" href={Product4}>
-                        <img
-                          className="d-block w-100"
-                          src={Product4}
-                          alt="Fourth slide"
-                        />
-                      </a>
-                    </div>
+                    {product.ImageURLs.map((image, index) => (
+                      <div
+                        className={`carousel-item ${
+                          index === 0 ? "active" : ""
+                        }`}
+                        key={index}
+                      >
+                        <a className="gallery_img" href={image}>
+                          <img
+                            className="d-block w-100"
+                            src={image}
+                            alt={`Slide ${index + 1}`}
+                          />
+                        </a>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
