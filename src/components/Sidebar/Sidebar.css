@@ -62,6 +62,12 @@
   height: 15px;
 }
 
+.widget.price .ui-slider-handle:hover,
+.widget.price .ui-slider-handle:focus {
+  background-color: #ff084e;
+  outline: none;
+}
+
 .widget.price .ui-slider-range.ui-corner-all.ui-widget-header {
   background-color: #3a3a3a;
 }
@@ -77,13 +83,23 @@
   text-transform: uppercase;
 }
 
+.widget.color .widget-desc ul {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
+  justify-content: flex-start; /* Align items to the start */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+}
+
+.widget.color .widget-desc ul li {
+  width: calc(16.66% - 10px); /* 6 items per row with some margin */
+  margin: 6px; /* Add some margin between items */
+  list-style: none; /* Remove bullet points */
+}
+
 .widget.color .widget-desc ul li a {
-  width: 25px;
-  height: 25px;
-  display: block;
-  background-color: #000;
-  position: relative;
-  z-index: 1;
+  display: block; /* Ensure the link takes the full space */
+  text-align: center; /* Center the text */
 }
 
 .widget.color .widget-desc ul li.gray a {
@@ -136,6 +152,10 @@
   padding-top: 35px;
 }
 
+.widget.color .widget-desc ul li a .color-count {
+  padding: 5px;
+}
+
 .single-recommended-product .single-recommended-thumb,
 .single-recommended-product .single-recommended-desc {
   max-width: 50%;
@@ -183,4 +203,114 @@
 .sub-menu a.active::before {
   background-color: #ff084e !important; /* Change to your desired color */
   border-color: #ff084e !important;
+}
+
+.price-slider-container {
+  position: relative;
+  height: 5px;
+  margin: 40px 10px 30px;
+  background-color: #ebebeb;
+}
+
+.price-slider {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 5px;
+  background: none;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  padding: 0;
+}
+
+.price-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  pointer-events: all;
+  width: 18px;
+  height: 18px;
+  background-color: #3a3a3a;
+  border-radius: 0;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.price-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background-color: #3a3a3a;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  pointer-events: all;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.price-slider:focus {
+  outline: none;
+}
+
+.price-slider:focus::-webkit-slider-thumb {
+  background-color: #ff084e;
+}
+
+.price-slider:focus::-moz-range-thumb {
+  background-color: #ff084e;
+}
+
+.price-slider:hover::-webkit-slider-thumb {
+  background-color: #ff084e;
+}
+
+.price-slider:hover::-moz-range-thumb {
+  background-color: #ff084e;
+}
+
+.price-slider-min {
+  z-index: 2;
+}
+
+.price-slider-max {
+  z-index: 1;
+}
+
+/* This creates a dynamic colored track between the two handles */
+.price-slider-track {
+  position: absolute;
+  height: 5px;
+  background-color: transparent;
+  width: 100%;
+  z-index: 0;
+}
+
+/* Range display styles */
+.range-price {
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 20px;
+  text-transform: uppercase;
+  color: #3a3a3a;
+  letter-spacing: 0.5px;
+}
+
+/* Title styling */
+.widget.price .widget-title {
+  font-size: 16px;
+  margin-bottom: 25px;
+  color: #333;
+  letter-spacing: 0.5px;
+}
+
+/* Widget styling enhancements */
+.widget.price {
+  padding: 20px 0;
+}
+
+/* Active range styling - to create a visual indication of the selected range */
+.price-range-selected {
+  position: absolute;
+  height: 5px;
+  background-color: #3a3a3a;
+  z-index: 0;
 }

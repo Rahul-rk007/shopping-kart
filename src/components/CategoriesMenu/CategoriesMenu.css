@@ -68,7 +68,8 @@
 .menu-content li .sub-menu li {
   border: none;
   border-bottom: 1px solid #ebebeb;
-  margin-left: 0;
+  border-top: 1px solid #ebebeb;
+  margin-left: 10px;
   padding-left: 5px;
 }
 

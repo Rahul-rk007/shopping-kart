@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import "./ProductDetails.css";
 import Layout from "../Layout/Layout";
@@ -9,12 +9,16 @@ import Product1 from "../../assets/product-img/product-1.jpg";
 import Product5 from "../../assets/product-img/product-5.jpg";
 import { useParams } from "react-router-dom";
 import { getProductDetails } from "../../api/productApi";
+import CartContext from "../../context/CartContext";
+import UserContext from "../../context/UserContext";
 
 const ProductDetails = () => {
   const { id } = useParams(); // Get the product ID from the URL
   const [product, setProduct] = useState(null); // State to hold product details
   const [loading, setLoading] = useState(true); // State to manage loading status
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useContext(CartContext); // Access addToCart from CartContext
+  const user = useContext(UserContext);
 
   const handleQuantityChange = (change) => {
     setQuantity((prev) => {
@@ -26,7 +30,8 @@ const ProductDetails = () => {
   useEffect(() => {
     console.log("Product ID:", id); // Log the ID to see if it's defined
     const fetchProductDetails = async () => {
-      if (id) { // Check if id is defined
+      if (id) {
+        // Check if id is defined
         try {
           const data = await getProductDetails(id); // Fetch product details by ID
           setProduct(data); // Set the product details in state
@@ -65,7 +70,9 @@ const ProductDetails = () => {
                 <li className="breadcrumb-item">
                   <a href="#">{product.CategoryID.CategoryName}</a>
                 </li>
-                <li className="breadcrumb-item active">{product.SubcategoryID.SubcategoryName}</li>
+                <li className="breadcrumb-item active">
+                  {product.SubcategoryID.SubcategoryName}
+                </li>
               </ol>
 
               <a href="#" className="backToHome d-block">

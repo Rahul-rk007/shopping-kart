@@ -16,17 +16,24 @@ const Shop = () => {
   });
   const [loading, setLoading] = useState(false);
   const hasFetched = useRef(false);
+  const [priceRange, setPriceRange] = useState([0, 3000]); // Default price range
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedSubcategoryId, setSelectedSubcategoryId] = useState(null); // Track selected subcategory
 
   // Function to fetch products
-  const fetchProducts = async (subcategoryId = null) => {
+  const fetchProducts = async (subcategoryId = selectedSubcategoryId) => {
     setLoading(true);
-    console.log(subcategoryId);
+    if (subcategoryId !== selectedSubcategoryId) {
+      products.offset = 0;
+    }
 
     try {
       const response = await productList(
         products.limit,
         products.offset,
-        subcategoryId
+        subcategoryId,
+        priceRange,
+        selectedColor
       );
       console.log("API Response:", response);
       setProducts((prev) => ({
@@ -60,9 +67,28 @@ const Shop = () => {
     fetchProducts();
   };
 
-  const handleCategorySelect = (subcategoryId) => {
-    setProducts({ total: 0, limit: 9, offset: 0, products: [] });
+  const handleCategorySelect = async (subcategoryId) => {
+    setProducts((prev) => ({
+      limit: 9,
+      total: 0,
+      products: [],
+      offset: 0,
+    }));
+    //setProducts({ total: 0, limit: 9, offset: 0, products: [] }); // Reset products and offset
+    setSelectedSubcategoryId(subcategoryId); // Update selected subcategory
     fetchProducts(subcategoryId);
+  };
+
+  const handlePriceRangeChange = (range) => {
+    setPriceRange(range);
+    setProducts({ total: 0, limit: 9, offset: 0, products: [] }); // Reset products and offset
+    fetchProducts(selectedSubcategoryId); // Fetch products with the new price range and current category
+  };
+
+  const handleColorSelect = (color) => {
+    setSelectedColor(color); // Set the selected color
+    setProducts({ total: 0, limit: 9, offset: 0, products: [] }); // Reset products and offset
+    fetchProducts(selectedSubcategoryId); // Fetch products with the selected color and current category
   };
 
   return (
@@ -71,7 +97,11 @@ const Shop = () => {
         <div className="container">
           <div className="row">
             <div className="col-12 col-md-4 col-lg-3">
-              <Sidebar onCategorySelect={handleCategorySelect} />
+              <Sidebar
+                onCategorySelect={handleCategorySelect}
+                onPriceRangeChange={handlePriceRangeChange}
+                onColorSelect={handleColorSelect}
+              />
             </div>
             <div className="col-12 col-md-8 col-lg-9">
               {products.total <= 0 ? (

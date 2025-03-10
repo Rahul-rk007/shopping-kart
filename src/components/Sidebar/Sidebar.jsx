@@ -1,13 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Sidebar.css";
-import { fetchCategoriesWithSubcategories } from "../../api/productApi";
+import {
+  fetchCategoriesWithSubcategories,
+  fetchColorCounts,
+} from "../../api/productApi";
 
-const Sidebar = ({ onCategorySelect }) => {
+const Sidebar = ({
+  onCategorySelect,
+  onPriceRangeChange = () => {},
+  onColorSelect = () => {},
+}) => {
   const [categories, setCategories] = useState([]);
   const [openCategoryId, setOpenCategoryId] = useState(null);
   const [selectedSubcategoryId, setSelectedSubcategoryId] = useState(null);
+  const [colorCounts, setColorCounts] = useState([]);
+  const [showAllColors, setShowAllColors] = useState(false);
 
-  // Fetch categories and subcategories when the component mounts
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(3000);
+  const [priceGap] = useState(100);
+
+  const minRangeRef = useRef(null);
+  const maxRangeRef = useRef(null);
+  const trackRef = useRef(null);
+
   useEffect(() => {
     const getCategories = async () => {
       try {
@@ -21,14 +37,52 @@ const Sidebar = ({ onCategorySelect }) => {
     getCategories();
   }, []);
 
+  const fetchColors = async () => {
+    try {
+      const response = await fetchColorCounts({
+        subcategoryId: selectedSubcategoryId,
+        minPrice,
+        maxPrice,
+      });
+      setColorCounts(response);
+    } catch (error) {
+      console.error("Error fetching color counts:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchColors();
+  }, [selectedSubcategoryId, minPrice, maxPrice]);
+
   const handleCategoryClick = (categoryId) => {
     setOpenCategoryId((prevId) => (prevId === categoryId ? null : categoryId));
   };
 
   const handleSubcategoryClick = (subcategoryId) => {
-    setSelectedSubcategoryId(subcategoryId); // Update selected subcategory
-    onCategorySelect(subcategoryId); // Call the category select function
+    setSelectedSubcategoryId(subcategoryId);
+    onCategorySelect(subcategoryId);
   };
+
+  const handleMinPriceChange = (e) => {
+    const value = parseInt(e.target.value);
+    if (maxPrice - value >= priceGap) {
+      setMinPrice(value);
+      onPriceRangeChange([value, maxPrice]);
+    }
+  };
+
+  const handleMaxPriceChange = (e) => {
+    const value = parseInt(e.target.value);
+    if (value - minPrice >= priceGap) {
+      setMaxPrice(value);
+      onPriceRangeChange([minPrice, value]);
+    }
+  };
+
+  const handleColorSelect = (color) => {
+    onColorSelect(color);
+  };
+
   return (
     <div className="shop_sidebar_area">
       <div className="widget catagory mb-50">
@@ -57,13 +111,13 @@ const Sidebar = ({ onCategorySelect }) => {
                         href="#"
                         onClick={(e) => {
                           e.preventDefault();
-                          handleSubcategoryClick(subcategory.id); // Update selected subcategory
+                          handleSubcategoryClick(subcategory.id);
                         }}
                         className={
                           selectedSubcategoryId === subcategory.id
                             ? "active"
                             : ""
-                        } // Highlight selected subcategory
+                        }
                       >
                         {subcategory.name}
                       </a>
@@ -80,92 +134,86 @@ const Sidebar = ({ onCategorySelect }) => {
         <h6 className="widget-title mb-30">Filter by Price</h6>
         <div className="widget-desc">
           <div className="slider-range">
-            <div
-              className="slider-range-price"
-              data-min="0"
-              data-max="3000"
-              data-unit="$"
-              data-value-min="0"
-              data-value-max="1350"
-              data-label-result="Price:"
-            >
-              <div className="ui-slider-range"></div>
-              <span className="ui-slider-handle" tabIndex="0"></span>
-              <span className="ui-slider-handle" tabIndex="0"></span>
+            <div className="price-slider-container">
+              <input
+                type="range"
+                min="0"
+                max="3000"
+                value={minPrice}
+                onChange={handleMinPriceChange}
+                className="price-slider price-slider-min"
+                ref={minRangeRef}
+              />
+              <input
+                type="range"
+                min="0"
+                max="3000"
+                value={maxPrice}
+                onChange={handleMaxPriceChange}
+                className="price-slider price-slider-max"
+                ref={maxRangeRef}
+              />
+              <div className="price-slider-track"></div>
+              <div className="price-range-selected" ref={trackRef}></div>
             </div>
-            <div className="range-price">Price: 0 - 1350</div>
+            <div className="range-price">
+              Price: ${minPrice} - ${maxPrice}
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="widget color mb-70">
+      {/* <div className="widget color mb-70">
         <h6 className="widget-title mb-30">Filter by Color</h6>
         <div className="widget-desc">
           <ul className="d-flex justify-content-between">
-            <li className="gray">
-              <a href="#">
-                <span>(3)</span>
-              </a>
-            </li>
-            <li className="red">
-              <a href="#">
-                <span>(25)</span>
-              </a>
-            </li>
-            <li className="yellow">
-              <a href="#">
-                <span>(112)</span>
-              </a>
-            </li>
-            <li className="green">
-              <a href="#">
-                <span>(72)</span>
-              </a>
-            </li>
-            <li className="teal">
-              <a href="#">
-                <span>(9)</span>
-              </a>
-            </li>
-            <li className="cyan">
-              <a href="#">
-                <span>(29)</span>
-              </a>
-            </li>
+            {colorCounts
+              .slice(0, showAllColors ? colorCounts.length : 5)
+              .map(({ color, count }) => (
+                <li key={color}>
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleColorSelect(color);
+                    }}
+                  >
+                    <span
+                      style={{
+                        backgroundColor: color,
+                        width: "20px",
+                        height: "20px",
+                        display: "inline-block",
+                        borderRadius: "50%",
+                      }}
+                    ></span>
+                    <span className="color-count">{` (${count})`}</span>
+                  </a>
+                </li>
+              ))}
           </ul>
+          {!showAllColors && colorCounts.length > 5 && (
+            <button
+              className="btn btn-link"
+              onClick={() => setShowAllColors(true)}
+            >
+              Show More
+            </button>
+          )}
+          {showAllColors && (
+            <button
+              className="btn btn-link"
+              onClick={() => setShowAllColors(false)}
+            >
+              Show Less
+            </button>
+          )}
         </div>
-      </div>
+      </div> */}
 
-      <div className="widget size mb-50">
-        <h6 className="widget-title mb-30">Filter by Size</h6>
-        <div className="widget-desc">
-          <ul className="d-flex justify-content-between">
-            <li>
-              <a href="#">XS</a>
-            </li>
-            <li>
-              <a href="#">S</a>
-            </li>
-            <li>
-              <a href="#">M</a>
-            </li>
-            <li>
-              <a href="#">L</a>
-            </li>
-            <li>
-              <a href="#">XL</a>
-            </li>
-            <li>
-              <a href="#">XXL</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="widget recommended">
+      {/* <div className="widget recommended">
         <h6 className="widget-title mb-30">Recommended</h6>
         <div className="widget-desc">
-          {/* Recommended Products */}
           {["product-10", "product-11", "product-12"].map((product, index) => (
             <div
               className="single-recommended-product d-flex mb-30"
@@ -177,10 +225,10 @@ const Sidebar = ({ onCategorySelect }) => {
               <div className="single-recommended-desc">
                 <h6>
                   {product === "product-10"
-                    ? "Men’s T-shirt"
+                    ? "Men's T-shirt"
                     : product === "product-11"
                     ? "Blue mini top"
-                    : "Women’s T-shirt"}
+                    : "Women's T-shirt"}
                 </h6>
                 <p>
                   ${" "}
@@ -194,7 +242,7 @@ const Sidebar = ({ onCategorySelect }) => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

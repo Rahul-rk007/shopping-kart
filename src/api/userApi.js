@@ -23,15 +23,18 @@ export const signupUser = async (userData) => {
 };
 
 export const getUser = () => {
-  const token = localStorage.getItem("token"); // Ensure you're getting the token from local storage
-  if (!token) {
-    return null; // Return null if no token is found
+  const jwt = localStorage.getItem("token");
+
+  // Check if the token exists and is a valid string
+  if (!jwt) {
+    return null; // or throw an error, or return an empty object, depending on your needs
   }
+
   try {
-    return jwtDecode(token); // Decode the token
+    return jwtDecode(jwt);
   } catch (error) {
-    console.error("Error decoding token:", error);
-    return null; // Return null if there's an error decoding the token
+    console.error("Failed to decode JWT:", error);
+    return null; // Return null if decoding fails
   }
 };
 

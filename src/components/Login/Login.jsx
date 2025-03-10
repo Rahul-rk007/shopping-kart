@@ -1,7 +1,7 @@
 import React from "react";
 import "./Login.css";
 import Layout from "../Layout/Layout";
-import { Link, useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
 import { loginUser } from "../../api/userApi"; // Import the loginUser  function
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,7 +23,7 @@ const schema = z.object({
 });
 
 const Login = ({ setUser }) => {
-  // Accept setUser  as a prop
+  const location = useLocation();
   const navigate = useNavigate(); // Use useNavigate for navigation
   const {
     register,
@@ -45,13 +45,18 @@ const Login = ({ setUser }) => {
 
       const jwtUser = getUser(); // Get user from token
       setUser(jwtUser); // Update user state in App
-      navigate("/"); // Redirect to the desired page after successful login
+      const { state } = location;
+      window.location = state ? state.form : "/";
     } catch (err) {
       // Handle error (e.g., display error message)
       console.error(err);
       toast.error("Login failed. Please check your credentials."); // Show error toast message
     }
   };
+
+  if (getUser()) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <Layout>

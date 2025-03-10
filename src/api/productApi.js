@@ -1,10 +1,26 @@
 import apiClient from "./apiClient";
 
-export const productList = async (limit = 9, offset = 0, subcategoryId) => {
+export const productList = async (
+  limit = 9,
+  offset = 0,
+  subcategoryId,
+  priceRange = [0, 3000], // Default price range
+  color // Single color instead of an array
+) => {
   try {
-    const response = await apiClient.get("/product", {
-      params: { limit, offset, subcategoryId }, // Pass limit and offset as query parameters
-    });
+    const params = {
+      limit,
+      offset,
+      subcategoryId,
+      ...(priceRange &&
+        priceRange.length === 2 && {
+          minPrice: priceRange[0],
+          maxPrice: priceRange[1],
+        }),
+      ...(color && { color }), // Only include color if it is provided
+    };
+
+    const response = await apiClient.get("/product", { params });
     return response.data; // Return the response data
   } catch (error) {
     throw error.response?.data || "Something went wrong!."; // Handle errors
@@ -47,5 +63,25 @@ export const fetchCategoriesWithSubcategories = async () => {
     return response.data; // Return the response data
   } catch (error) {
     throw error.response?.data || "Something went wrong!";
+  }
+};
+
+export const fetchColorCounts = async ({
+  subcategoryId,
+  minPrice,
+  maxPrice,
+}) => {
+  try {
+    const response = await apiClient.get(`/product/colors`, {
+      params: {
+        subcategoryId,
+        minPrice,
+        maxPrice,
+      },
+    });
+    return response.data; // Return the data from the response
+  } catch (error) {
+    console.error("Error fetching color counts:", error);
+    throw error; // Rethrow the error for further handling if needed
   }
 };

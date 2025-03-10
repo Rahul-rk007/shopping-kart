@@ -16,7 +16,7 @@ import Address from "../MyAccount/Address/Address";
 import ChangePassword from "../MyAccount/ChangePassword/ChangePassword";
 import OrderDetails from "../MyAccount/OrderDetails/OrderDetails";
 import Logout from "../Logout/Logout";
-import PrivateRoute from "../PrivateRoute";
+import PrivateRoute from "./PrivateRoute";
 
 const Routing = ({ setUser }) => {
   // Accept setUser  as a prop
@@ -25,38 +25,22 @@ const Routing = ({ setUser }) => {
       <Route path="/" element={<Home />} />
       <Route path="/products" element={<Shop />} />
       <Route path="/product/:id" element={<ProductDetails />} />
-      <Route path="/cart" element={<Cart />} />
-      <Route path="/checkout" element={<Checkout />} />
       <Route path="/aboutus" element={<Aboutus />} />
       <Route path="/contactus" element={<Contactus />} />
-      <Route path="/login" element={<Login setUser={setUser} />} />{" "}
-      {/* Pass setUser  to Login */}
+      <Route path="/login" element={<Login setUser={setUser} />} />
       <Route path="/signup" element={<Signup />} />
-      <Route
-        path="/myaccount/myorders"
-        element={<PrivateRoute element={<MyOrders />} />}
-      />
-      <Route
-        path="/myaccount/profile"
-        element={<PrivateRoute element={<Profile />} />}
-      />
-      <Route
-        path="/myaccount/wishlist"
-        element={<PrivateRoute element={<Wishlist />} />}
-      />
-      <Route
-        path="/myaccount/address"
-        element={<PrivateRoute element={<Address />} />}
-      />
-      <Route
-        path="/myaccount/changepassword"
-        element={<PrivateRoute element={<ChangePassword />} />}
-      />
-      <Route
-        path="/myaccount/orderdetails"
-        element={<PrivateRoute element={<OrderDetails />} />}
-      />
-      <Route path="/logout" element={<Logout />} />
+      {/* Pass setUser  to Login */}
+      <Route element={<PrivateRoute />}>
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/myaccount/myorders" element={<MyOrders />} />
+        <Route path="/myaccount/profile" element={<Profile />} />
+        <Route path="/myaccount/wishlist" element={<Wishlist />} />
+        <Route path="/myaccount/address" element={<Address />} />
+        <Route path="/myaccount/changepassword" element={<ChangePassword />} />
+        <Route path="/myaccount/orderdetails" element={<OrderDetails />} />
+        <Route path="/logout" element={<Logout />} />
+      </Route>
     </Routes>
   );
 };

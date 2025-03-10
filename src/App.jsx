@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "./App.css";
 import Routes from "./components/Routes/Routing";
 import { getJwt, getUser } from "./api/userApi";
 import UserContext from "./context/UserContext";
 import setAuthToken from "./api/setAuthToken";
-import Login from "./components/Login/Login"; // Import Login component
+import CartContext from "./context/CartContext";
+import {
+  addToCartAPI,
+  getCartApi,
+  removeFromCartApi,
+} from "../src/api/cartApi"; // Adjust the import path as necessary
 
 setAuthToken(getJwt());
 
 function App() {
   const [user, setUser] = useState(null);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     const jwtUser = getUser(); // Call the getUser  function
@@ -22,12 +28,98 @@ function App() {
     }
   }, []);
 
+  const addToCart = (product, quantity) => {
+    const updatedCart = [...cart];
+    const productIndex = updatedCart.findIndex(
+      (item) => item.product._id === product._id
+    );
+
+    if (productIndex === -1) {
+      updatedCart.push({ product, quantity });
+    } else {
+      updatedCart[productIndex].quantity += quantity;
+    }
+
+    setCart(updatedCart);
+    addToCartAPI(product._id, quantity)
+      .then((res) => {
+        toast.success(res.data.message);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message || "Error adding to cart");
+        setCart(cart); // Revert to previous cart state
+      });
+  };
+
+  const removeFromCart = (id) => {
+    const oldCart = [...cart];
+    const newCart = oldCart.filter((item) => item.product._id !== id);
+    setCart(newCart);
+
+    removeFromCartApi(id)
+      .then((res) => {
+        toast.success(res.data.message);
+      })
+      .catch((err) => {
+        setCart(oldCart); // Revert to previous cart state
+        toast.error("Something went wrong!");
+      });
+  };
+
+  const updateCart = (type, id) => {
+    const oldCart = [...cart];
+    const updatedCart = [...cart];
+    const productIndex = updatedCart.findIndex(
+      (item) => item.product._id === id
+    );
+
+    if (type === "increase") {
+      updatedCart[productIndex].quantity += 1;
+      setCart(updatedCart);
+      increaseCartApi(id).catch((err) => {
+        toast.error("Something went wrong!");
+        setCart(oldCart); // Revert to previous cart state
+      });
+    } else if (type === "decrease") {
+      if (updatedCart[productIndex].quantity > 1) {
+        updatedCart[productIndex].quantity -= 1;
+        setCart(updatedCart);
+        decreaseCartApi(id).catch((err) => {
+          toast.error("Something went wrong!");
+          setCart(oldCart); // Revert to previous cart state
+        });
+      } else {
+        removeFromCart(id); // Remove item if quantity is 1
+      }
+    }
+  };
+
+  const getCart = () => {
+    getCartApi()
+      .then((res) => {
+        setCart(res.data);
+      })
+      .catch((err) => {
+        toast.error("Something went wrong!");
+      });
+  };
+
+  useEffect(() => {
+    if (user) {
+      getCart(); // Fetch cart when user is authenticated
+    }
+  }, [user]);
+
   return (
     <UserContext.Provider value={user}>
-      <ToastContainer />
-      <main>
-        <Routes setUser={setUser} /> {/* Pass setUser  to Routes */}
-      </main>
+      <CartContext.Provider
+        value={{ cart, addToCart, removeFromCart, updateCart }}
+      >
+        <ToastContainer />
+        <main>
+          <Routes setUser={setUser} />
+        </main>
+      </CartContext.Provider>
     </UserContext.Provider>
   );
 }
