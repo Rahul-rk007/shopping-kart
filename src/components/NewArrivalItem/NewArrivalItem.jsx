@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
+import CartContext from "../../context/CartContext";
 
 const NewArrivalItem = ({ product, onQuickView }) => {
+  const { addToCart } = useContext(CartContext);
   return (
     <div
       className={`col-12 col-sm-6 col-md-4 single_gallery_item ${product.category} wow fadeInUpBig`}
@@ -17,9 +19,12 @@ const NewArrivalItem = ({ product, onQuickView }) => {
       <div className="product-description">
         <h4 className="product-price">${product.Price}</h4>
         <p>{product.Description}</p>
-        <a href="#" className="add-to-cart-btn">
+        <button
+          className="add-to-cart-btn"
+          onClick={() => addToCart(product, 1)}
+        >
           ADD TO CART
-        </a>
+        </button>
       </div>
     </div>
   );
