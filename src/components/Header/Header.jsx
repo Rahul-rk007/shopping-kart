@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 
 import "./Header.css";
 import LOGO from "../../assets/core-img/logo.png";
-import product10 from "../../assets/product-img/product-10.jpg";
-import product11 from "../../assets/product-img/product-11.jpg";
 import { NavLink } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import CartContext from "../../context/CartContext";

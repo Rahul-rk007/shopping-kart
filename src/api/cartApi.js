@@ -9,11 +9,14 @@ export function getCartApi() {
 }
 
 export function removeFromCartApi(id) {
-  return apiClient.delete(`/cart/${id}`);
+  return apiClient.delete(`/cart/remove/${id}`);
 }
 export function increaseCartApi(id) {
   return apiClient.patch(`/cart/increase/${id}`);
 }
 export function descreaseCartApi(id) {
   return apiClient.patch(`/cart/decrease/${id}`);
+}
+export function clearCartApi() {
+  return apiClient.delete("/cart/clear"); // Call the clear cart endpoint
 }

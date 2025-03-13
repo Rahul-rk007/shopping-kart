@@ -1,16 +1,13 @@
 import React, { useContext, useEffect } from "react";
 import "./Cart.css";
 import Layout from "../Layout/Layout";
-import Product9 from "../../assets/product-img/product-9.jpg";
 import CartContext from "../../context/CartContext";
 import { NavLink } from "react-router-dom";
+import { clearCartApi } from "../../api/cartApi";
+import { toast } from "react-toastify";
 
 const Cart = () => {
-  const { cart, removeFromCart, updateCart, getCart } = useContext(CartContext);
-
-  useEffect(() => {
-    getCart(); // Fetch cart data when the component mounts
-  }, [getCart]);
+  const { cart, removeFromCart, updateCart, setCart } = useContext(CartContext);
 
   const handleQuantityChange = (operation, productId) => {
     if (operation === "minus") {
@@ -18,6 +15,17 @@ const Cart = () => {
     } else if (operation === "plus") {
       updateCart("increase", productId);
     }
+  };
+
+  const clearCart = () => {
+    clearCartApi()
+      .then((res) => {
+        setCart([]); // Clear the cart state in context
+        toast.success(res.data.message);
+      })
+      .catch((err) => {
+        toast.error("Failed to clear cart. Please try again.");
+      });
   };
   return (
     <Layout>
@@ -91,7 +99,7 @@ const Cart = () => {
                           </td>
                           <td className="action">
                             <button
-                              className="btn"
+                              className="btn btn-outline-danger"
                               onClick={() => removeFromCart(item.product._id)}
                             >
                               Remove
@@ -102,7 +110,7 @@ const Cart = () => {
                     ) : (
                       <tr>
                         <td colSpan="5" className="text-center">
-                          Your cart is empty.
+                          <h6>Your cart is empty.</h6>
                         </td>
                       </tr>
                     )}
@@ -115,7 +123,9 @@ const Cart = () => {
                   <NavLink to="/products">Continue shopping</NavLink>
                 </div>
                 <div className="update-checkout w-50 text-right">
-                  <a href="#">Clear cart</a>
+                  <button className="" onClick={clearCart}>
+                    Empty cart
+                  </button>
                 </div>
               </div>
             </div>

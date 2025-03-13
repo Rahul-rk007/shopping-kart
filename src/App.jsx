@@ -56,7 +56,10 @@ function App() {
 
   const removeFromCart = (id) => {
     const oldCart = [...cart.products];
+    console.log("old=>", oldCart);
     const newCart = oldCart.filter((item) => item.product._id !== id);
+    console.log("new=>", newCart);
+
     setCart(newCart);
 
     removeFromCartApi(id)
@@ -116,7 +119,7 @@ function App() {
   return (
     <UserContext.Provider value={user}>
       <CartContext.Provider
-        value={{ cart, addToCart, removeFromCart, updateCart, getCart }}
+        value={{ cart, addToCart, removeFromCart, updateCart, setCart }}
       >
         <ToastContainer />
         <main>
