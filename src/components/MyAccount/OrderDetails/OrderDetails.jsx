@@ -74,20 +74,20 @@ const OrderDetails = () => {
                             Pixelstore fresh Blackberry
                           </td>
                           <td>x 02</td>
-                          <td>$720.00</td>
+                          <td>Rs. 720.00</td>
                         </tr>
                       ))}
                     <tr>
                       <td colSpan="2" className="orderdetails-text-right">
                         SUBTOTAL
                       </td>
-                      <td>$2160.00</td>
+                      <td>Rs. 2160.00</td>
                     </tr>
                     <tr>
                       <td colSpan="2" className="orderdetails-text-right">
                         SHIPPING
                       </td>
-                      <td> $50.00</td>
+                      <td> Rs. 50.00</td>
                     </tr>
                     <tr>
                       <td
@@ -97,7 +97,7 @@ const OrderDetails = () => {
                         TOTAL
                       </td>
                       <td className="orderdetails-font-weight-bold">
-                        $2210.00
+                      Rs. 2210.00
                       </td>
                     </tr>
                   </tbody>

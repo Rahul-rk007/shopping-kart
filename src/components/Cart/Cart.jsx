@@ -55,7 +55,7 @@ const Cart = () => {
                             <h6>{item.productName}</h6>
                           </td>
                           <td className="price">
-                            <span>${item.price}</span>
+                            <span>Rs. {item.price}</span>
                           </td>
                           <td className="qty">
                             <div className="quantity">
@@ -94,7 +94,7 @@ const Cart = () => {
                           </td>
                           <td className="total_price">
                             <span>
-                              ${(item.price * item.quantity).toFixed(2)}
+                            Rs. {(item.price * item.quantity).toFixed(2)}
                             </span>
                           </td>
                           <td className="action">
@@ -165,7 +165,7 @@ const Cart = () => {
                     htmlFor="customRadio1"
                   >
                     <span>Next day delivery</span>
-                    <span>$4.99</span>
+                    <span>Rs. 4.99</span>
                   </label>
                 </div>
 
@@ -181,7 +181,7 @@ const Cart = () => {
                     htmlFor="customRadio2"
                   >
                     <span>Standard delivery</span>
-                    <span>$1.99</span>
+                    <span>Rs. 1.99</span>
                   </label>
                 </div>
 
@@ -211,7 +211,7 @@ const Cart = () => {
 
                 <ul className="cart-total-chart">
                   <li>
-                    <span>Subtotal</span> <span>$59.90</span>
+                    <span>Subtotal</span> <span>Rs. 59.90</span>
                   </li>
                   <li>
                     <span>Shipping</span> <span>Free</span>
@@ -221,7 +221,7 @@ const Cart = () => {
                       <strong>Total</strong>
                     </span>{" "}
                     <span>
-                      <strong>$59.90</strong>
+                      <strong>Rs. 59.90</strong>
                     </span>
                   </li>
                 </ul>

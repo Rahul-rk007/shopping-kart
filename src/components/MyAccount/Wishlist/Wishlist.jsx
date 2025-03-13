@@ -42,7 +42,7 @@ const Wishlist = () => {
                               </span>
                             </div>
                             <div className="wishlist-price wishlist-price wishlist-product-details">
-                              $400.00 <span>$900.00</span>
+                            Rs. 400.00 <span>Rs. 900.00</span>
                             </div>
                           </td>
                           <td className="col-md-2">
@@ -78,7 +78,7 @@ const Wishlist = () => {
                               </span>
                             </div>
                             <div className="wishlist-price  wishlist-price wishlist-product-details">
-                              $450.00 <span>$900.00</span>
+                            Rs. 450.00 <span>Rs. 900.00</span>
                             </div>
                           </td>
                           <td className="col-md-2">

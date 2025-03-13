@@ -147,7 +147,7 @@ const ProductDetails = () => {
                 <h4 className="title">
                   <a href="#">{product.ProductName}</a>
                 </h4>
-                <h4 className="price">${product.Price}</h4>
+                <h4 className="price">Rs. {product.Price}</h4>
                 <p className="available">
                   Available: <span className="text-muted">In Stock</span>
                 </p>

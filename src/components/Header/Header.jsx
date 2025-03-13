@@ -127,7 +127,7 @@ const Header = ({ onToggleMenu }) => {
                       onClick={handleCartClick}
                     >
                       <span className="cart_quantity">{itemCount}</span>
-                      <i className="ti-bag"></i> Your Bag ${formattedPrice}
+                      <i className="ti-bag"></i> Your Bag Rs. {formattedPrice}
                     </NavLink>
 
                     {showCart && (
@@ -162,7 +162,7 @@ const Header = ({ onToggleMenu }) => {
                                   <p>
                                     {item.quantity} x{" "}
                                     <span className="price">
-                                      ${price.toFixed(2) || "0.00"}{" "}
+                                    Rs. {price.toFixed(2) || "0.00"}{" "}
                                       {/* Fallback price */}
                                     </span>
                                   </p>
@@ -185,7 +185,7 @@ const Header = ({ onToggleMenu }) => {
                             Checkout
                           </NavLink>
                           <span className="pull-right">
-                            Total: ${totalPrice.toFixed(2)}
+                            Total: Rs. {totalPrice.toFixed(2)}
                           </span>
                         </li>
                       </ul>

@@ -12,7 +12,7 @@ const ProductItem = ({ product, onQuickView }) => {
         </div>
       </div>
       <div className="product-description">
-        <h4 className="product-price">${product.price}</h4>
+        <h4 className="product-price">Rs. {product.price}</h4>
         <p>{product.description}</p>
         <a href="#" className="add-to-cart-btn">
           ADD TO CART

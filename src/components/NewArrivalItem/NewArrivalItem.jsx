@@ -17,7 +17,7 @@ const NewArrivalItem = ({ product, onQuickView }) => {
         </div>
       </div>
       <div className="product-description">
-        <h4 className="product-price">${product.Price}</h4>
+        <h4 className="product-price">Rs. {product.Price}</h4>
         <p>{product.Description}</p>
         <button
           className="add-to-cart-btn"

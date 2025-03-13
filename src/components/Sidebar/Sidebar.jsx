@@ -157,7 +157,7 @@ const Sidebar = ({
               <div className="price-range-selected" ref={trackRef}></div>
             </div>
             <div className="range-price">
-              Price: ${minPrice} - ${maxPrice}
+              Price: Rs. {minPrice} - Rs. {maxPrice}
             </div>
           </div>
         </div>

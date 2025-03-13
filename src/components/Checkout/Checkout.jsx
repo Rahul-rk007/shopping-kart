@@ -106,16 +106,16 @@ const Checkout = () => {
                     <span>Product</span> <span>Total</span>
                   </li>
                   <li>
-                    <span>Cocktail Yellow dress</span> <span>$59.90</span>
+                    <span>Cocktail Yellow dress</span> <span>Rs. 59.90</span>
                   </li>
                   <li>
-                    <span>Subtotal</span> <span>$59.90</span>
+                    <span>Subtotal</span> <span>Rs. 59.90</span>
                   </li>
                   <li>
                     <span>Shipping</span> <span>Free</span>
                   </li>
                   <li>
-                    <span>Total</span> <span>$59.90</span>
+                    <span>Total</span> <span>Rs. 59.90</span>
                   </li>
                 </ul>
 

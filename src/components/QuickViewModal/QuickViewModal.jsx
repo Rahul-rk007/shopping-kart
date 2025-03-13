@@ -86,7 +86,7 @@ const QuickViewModal = ({ isOpen, onClose, product }) => {
                         ))}
                       </div>
                       <h5 className="price">
-                        ${product.Price} <span>${product.originalPrice}</span>
+                      Rs. {product.Price} <span>Rs. {product.originalPrice}</span>
                       </h5>
                       <p>{product.Description}</p>
                       <a href={`/product/${product._id}`}>

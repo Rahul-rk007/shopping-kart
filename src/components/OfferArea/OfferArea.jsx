@@ -19,10 +19,10 @@ const OfferArea = () => {
               <h2>
                 White t-shirt <span className="karl-level">Hot</span>
               </h2>
-              <p>* Free shipping until 25 Dec 2017</p>
+              <p>* Free shipping until 25 May 2025</p>
               <div className="offer-product-price">
                 <h3>
-                  <span className="regular-price">$25.90</span> $15.90
+                  <span className="regular-price">Rs. 250.00</span> Rs. 200.00
                 </h3>
               </div>
               <a href="#" className="btn karl-btn mt-30">

@@ -62,7 +62,7 @@ const MyOrders = () => {
                 {order.status}
               </div>
               <div className="myorder-details-part3 col-md-1">
-                ${order.amount}
+              Rs. {order.amount}
               </div>
               <div className="col-md-1">
                 <button className="btn myorder-arrow-btn">
