@@ -1,17 +1,31 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import "./Cart.css";
 import Layout from "../Layout/Layout";
-import Product9 from "../../assets/product-img/product-9.jpg";
+import CartContext from "../../context/CartContext";
+import { NavLink } from "react-router-dom";
+import { clearCartApi } from "../../api/cartApi";
+import { toast } from "react-toastify";
 
 const Cart = () => {
-  const handleQuantityChange = (operation) => {
-    const qtyInput = document.getElementById("qty");
-    let qty = parseInt(qtyInput.value, 10);
-    if (operation === "minus" && qty > 1) {
-      qtyInput.value = qty - 1;
+  const { cart, removeFromCart, updateCart, setCart } = useContext(CartContext);
+
+  const handleQuantityChange = (operation, productId) => {
+    if (operation === "minus") {
+      updateCart("decrease", productId);
     } else if (operation === "plus") {
-      qtyInput.value = qty + 1;
+      updateCart("increase", productId);
     }
+  };
+
+  const clearCart = () => {
+    clearCartApi()
+      .then((res) => {
+        setCart([]); // Clear the cart state in context
+        toast.success(res.data.message);
+      })
+      .catch((err) => {
+        toast.error("Failed to clear cart. Please try again.");
+      });
   };
   return (
     <Layout>
@@ -27,60 +41,91 @@ const Cart = () => {
                       <th>Price</th>
                       <th>Quantity</th>
                       <th>Total</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td className="cart_product_img d-flex align-items-center">
-                        <a href="#">
-                          <img src={Product9} alt="Product" />
-                        </a>
-                        <h6>Yellow Cocktail Dress</h6>
-                      </td>
-                      <td className="price">
-                        <span>$49.88</span>
-                      </td>
-                      <td className="qty">
-                        <div className="quantity">
-                          <span
-                            className="qty-minus"
-                            onClick={() => handleQuantityChange("minus")}
-                          >
-                            <i className="fa fa-minus" aria-hidden="true"></i>
-                          </span>
-                          <input
-                            type="number"
-                            className="qty-text"
-                            id="qty"
-                            step="1"
-                            min="1"
-                            max="99"
-                            name="quantity"
-                            defaultValue="1"
-                          />
-                          <span
-                            className="qty-plus"
-                            onClick={() => handleQuantityChange("plus")}
-                          >
-                            <i className="fa fa-plus" aria-hidden="true"></i>
-                          </span>
-                        </div>
-                      </td>
-                      <td className="total_price">
-                        <span>$49.88</span>
-                      </td>
-                    </tr>
+                    {cart.products && cart.products.length > 0 ? (
+                      cart.products.map((item) => (
+                        <tr key={item._id}>
+                          <td className="cart_product_img d-flex align-items-center">
+                            <a href="#">
+                              <img src={item.image} alt="Product" />
+                            </a>
+                            <h6>{item.productName}</h6>
+                          </td>
+                          <td className="price">
+                            <span>${item.price}</span>
+                          </td>
+                          <td className="qty">
+                            <div className="quantity">
+                              <span
+                                className="qty-minus"
+                                onClick={() =>
+                                  handleQuantityChange(
+                                    "minus",
+                                    item.product._id
+                                  )
+                                }
+                              >
+                                <i
+                                  className="fa fa-minus"
+                                  aria-hidden="true"
+                                ></i>
+                              </span>
+                              <input
+                                type="number"
+                                className="qty-text"
+                                value={item.quantity}
+                                readOnly
+                              />
+                              <span
+                                className="qty-plus"
+                                onClick={() =>
+                                  handleQuantityChange("plus", item.product._id)
+                                }
+                              >
+                                <i
+                                  className="fa fa-plus"
+                                  aria-hidden="true"
+                                ></i>
+                              </span>
+                            </div>
+                          </td>
+                          <td className="total_price">
+                            <span>
+                              ${(item.price * item.quantity).toFixed(2)}
+                            </span>
+                          </td>
+                          <td className="action">
+                            <button
+                              className="btn btn-outline-danger"
+                              onClick={() => removeFromCart(item.product._id)}
+                            >
+                              Remove
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="5" className="text-center">
+                          <h6>Your cart is empty.</h6>
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
 
               <div className="cart-footer d-flex mt-30">
                 <div className="back-to-shop w-50">
-                  <a href="shop-grid-left-sidebar.html">Continue shopping</a>
+                  <NavLink to="/products">Continue shopping</NavLink>
                 </div>
                 <div className="update-checkout w-50 text-right">
-                  <a href="#">Clear cart</a>
-                  <a href="#">Update cart</a>
+                  <button className="" onClick={clearCart}>
+                    Empty cart
+                  </button>
                 </div>
               </div>
             </div>
@@ -95,7 +140,9 @@ const Cart = () => {
                 </div>
                 <form action="#">
                   <input type="search" name="search" placeholder="#569ab15" />
-                  <button className="btn-red" type="submit">Apply</button>
+                  <button className="btn-red" type="submit">
+                    Apply
+                  </button>
                 </form>
               </div>
             </div>
@@ -178,7 +225,10 @@ const Cart = () => {
                     </span>
                   </li>
                 </ul>
-                <a href="checkout.html" className="btn karl-checkout-btn btn-red">
+                <a
+                  href="checkout.html"
+                  className="btn karl-checkout-btn btn-red"
+                >
                   Proceed to checkout
                 </a>
               </div>

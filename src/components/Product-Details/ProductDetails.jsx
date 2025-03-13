@@ -7,7 +7,7 @@ import Product3 from "../../assets/product-img/product-3.jpg";
 import Product4 from "../../assets/product-img/product-4.jpg";
 import Product1 from "../../assets/product-img/product-1.jpg";
 import Product5 from "../../assets/product-img/product-5.jpg";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getProductDetails } from "../../api/productApi";
 import CartContext from "../../context/CartContext";
 import UserContext from "../../context/UserContext";
@@ -19,6 +19,7 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useContext(CartContext); // Access addToCart from CartContext
   const user = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleQuantityChange = (change) => {
     setQuantity((prev) => {
@@ -48,6 +49,21 @@ const ProductDetails = () => {
 
     fetchProductDetails();
   }, [id]); // Fetch product details when the component mounts or when the ID changes
+
+  const handleAddToCart = (e) => {
+    e.preventDefault(); // Prevent the default form submission
+    if (user) {
+      console.log("detail", product);
+
+      addToCart(product, quantity); // Call addToCart with the product and quantity
+    } else {
+      localStorage.setItem(
+        "redirectAfterLogin",
+        JSON.stringify({ product, quantity })
+      ); // Store product and quantity
+      navigate("/login"); // Redirect to login page
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>; // Show loading state
@@ -94,66 +110,33 @@ const ProductDetails = () => {
                   data-ride="carousel"
                 >
                   <ol className="carousel-indicators">
-                    <li
-                      className="active"
-                      data-target="#product_details_slider"
-                      data-slide-to="0"
-                      style={{ backgroundImage: `url(${Product1})` }}
-                    ></li>
-                    <li
-                      data-target="#product_details_slider"
-                      data-slide-to="1"
-                      style={{ backgroundImage: `url(${Product2})` }}
-                    ></li>
-                    <li
-                      data-target="#product_details_slider"
-                      data-slide-to="2"
-                      style={{ backgroundImage: `url(${Product3})` }}
-                    ></li>
-                    <li
-                      data-target="#product_details_slider"
-                      data-slide-to="3"
-                      style={{ backgroundImage: `url(${Product4})` }}
-                    ></li>
+                    {product.ImageURLs.map((image, index) => (
+                      <li
+                        key={index}
+                        data-target="#product_details_slider"
+                        data-slide-to={index}
+                        style={{ backgroundImage: `url(${image})` }}
+                      ></li>
+                    ))}
                   </ol>
 
                   <div className="carousel-inner">
-                    <div className="carousel-item active">
-                      <a className="gallery_img" href={Product1}>
-                        <img
-                          className="d-block w-100"
-                          src={Product1}
-                          alt="First slide"
-                        />
-                      </a>
-                    </div>
-                    <div className="carousel-item">
-                      <a className="gallery_img" href={Product2}>
-                        <img
-                          className="d-block w-100"
-                          src={Product2}
-                          alt="Second slide"
-                        />
-                      </a>
-                    </div>
-                    <div className="carousel-item">
-                      <a className="gallery_img" href={Product3}>
-                        <img
-                          className="d-block w-100"
-                          src={Product3}
-                          alt="Third slide"
-                        />
-                      </a>
-                    </div>
-                    <div className="carousel-item">
-                      <a className="gallery_img" href={Product4}>
-                        <img
-                          className="d-block w-100"
-                          src={Product4}
-                          alt="Fourth slide"
-                        />
-                      </a>
-                    </div>
+                    {product.ImageURLs.map((image, index) => (
+                      <div
+                        className={`carousel-item ${
+                          index === 0 ? "active" : ""
+                        }`}
+                        key={index}
+                      >
+                        <a className="gallery_img" href={image}>
+                          <img
+                            className="d-block w-100"
+                            src={image}
+                            alt={`Slide ${index + 1}`}
+                          />
+                        </a>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -177,7 +160,7 @@ const ProductDetails = () => {
                   <i className="fa fa-star-o" aria-hidden="true"></i>
                 </div>
 
-                <div className="widget size mb-50">
+                {/* <div className="widget size mb-50">
                   <h6 className="widget-title">Size</h6>
                   <div className="widget-desc">
                     <ul>
@@ -188,9 +171,13 @@ const ProductDetails = () => {
                       ))}
                     </ul>
                   </div>
-                </div>
+                </div> */}
 
-                <form className="cart clearfix mb-50 d-flex" method="post">
+                <form
+                  className="cart clearfix mb-50 d-flex"
+                  onSubmit={handleAddToCart}
+                  method="post"
+                >
                   <div className="quantity">
                     <span
                       className="qty-minus"
@@ -346,123 +333,6 @@ const ProductDetails = () => {
           </div>
         </div>
       </section>
-
-      {/* <section className="you_may_like_area clearfix">
-        <div className="container">
-          <div className="row">
-            <div className="col-12">
-              <div className="section_heading text-center">
-                <h2>related Products</h2>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-12">
-              <div className="you_make_like_slider owl-carousel">
-                <div className="single_gallery_item">
-                  <div className="product-img">
-                    <img src={Product1} alt="" />
-                    <div className="product-quicview">
-                      <a href="#" data-toggle="modal" data-target="#quickview">
-                        <i className="ti-plus"></i>
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="product-description">
-                    <h4 className="product-price">$39.90</h4>
-                    <p>Jeans midi cocktail dress</p>
-
-                    <a href="#" className="add-to-cart-btn">
-                      ADD TO CART
-                    </a>
-                  </div>
-                </div>
-
-                <div className="single_gallery_item">
-                  <div className="product-img">
-                    <img src={Product2} alt="" />
-                    <div className="product-quicview">
-                      <a href="#" data-toggle="modal" data-target="#quickview">
-                        <i className="ti-plus"></i>
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="product-description">
-                    <h4 className="product-price">$39.90</h4>
-                    <p>Jeans midi cocktail dress</p>
-
-                    <a href="#" className="add-to-cart-btn">
-                      ADD TO CART
-                    </a>
-                  </div>
-                </div>
-
-                <div className="single_gallery_item">
-                  <div className="product-img">
-                    <img src={Product3} alt="" />
-                    <div className="product-quicview">
-                      <a href="#" data-toggle="modal" data-target="#quickview">
-                        <i className="ti-plus"></i>
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="product-description">
-                    <h4 className="product-price">$39.90</h4>
-                    <p>Jeans midi cocktail dress</p>
-
-                    <a href="#" className="add-to-cart-btn">
-                      ADD TO CART
-                    </a>
-                  </div>
-                </div>
-
-                <div className="single_gallery_item">
-                  <div className="product-img">
-                    <img src={Product4} alt="" />
-                    <div className="product-quicview">
-                      <a href="#" data-toggle="modal" data-target="#quickview">
-                        <i className="ti-plus"></i>
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="product-description">
-                    <h4 className="product-price">$39.90</h4>
-                    <p>Jeans midi cocktail dress</p>
-
-                    <a href="#" className="add-to-cart-btn">
-                      ADD TO CART
-                    </a>
-                  </div>
-                </div>
-
-                <div className="single_gallery_item">
-                  <div className="product-img">
-                    <img src={Product5} alt="" />
-                    <div className="product-quicview">
-                      <a href="#" data-toggle="modal" data-target="#quickview">
-                        <i className="ti-plus"></i>
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="product-description">
-                    <h4 className="product-price">$39.90</h4>
-                    <p>Jeans midi cocktail dress</p>
-
-                    <a href="#" className="add-to-cart-btn">
-                      ADD TO CART
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
     </Layout>
   );
 };

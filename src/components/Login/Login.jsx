@@ -9,6 +9,7 @@ import { z } from "zod";
 import { toast } from "react-toastify"; // Import toast
 import setAuthToken from "../../api/setAuthToken"; // Import setAuthToken
 import { getUser } from "../../api/userApi"; // Import getUser
+import { addToCartAPI } from "../../api/cartApi";
 
 // Define the validation schema using Zod
 const schema = z.object({
@@ -45,6 +46,25 @@ const Login = ({ setUser }) => {
 
       const jwtUser = getUser(); // Get user from token
       setUser(jwtUser); // Update user state in App
+
+      // Check for stored product data
+      const storedData = localStorage.getItem("redirectAfterLogin");
+      if (storedData) {
+        console.log("here login");
+
+        const { product, quantity } = JSON.parse(storedData);
+        // Add the product to the cart
+        await addToCartAPI(product._id, quantity)
+          .then((res) => {
+            toast.success(res.data.message);
+            localStorage.removeItem("redirectAfterLogin"); // Clear stored data
+          })
+          .catch((err) => {
+            toast.error(err.response.data.message || "Error adding to cart");
+            setCart(cart); // Revert to previous cart state
+          }); // Ensure addToCart is accessible here
+      }
+
       const { state } = location;
       window.location = state ? state.form : "/";
     } catch (err) {

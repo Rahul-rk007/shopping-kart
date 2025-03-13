@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 
 import "./Header.css";
 import LOGO from "../../assets/core-img/logo.jpeg";
-import product10 from "../../assets/product-img/product-10.jpg";
-import product11 from "../../assets/product-img/product-11.jpg";
 import { NavLink } from "react-router-dom";
 import UserContext from "../../context/UserContext";
+import CartContext from "../../context/CartContext";
 
 const Header = ({ onToggleMenu }) => {
   const user = useContext(UserContext);
+  const { cart } = useContext(CartContext);
   const [showCart, setShowCart] = useState(false);
   const cartRef = useRef(null);
 
@@ -36,6 +36,11 @@ const Header = ({ onToggleMenu }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const totalPrice = cart?.cartTotal || 0; // Default to 0 if cartTotal is undefined
+  const formattedPrice = totalPrice.toFixed(2);
+  const itemCount = Array.isArray(cart?.products) ? cart.products.length : 0; // Check if products is an array
+
   return (
     <header className="header_area">
       <div className="main_header_area">
@@ -121,52 +126,54 @@ const Header = ({ onToggleMenu }) => {
                       id="header-cart-btn"
                       onClick={handleCartClick}
                     >
-                      <span className="cart_quantity">2</span>
-                      <i className="ti-bag"></i> Your Bag $20
+                      <span className="cart_quantity">{itemCount}</span>
+                      <i className="ti-bag"></i> Your Bag ${formattedPrice}
                     </NavLink>
 
                     {showCart && (
                       <ul className="cart-list">
-                        <li>
-                          <a href="#" className="image">
-                            <img
-                              src={product10}
-                              className="cart-thumb"
-                              alt=""
-                            />
-                          </a>
-                          <div className="cart-item-desc">
-                            <h6>
-                              <a href="#">Women's Fashion</a>
-                            </h6>
-                            <p>
-                              1x - <span className="price">$10</span>
-                            </p>
-                          </div>
-                          <span className="dropdown-product-remove">
-                            <i className="icon-cross"></i>
-                          </span>
-                        </li>
-                        <li>
-                          <a href="#" className="image">
-                            <img
-                              src={product11}
-                              className="cart-thumb"
-                              alt=""
-                            />
-                          </a>
-                          <div className="cart-item-desc">
-                            <h6>
-                              <a href="#">Women's Fashion</a>
-                            </h6>
-                            <p>
-                              1x - <span className="price">$10</span>
-                            </p>
-                          </div>
-                          <span className="dropdown-product-remove">
-                            <i className="icon-cross"></i>
-                          </span>
-                        </li>
+                        {Array.isArray(cart?.products) &&
+                          cart.products.map((item, index) => {
+                            // Check if item.product is defined
+                            const product = item;
+                            const imageUrl = product?.image
+                              ? product.image
+                              : ""; // Safely access the image URL
+                            const price = product?.price;
+
+                            return (
+                              <li key={index}>
+                                <a href="#" className="image">
+                                  <img
+                                    src={imageUrl}
+                                    className="cart-thumb"
+                                    alt={
+                                      product?.productName || "Product Image"
+                                    } // Fallback alt text
+                                  />
+                                </a>
+                                <div className="cart-item-desc">
+                                  <h6>
+                                    <a href="#">
+                                      {product?.productName || "Product Name"}
+                                    </a>{" "}
+                                    {/* Fallback name */}
+                                  </h6>
+                                  <p>
+                                    {item.quantity} x{" "}
+                                    <span className="price">
+                                      ${price.toFixed(2) || "0.00"}{" "}
+                                      {/* Fallback price */}
+                                    </span>
+                                  </p>
+                                </div>
+                                <span className="dropdown-product-remove">
+                                  <i className="icon-cross"></i>
+                                </span>
+                              </li>
+                            );
+                          })}
+
                         <li className="total total-price">
                           <NavLink to="/cart" className="btn btn-sm btn-cart">
                             Cart
@@ -177,7 +184,9 @@ const Header = ({ onToggleMenu }) => {
                           >
                             Checkout
                           </NavLink>
-                          <span className="pull-right">Total: $20.00</span>
+                          <span className="pull-right">
+                            Total: ${totalPrice.toFixed(2)}
+                          </span>
                         </li>
                       </ul>
                     )}

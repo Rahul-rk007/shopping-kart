@@ -8,7 +8,9 @@ import setAuthToken from "./api/setAuthToken";
 import CartContext from "./context/CartContext";
 import {
   addToCartAPI,
+  descreaseCartApi,
   getCartApi,
+  increaseCartApi,
   removeFromCartApi,
 } from "../src/api/cartApi"; // Adjust the import path as necessary
 
@@ -29,7 +31,8 @@ function App() {
   }, []);
 
   const addToCart = (product, quantity) => {
-    const updatedCart = [...cart];
+    const updatedCart = Array.isArray(cart) ? [...cart] : [];
+
     const productIndex = updatedCart.findIndex(
       (item) => item.product._id === product._id
     );
@@ -52,8 +55,11 @@ function App() {
   };
 
   const removeFromCart = (id) => {
-    const oldCart = [...cart];
+    const oldCart = [...cart.products];
+    console.log("old=>", oldCart);
     const newCart = oldCart.filter((item) => item.product._id !== id);
+    console.log("new=>", newCart);
+
     setCart(newCart);
 
     removeFromCartApi(id)
@@ -67,26 +73,26 @@ function App() {
   };
 
   const updateCart = (type, id) => {
-    const oldCart = [...cart];
-    const updatedCart = [...cart];
+    const oldCart = [...cart.products];
+    const updatedCart = [...cart.products];
     const productIndex = updatedCart.findIndex(
       (item) => item.product._id === id
     );
 
     if (type === "increase") {
       updatedCart[productIndex].quantity += 1;
-      setCart(updatedCart);
+      setCart({ products: updatedCart }); // Update cart with the new products array
       increaseCartApi(id).catch((err) => {
         toast.error("Something went wrong!");
-        setCart(oldCart); // Revert to previous cart state
+        setCart({ products: oldCart }); // Revert to previous cart state
       });
     } else if (type === "decrease") {
       if (updatedCart[productIndex].quantity > 1) {
         updatedCart[productIndex].quantity -= 1;
-        setCart(updatedCart);
-        decreaseCartApi(id).catch((err) => {
+        setCart({ products: updatedCart }); // Update cart with the new products array
+        descreaseCartApi(id).catch((err) => {
           toast.error("Something went wrong!");
-          setCart(oldCart); // Revert to previous cart state
+          setCart({ products: oldCart }); // Revert to previous cart state
         });
       } else {
         removeFromCart(id); // Remove item if quantity is 1
@@ -113,7 +119,7 @@ function App() {
   return (
     <UserContext.Provider value={user}>
       <CartContext.Provider
-        value={{ cart, addToCart, removeFromCart, updateCart }}
+        value={{ cart, addToCart, removeFromCart, updateCart, setCart }}
       >
         <ToastContainer />
         <main>
