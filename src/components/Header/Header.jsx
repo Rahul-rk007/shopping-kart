@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 
 import "./Header.css";
-import LOGO from "../../assets/core-img/logo.png";
+import LOGO from "../../assets/core-img/logo.jpeg";
 import product10 from "../../assets/product-img/product-10.jpg";
 import product11 from "../../assets/product-img/product-11.jpg";
 import { NavLink } from "react-router-dom";
@@ -42,7 +42,7 @@ const Header = ({ onToggleMenu }) => {
         <div className="container h-100">
           <div className="row h-100">
             <div className="col-12 d-md-flex align-items-md-center justify-content-between">
-              <div className="top_logo">
+              <div className="top_logo header-logo">
                 <a href="#">
                   <img src={LOGO} alt="" />
                 </a>

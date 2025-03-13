@@ -2,6 +2,7 @@ import React from "react";
 import Layout from "../Layout/Layout";
 import "./Aboutus.css";
 import AboutusImg from "../../assets/aboutus.jpg";
+
 const Aboutus = () => {
   return (
     <Layout>
@@ -11,21 +12,14 @@ const Aboutus = () => {
             <div className="col-lg-6">
               <h2>About Us</h2>
               <p>
-                Welcome to our website! We are a team of passionate individuals
-                dedicated to providing the best services to our customers. Our
-                mission is to deliver high-quality products that meet the needs
-                of our clients.
+                Welcome to Snappy Wish, your premier online shopping destination! Our dedicated team is here to provide you with a fun and hassle-free shopping experience. We offer a wide range of high-quality products, from trendy fashion to the latest gadgets, all curated to meet your needs.
               </p>
               <p>
-                With years of experience in the industry, we understand the
-                importance of customer satisfaction. Our team works tirelessly
-                to ensure that every product we offer is crafted with care and
-                precision.
+                At Snappy Wish, customer satisfaction is our priority. Enjoy fast shipping, easy returns, and exceptional service. Thank you for choosing us we look forward to helping you find your next favorite item!
               </p>
-              <p>Thank you for choosing us. We look forward to serving you!</p>
             </div>
             <div className="col-lg-6">
-              <img src={AboutusImg} alt="About Us" className="img-fluid" />
+              <img src={AboutusImg} alt="About Snappy Wish" className="img-fluid" />
             </div>
           </div>
         </div>

@@ -7,6 +7,9 @@
   margin-top: 20px;
 }
 
+.wishlist-table-container{
+  background-color: white;
+}
 .wishlist-tablebody{
   margin-left: 8%;
 }

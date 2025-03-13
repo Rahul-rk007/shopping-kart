@@ -1,5 +1,5 @@
-.adderss-page-container {
-  max-width: 700px;
+.address-page-container {
+  max-width: 800px;
 }
 
 .address-page-form {
@@ -25,6 +25,9 @@
   font-weight: bold;
 }
 
+.address-page-list-container{
+  background-color: white;
+}
 .address-page-list-section{
   border: 0.5px solid gray;
   border-radius: 10px;

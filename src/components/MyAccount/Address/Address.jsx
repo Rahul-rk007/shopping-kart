@@ -345,6 +345,7 @@ const Address = () => {
             New Address
           </button>
         </div>
+        <div className="address-page-list-container">
         <div className="address-page-list-section">
           {addresses.length === 0 ? (
             <div className="alert alert-info" role="alert">
@@ -388,6 +389,7 @@ const Address = () => {
             </ul>
           )}
         </div>
+      </div>
       </div>
     </MyAccount>
   );
