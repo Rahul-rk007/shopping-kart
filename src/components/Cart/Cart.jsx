@@ -1,4 +1,5 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./Cart.css";
 import Layout from "../Layout/Layout";
 import CartContext from "../../context/CartContext";
@@ -7,7 +8,13 @@ import { clearCartApi } from "../../api/cartApi";
 import { toast } from "react-toastify";
 
 const Cart = () => {
-  const { cart, removeFromCart, updateCart, setCart } = useContext(CartContext);
+  const { cart, removeFromCart, updateCart, setCart, getCart } =
+    useContext(CartContext);
+  const navigate = useNavigate(); // Create navigate function
+
+  const [shippingMethod, setShippingMethod] = useState("personalPickup"); // Default shipping method
+  const [couponCode, setCouponCode] = useState("");
+  const [discount, setDiscount] = useState(0); // Discount amount
 
   const handleQuantityChange = (operation, productId) => {
     if (operation === "minus") {
@@ -16,6 +23,10 @@ const Cart = () => {
       updateCart("increase", productId);
     }
   };
+
+  useEffect(() => {
+    getCart();
+  }, [cart]);
 
   const clearCart = () => {
     clearCartApi()
@@ -27,6 +38,57 @@ const Cart = () => {
         toast.error("Failed to clear cart. Please try again.");
       });
   };
+
+  const handleShippingChange = (event) => {
+    setShippingMethod(event.target.value);
+  };
+
+  const applyCoupon = () => {
+    // Example: Apply a fixed discount for a specific coupon code
+    if (couponCode === "COUPON20") {
+      const subtotal = calculateSubtotal();
+      const discountAmount = subtotal * 0.2; // 20% discount
+      setDiscount(discountAmount);
+      toast.success("Coupon applied successfully!");
+    } else {
+      toast.error("Invalid coupon code.");
+    }
+  };
+
+  // Calculate subtotal
+  const calculateSubtotal = () => {
+    if (!Array.isArray(cart.products)) {
+      return 0; // Return 0 if products is not an array
+    }
+    return cart.products.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+  };
+
+  // Calculate total
+  const calculateTotal = () => {
+    const subtotal = calculateSubtotal();
+    const shippingCost =
+      shippingMethod === "nextDay"
+        ? 50
+        : shippingMethod === "standard"
+        ? 20
+        : 0;
+    return subtotal + shippingCost - discount;
+  };
+
+  const handleCheckout = () => {
+    // Navigate to the checkout page with the applied coupon and shipping method
+    navigate("/checkout", {
+      state: {
+        couponCode,
+        shippingMethod,
+        discount,
+      },
+    });
+  };
+
   return (
     <Layout>
       <div className="cart_area section_padding_100 clearfix bg-color">
@@ -47,7 +109,7 @@ const Cart = () => {
                   <tbody>
                     {cart.products && cart.products.length > 0 ? (
                       cart.products.map((item) => (
-                        <tr key={item._id}>
+                        <tr key={item.product._id}>
                           <td className="cart_product_img d-flex align-items-center">
                             <a href="#">
                               <img src={item.image} alt="Product" />
@@ -55,7 +117,7 @@ const Cart = () => {
                             <h6>{item.productName}</h6>
                           </td>
                           <td className="price">
-                            <span>Rs. {item.price}</span>
+                            <span>Rs. {item.price.toFixed(2)}</span>
                           </td>
                           <td className="qty">
                             <div className="quantity">
@@ -94,7 +156,7 @@ const Cart = () => {
                           </td>
                           <td className="total_price">
                             <span>
-                            Rs. {(item.price * item.quantity).toFixed(2)}
+                              Rs. {(item.price * item.quantity).toFixed(2)}
                             </span>
                           </td>
                           <td className="action">
@@ -138,12 +200,28 @@ const Cart = () => {
                   <h5>Coupon code</h5>
                   <p>Enter your coupon code</p>
                 </div>
-                <form action="#">
-                  <input type="search" name="search" placeholder="COUPON" />
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    applyCoupon();
+                  }}
+                >
+                  <input
+                    type="text"
+                    name="coupon"
+                    placeholder="COUPON"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)}
+                  />
                   <button className="btn-red" type="submit">
                     Apply
                   </button>
                 </form>
+                {discount > 0 && (
+                  <div className="discount-info">
+                    <p>Discount applied: Rs. {discount.toFixed(2)}</p>
+                  </div>
+                )}
               </div>
             </div>
             <div className="col-12 col-md-6 col-lg-4">
@@ -157,48 +235,60 @@ const Cart = () => {
                   <input
                     type="radio"
                     id="customRadio1"
-                    name="customRadio"
+                    name="shippingMethod"
+                    value="nextDay"
                     className="custom-control-input"
+                    checked={shippingMethod === "nextDay"}
+                    onChange={handleShippingChange}
                   />
                   <label
                     className="custom-control-label d-flex align-items-center justify-content-between"
                     htmlFor="customRadio1"
                   >
-                    <span>Next day delivery</span>
-                    <span>Rs. 50.00</span>
+                    <span>Expedited shipping</span>
+                    <span>Rs. 100.00</span>
                   </label>
+                  <small>(2-3 business days)</small>
                 </div>
 
                 <div className="custom-control custom-radio mb-30">
                   <input
                     type="radio"
                     id="customRadio2"
-                    name="customRadio"
+                    name="shippingMethod"
+                    value="standard"
                     className="custom-control-input"
+                    checked={shippingMethod === "standard"}
+                    onChange={handleShippingChange}
                   />
                   <label
                     className="custom-control-label d-flex align-items-center justify-content-between"
                     htmlFor="customRadio2"
                   >
-                    <span>Standard delivery</span>
-                    <span>Rs. 20.00</span>
+                    <span>Standard shipping</span>
+                    <span>Rs. 50.00</span>
                   </label>
+                  <small>(4-7 business days)</small>
                 </div>
 
                 <div className="custom-control custom-radio">
                   <input
                     type="radio"
                     id="customRadio3"
-                    name="customRadio"
+                    name="shippingMethod"
+                    value="personalPickup"
                     className="custom-control-input"
+                    checked={shippingMethod === "personalPickup"}
+                    onChange={handleShippingChange}
                   />
                   <label
                     className="custom-control-label d-flex align-items-center justify-content-between"
                     htmlFor="customRadio3"
                   >
-                    <span>Personal Pickup</span>
+                    <span>Free shipping</span>
                     <span>Rs. 0.00</span>
                   </label>
+                  <small>(7-15 business days)</small>
                 </div>
               </div>
             </div>
@@ -211,26 +301,41 @@ const Cart = () => {
 
                 <ul className="cart-total-chart">
                   <li>
-                    <span>Subtotal</span> <span>Rs. 400.00</span>
+                    <span>Subtotal</span>{" "}
+                    <span>Rs. {calculateSubtotal().toFixed(2)}</span>
                   </li>
                   <li>
-                    <span>Shipping</span> <span>0.00</span>
+                    <span>Shipping</span>{" "}
+                    <span>
+                      Rs.{" "}
+                      {shippingMethod === "nextDay"
+                        ? "100.00"
+                        : shippingMethod === "standard"
+                        ? "50.00"
+                        : "0.00"}
+                    </span>
                   </li>
+                  {discount > 0 && (
+                    <li>
+                      <span>Discount</span>{" "}
+                      <span>- Rs. {discount.toFixed(2)}</span>
+                    </li>
+                  )}
                   <li>
                     <span>
                       <strong>Total</strong>
                     </span>{" "}
                     <span>
-                      <strong>Rs. 400.00</strong>
+                      <strong>Rs. {calculateTotal().toFixed(2)}</strong>
                     </span>
                   </li>
                 </ul>
-                <a
-                  href="checkout.html"
+                <button
                   className="btn karl-checkout-btn btn-red"
+                  onClick={handleCheckout} // Call handleCheckout on click
                 >
                   Proceed to checkout
-                </a>
+                </button>
               </div>
             </div>
           </div>
