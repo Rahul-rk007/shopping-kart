@@ -13,6 +13,7 @@ import {
   increaseCartApi,
   removeFromCartApi,
 } from "../src/api/cartApi"; // Adjust the import path as necessary
+import Layout from "./components/Layout/Layout";
 
 setAuthToken(getJwt());
 
@@ -119,7 +120,14 @@ function App() {
   return (
     <UserContext.Provider value={user}>
       <CartContext.Provider
-        value={{ cart, addToCart, removeFromCart, updateCart, setCart }}
+        value={{
+          cart,
+          addToCart,
+          removeFromCart,
+          updateCart,
+          setCart,
+          getCart,
+        }}
       >
         <ToastContainer />
         <main>
