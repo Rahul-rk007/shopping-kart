@@ -133,12 +133,6 @@
   margin-bottom: 5px;
 }
 
-.total-price {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
 .cart-list li .btn-checkout,
 .cart-list li .btn-cart {
   background-color: #ff084e;
@@ -149,6 +143,7 @@
 
 .cart-list li .btn-cart {
   background-color: #3a3a3a;
+  width: 80px;
 }
 
 .cart-item-desc > p {
@@ -234,4 +229,29 @@
   text-decoration: none;
   background-color: #ff084e;
   font-weight: 700;
+}
+
+.cart-total-price-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+}
+
+.product-price{
+  display: flex;
+  justify-content: space-between;
+}
+
+.product-total-price{
+  margin-top: 5px;
+  font-weight: 500;
+}
+.cart-total-price-container > span {
+  text-align: right;
+}
+
+.total-price {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
 }

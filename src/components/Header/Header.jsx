@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-
 import "./Header.css";
 import LOGO from "../../assets/core-img/logo.jpeg";
 import { NavLink } from "react-router-dom";
@@ -134,12 +133,11 @@ const Header = ({ onToggleMenu }) => {
                       <ul className="cart-list">
                         {Array.isArray(cart?.products) &&
                           cart.products.map((item, index) => {
-                            // Check if item.product is defined
-                            const product = item;
-                            const imageUrl = product?.image
-                              ? product.image
-                              : ""; // Safely access the image URL
-                            const price = product?.price;
+                            const product = item; // Assuming item is the product object
+                            const imageUrl = product?.image || ""; // Safely access the image URL
+                            const price = product?.price || 0; // Default to 0 if price is undefined
+                            const quantity = item.quantity || 1; // Default to 1 if quantity is undefined
+                            const totalItemPrice = price * quantity; // Calculate total price for the item
 
                             return (
                               <li key={index}>
@@ -159,13 +157,17 @@ const Header = ({ onToggleMenu }) => {
                                     </a>{" "}
                                     {/* Fallback name */}
                                   </h6>
-                                  <p>
-                                    {item.quantity} x{" "}
-                                    <span className="price">
-                                    Rs. {price.toFixed(2) || "0.00"}{" "}
-                                      {/* Fallback price */}
+                                  <div className="product-price">
+                                    <p>
+                                      {quantity} x{" "}
+                                      <span className="price">
+                                        Rs. {price.toFixed(2) || "0.00"} =
+                                      </span>
+                                    </p>
+                                    <span className="price product-total-price">
+                                      Rs. {totalItemPrice.toFixed(2) || "0.00"} {/* Display total price */}
                                     </span>
-                                  </p>
+                                  </div>
                                 </div>
                                 <span className="dropdown-product-remove">
                                   <i className="icon-cross"></i>
@@ -173,37 +175,31 @@ const Header = ({ onToggleMenu }) => {
                               </li>
                             );
                           })}
-
-                        <li className="total total-price">
-                          <NavLink to="/cart" className="btn btn-sm btn-cart">
-                            Cart
-                          </NavLink>
-                          <NavLink
-                            to="/checkout"
-                            className="btn btn-sm btn-checkout"
-                          >
-                            Checkout
-                          </NavLink>
+                        <div className="cart-total-price-container">
                           <span className="pull-right">
                             Total: Rs. {totalPrice.toFixed(2)}
                           </span>
-                        </li>
+                          <div>
+                            <li className="total total-price">
+                              <NavLink
+                                to="/cart"
+                                className="btn btn-sm btn-cart"
+                              >
+                                Cart
+                              </NavLink>
+                              <NavLink
+                                to="/checkout"
+                                className="btn btn-sm btn-checkout"
+                              >
+                                Checkout
+                              </NavLink>
+                            </li>
+                          </div>
+                        </div>
                       </ul>
                     )}
                   </div>
                 )}
-                {/* <div className="header-right-side-menu ml-15">
-                  <a
-                    href="javascript:void(0)" // Prevents # from being appended
-                    id="sideMenuBtn"
-                    onClick={(e) => {
-                      e.preventDefault(); // Prevent default anchor behavior
-                      onToggleMenu();
-                    }}
-                  >
-                    <i className="ti-menu" aria-hidden="true"></i>
-                  </a>
-                </div> */}
               </div>
             </div>
           </div>
