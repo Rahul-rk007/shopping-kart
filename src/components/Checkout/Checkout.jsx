@@ -245,10 +245,7 @@ const Checkout = () => {
                   </div>
                 </div>
 
-                <a
-                  href="#"
-                  className="btn karl-checkout-btn btn-red"
-                >
+                <a href="#" className="btn karl-checkout-btn btn-red">
                   Place Order
                 </a>
               </div>

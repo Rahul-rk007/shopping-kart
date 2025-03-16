@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./Cart.css";
 import Layout from "../Layout/Layout";
 import CartContext from "../../context/CartContext";
@@ -9,6 +10,7 @@ import { toast } from "react-toastify";
 const Cart = () => {
   const { cart, removeFromCart, updateCart, setCart, getCart } =
     useContext(CartContext);
+  const navigate = useNavigate(); // Create navigate function
 
   const [shippingMethod, setShippingMethod] = useState("personalPickup"); // Default shipping method
   const [couponCode, setCouponCode] = useState("");
@@ -76,6 +78,17 @@ const Cart = () => {
     return subtotal + shippingCost - discount;
   };
 
+  const handleCheckout = () => {
+    // Navigate to the checkout page with the applied coupon and shipping method
+    navigate("/checkout", {
+      state: {
+        couponCode,
+        shippingMethod,
+        discount,
+      },
+    });
+  };
+
   return (
     <Layout>
       <div className="cart_area section_padding_100 clearfix bg-color">
@@ -104,7 +117,7 @@ const Cart = () => {
                             <h6>{item.productName}</h6>
                           </td>
                           <td className="price">
-                            <span>Rs. {item.price}</span>
+                            <span>Rs. {item.price.toFixed(2)}</span>
                           </td>
                           <td className="qty">
                             <div className="quantity">
@@ -317,12 +330,12 @@ const Cart = () => {
                     </span>
                   </li>
                 </ul>
-                <a
-                  href="checkout.html"
+                <button
                   className="btn karl-checkout-btn btn-red"
+                  onClick={handleCheckout} // Call handleCheckout on click
                 >
                   Proceed to checkout
-                </a>
+                </button>
               </div>
             </div>
           </div>
