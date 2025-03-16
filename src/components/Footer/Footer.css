@@ -1,7 +1,9 @@
 /* ----------------------
   :: 14.0 Footer Area CSS
   ---------------------- */
-
+.footer_logo{
+  width: 180px;
+}
   .footer_area {
     background-color: #fff;
     border-top: 2px solid #e5e5e5;
@@ -84,6 +86,6 @@
   .copywrite_text > p {
     color: #9f9f9f;
     font-size: 14px;
-    margin-top: 30px;
+    margin-top: 10px;
     display: block;
   }

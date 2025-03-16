@@ -139,7 +139,7 @@ const Cart = () => {
                   <p>Enter your coupon code</p>
                 </div>
                 <form action="#">
-                  <input type="search" name="search" placeholder="#569ab15" />
+                  <input type="search" name="search" placeholder="COUPON" />
                   <button className="btn-red" type="submit">
                     Apply
                   </button>
@@ -165,7 +165,7 @@ const Cart = () => {
                     htmlFor="customRadio1"
                   >
                     <span>Next day delivery</span>
-                    <span>Rs. 4.99</span>
+                    <span>Rs. 50.00</span>
                   </label>
                 </div>
 
@@ -181,7 +181,7 @@ const Cart = () => {
                     htmlFor="customRadio2"
                   >
                     <span>Standard delivery</span>
-                    <span>Rs. 1.99</span>
+                    <span>Rs. 20.00</span>
                   </label>
                 </div>
 
@@ -197,7 +197,7 @@ const Cart = () => {
                     htmlFor="customRadio3"
                   >
                     <span>Personal Pickup</span>
-                    <span>Free</span>
+                    <span>Rs. 0.00</span>
                   </label>
                 </div>
               </div>
@@ -211,17 +211,17 @@ const Cart = () => {
 
                 <ul className="cart-total-chart">
                   <li>
-                    <span>Subtotal</span> <span>Rs. 59.90</span>
+                    <span>Subtotal</span> <span>Rs. 400.00</span>
                   </li>
                   <li>
-                    <span>Shipping</span> <span>Free</span>
+                    <span>Shipping</span> <span>0.00</span>
                   </li>
                   <li>
                     <span>
                       <strong>Total</strong>
                     </span>{" "}
                     <span>
-                      <strong>Rs. 59.90</strong>
+                      <strong>Rs. 400.00</strong>
                     </span>
                   </li>
                 </ul>

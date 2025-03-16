@@ -5,6 +5,7 @@ import { z } from "zod";
 import MyAccount from "../MyAccount";
 import "./Profile.css";
 import { userProfile, editUserProfile } from "../../../api/userApi";
+import { toast } from "react-toastify";
 
 // Define the validation schema using Zod
 const schema = z.object({
@@ -60,6 +61,7 @@ const Profile = () => {
       // Optionally, you can refetch the user profile here
       const updatedUserData = await userProfile(); // Refetch updated user data
       setUserDetails(updatedUserData); // Update state with new user data
+      toast.success("Your pofile successfully updated.")
     } catch (error) {
       console.error("Failed to update user profile:", error);
     }

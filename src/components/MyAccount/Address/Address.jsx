@@ -15,6 +15,7 @@ import {
   getAllShippingAddresses,
   stateList,
 } from "../../../api/shippingAddressApi";
+import { toast } from "react-toastify";
 
 // Validation schema using Zod
 const schema = z.object({
@@ -110,12 +111,13 @@ const Address = () => {
         // Re-fetch addresses after editing
         const updatedAddresses = await getAllShippingAddresses();
         setAddresses(updatedAddresses.data || []);
+        toast.success("Shipping address updated successfully!")
       } else {
         // Add new address
         const response = await addShippingAddress(addressData);
         console.log(response);
         setAddresses((prevAddresses) => [...prevAddresses, response]);
-        console.log(addresses);
+        toast.success("Shipping address added successfully!")
       }
       reset();
       setIsFormVisible(false);
@@ -157,6 +159,7 @@ const Address = () => {
       await deleteAddress(addresses[index]._id);
       const updatedAddresses = addresses.filter((_, i) => i !== index);
       setAddresses(updatedAddresses);
+      toast.success("Shipping address deleted successfully!")
     } catch (error) {
       console.error("Error deleting address:", error);
     }
@@ -345,6 +348,7 @@ const Address = () => {
             New Address
           </button>
         </div>
+        <div className="address-page-list-container">
         <div className="address-page-list-section">
           {addresses.length === 0 ? (
             <div className="alert alert-info" role="alert">
@@ -388,6 +392,7 @@ const Address = () => {
             </ul>
           )}
         </div>
+      </div>
       </div>
     </MyAccount>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import "./Footer.css";
-import LOGO from "../../assets/core-img/logo.png";
+import LOGO from "../../assets/core-img/logo.jpeg";
 
 const Footer = () => {
   return (
@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="row">
           <div className="col-12 col-md-6 col-lg-3">
             <div className="single_footer_area">
-              <div className="footer-logo">
+              <div className="footer-logo footer_logo">
                 <img src={LOGO} alt="" />
               </div>
               <div className="copywrite_text d-flex align-items-center">

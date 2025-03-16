@@ -1,7 +1,7 @@
 import React from "react";
 
 import "./OfferArea.css";
-import bg5 from "../../assets/bg-img/bg-5.jpg";
+import bg5 from "../../assets/bg-img/bg-6.avif";
 
 const OfferArea = () => {
   return (
@@ -17,7 +17,7 @@ const OfferArea = () => {
               data-wow-delay="1s"
             >
               <h2>
-                White t-shirt <span className="karl-level">Hot</span>
+                Sun Glasses <span className="karl-level">Hot</span>
               </h2>
               <p>* Free shipping until 25 May 2025</p>
               <div className="offer-product-price">

@@ -47,7 +47,7 @@ const Sidebar = () => {
         >
           <NavLink className="myaccount-link" to="/myaccount/address">
             <img className="myaccount-list-img" src={Address} alt="Address" />
-            Address
+            Shipping Address
           </NavLink>
         </li>
         <hr />

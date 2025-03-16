@@ -21,6 +21,7 @@ const Wishlist = () => {
                     >
                       My Wishlist
                     </h2>
+                    <div className="wishlist-table-container">
                     <table className="table wishlist-table">
                       <tbody>
                         <tr>
@@ -95,8 +96,11 @@ const Wishlist = () => {
                             </a>
                           </td>
                         </tr>
+                        
                       </tbody>
+                      
                     </table>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -1,7 +1,9 @@
 /* ------------------------
   :: 5.0 Header Area CSS
   ------------------------ */
-
+.header-logo{
+  width:150px;
+}
 .top_header_area {
   height: 150px;
   width: 100%;

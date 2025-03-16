@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 
 import "./Header.css";
-import LOGO from "../../assets/core-img/logo.png";
+import LOGO from "../../assets/core-img/logo.jpeg";
 import { NavLink } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import CartContext from "../../context/CartContext";
@@ -46,8 +46,8 @@ const Header = ({ onToggleMenu }) => {
       <div className="main_header_area">
         <div className="container h-100">
           <div className="row h-100">
-            <div className="col-12 d-md-flex align-items-md-center justify-content-between">
-              <div className="top_logo">
+            <div className="col-12 d-flex align-items-md-center justify-content-between">
+              <div className="top_logo header-logo">
                 <a href="#">
                   <img src={LOGO} alt="" />
                 </a>
