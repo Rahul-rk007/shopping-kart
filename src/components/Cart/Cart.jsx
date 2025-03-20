@@ -15,6 +15,7 @@ const Cart = () => {
   const [shippingMethod, setShippingMethod] = useState("personalPickup"); // Default shipping method
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0); // Discount amount
+  const [couponDetails, setCouponDetails] = useState({}); // Coupon details
 
   const handleQuantityChange = (operation, productId) => {
     if (operation === "minus") {
@@ -49,6 +50,10 @@ const Cart = () => {
       const subtotal = calculateSubtotal();
       const discountAmount = subtotal * 0.2; // 20% discount
       setDiscount(discountAmount);
+      setCouponDetails({
+        value: 20,
+        type: "percentage",
+      });
       toast.success("Coupon applied successfully!");
     } else {
       toast.error("Invalid coupon code.");
@@ -71,22 +76,22 @@ const Cart = () => {
     const subtotal = calculateSubtotal();
     const shippingCost =
       shippingMethod === "nextDay"
-        ? 50
+        ? 100
         : shippingMethod === "standard"
-        ? 20
+        ? 50
         : 0;
     return subtotal + shippingCost - discount;
   };
 
   const handleCheckout = () => {
     // Navigate to the checkout page with the applied coupon and shipping method
-    navigate("/checkout", {
-      state: {
-        couponCode,
-        shippingMethod,
-        discount,
-      },
-    });
+    localStorage.setItem("couponCode", couponCode);
+    localStorage.setItem("shippingMethod", shippingMethod);
+    localStorage.setItem("discount", discount);
+    localStorage.setItem("couponDetails", JSON.stringify(couponDetails));
+
+    // Navigate to the checkout page
+    navigate("/checkout");
   };
 
   return (

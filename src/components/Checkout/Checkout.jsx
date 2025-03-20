@@ -1,41 +1,68 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom"; // Import useLocation
 import "./Checkout.css";
 import Layout from "../Layout/Layout";
 import { Link } from "react-router-dom";
+import { getAllShippingAddresses } from "../../api/shippingAddressApi"; // Import the API function
+import { getCartApi } from "../../api/cartApi"; // Import the API function to get cart details
 
 const Checkout = () => {
-  const [selectedAddress, setSelectedAddress] = useState("");
+  const location = useLocation(); // Get location to access state
+  const [selectedAddress, setSelectedAddress] = useState(""); // Initialize selectedAddress
+  const [shippingAddresses, setShippingAddresses] = useState([]); // State to hold shipping addresses
+  const [cartItems, setCartItems] = useState([]); // State to hold cart items
+  const [discountAmount, setDiscountAmount] = useState(
+    Number(localStorage.getItem("discount")) || 0
+  ); // State to hold discount amount
+  const [couponCode, setCouponCode] = useState(
+    localStorage.getItem("couponCode") || ""
+  ); // State to hold coupon code
+  const [shippingMethod, setShippingMethod] = useState(
+    localStorage.getItem("shippingMethod") || ""
+  ); // State to hold shipping method
 
-  const shippingAddresses = [
-    {
-      id: 1,
-      name: "John Doe",
-      address: "123 Main St, Springfield, USA",
-      phone: "123-456-7890",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      address: "456 Elm St, Springfield, USA",
-      phone: "987-654-3210",
-    },
-    {
-      id: 3,
-      name: "Alice Johnson",
-      address: "789 Oak St, Springfield, USA",
-      phone: "555-555-5555",
-    },
-    {
-      id: 1,
-      name: "John Doe",
-      address: "123 Main St, Springfield, USA",
-      phone: "123-456-7890",
-    },
-  ];
+  useEffect(() => {
+    const fetchShippingAddresses = async () => {
+      try {
+        const addresses = await getAllShippingAddresses();
+        setShippingAddresses(addresses.data || []); // Set the fetched addresses to state
+      } catch (error) {
+        console.error("Failed to fetch shipping addresses:", error);
+      }
+    };
+
+    const fetchCartDetails = async () => {
+      try {
+        const response = await getCartApi(); // Fetch cart details from the API
+        setCartItems(response.data.products); // Set the fetched cart items to state
+      } catch (error) {
+        console.error("Failed to fetch cart details:", error);
+      }
+    };
+
+    fetchShippingAddresses();
+    fetchCartDetails();
+  }, []);
 
   const handleAddressChange = (event) => {
     setSelectedAddress(event.target.value);
   };
+
+  const calculateSubtotal = () => {
+    return cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  };
+
+  const calculateTotal = () => {
+    const subtotal = calculateSubtotal();
+    const shippingCost =
+      shippingMethod === "nextDay"
+        ? 100
+        : shippingMethod === "standard"
+        ? 50
+        : 0;
+    return subtotal - discountAmount + shippingCost; // Total = Subtotal - Discount + Shipping
+  };
+
   return (
     <Layout>
       <div className="checkout_area section_padding_100 bg-color">
@@ -61,29 +88,46 @@ const Checkout = () => {
                   <hr />
                   <form action="#" method="post">
                     <div className="row address-scrollable">
-                      {shippingAddresses.map((address) => (
-                        <div className="col-12 mb-3" key={address.id}>
+                      {shippingAddresses.map((address, index) => (
+                        <div className="col-12 mb-3" key={index}>
                           <div className="custom-control custom-radio">
                             <input
                               type="radio"
-                              id={`address_${address.id}`}
+                              id={`address_${index}`}
                               name="shippingAddress"
                               className="custom-control-input"
                               value={address.id}
                               checked={
-                                selectedAddress === address.id.toString()
+                                selectedAddress === address.id?.toString()
                               }
                               onChange={handleAddressChange}
                             />
                             <label
                               className="custom-control-label mb-3"
-                              htmlFor={`address_${address.id}`}
+                              htmlFor={`address_${index}`}
                             >
-                              <strong>{address.name}</strong>
+                              <strong>{address.fullName}</strong>
                               <br />
-                              {address.address}
+                              {`${address.address1} ${
+                                address.address1 ? ", " + address.address1 : ""
+                              }${
+                                address.city
+                                  ? ", " +
+                                    address.city +
+                                    " - " +
+                                    address.zipCode
+                                  : ""
+                              }${
+                                address.state
+                                  ? ", " + address.state.stateName
+                                  : ""
+                              }${
+                                address.country
+                                  ? ", " + address.country.countryName
+                                  : ""
+                              }`}
                               <br />
-                              Phone: {address.phone}
+                              Phone: {address.phoneNumber}
                             </label>
                           </div>
                         </div>
@@ -105,17 +149,44 @@ const Checkout = () => {
                   <li>
                     <span>Product</span> <span>Total</span>
                   </li>
+                  {cartItems.length > 0 ? (
+                    cartItems.map((item, index) => (
+                      <li key={index}>
+                        <span>{item.productName}</span>{" "}
+                        <span>
+                          Rs. {(item.price * item.quantity).toFixed(2)}
+                        </span>
+                      </li>
+                    ))
+                  ) : (
+                    <li>
+                      <span>No items in cart</span> <span>Rs. 0.00</span>
+                    </li>
+                  )}
                   <li>
-                    <span>Cocktail Yellow dress</span> <span>Rs. 59.90</span>
+                    <span>Subtotal</span>{" "}
+                    <span>Rs. {calculateSubtotal().toFixed(2)}</span>
+                  </li>
+                  {discountAmount > 0 && (
+                    <li>
+                      <span>Discount</span>{" "}
+                      <span>- Rs. {discountAmount.toFixed(2)}</span>
+                    </li>
+                  )}
+                  <li>
+                    <span>Shipping</span>{" "}
+                    <span>
+                      Rs.{" "}
+                      {shippingMethod === "nextDay"
+                        ? "100.00"
+                        : shippingMethod === "standard"
+                        ? "50.00"
+                        : "0.00"}
+                    </span>
                   </li>
                   <li>
-                    <span>Subtotal</span> <span>Rs. 59.90</span>
-                  </li>
-                  <li>
-                    <span>Shipping</span> <span>Free</span>
-                  </li>
-                  <li>
-                    <span>Total</span> <span>Rs. 59.90</span>
+                    <span>Total</span>{" "}
+                    <span>Rs. {calculateTotal().toFixed(2)}</span>
                   </li>
                 </ul>
 
