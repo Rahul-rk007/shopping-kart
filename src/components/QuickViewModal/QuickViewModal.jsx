@@ -1,13 +1,15 @@
 import React, { useContext, useState } from "react";
-
 import "./QuickViewModal.css";
 import CartContext from "../../context/CartContext";
 import UserContext from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import { addToWishlist } from "../../api/wishlistApi"; // Import the wishlist API function
+import { toast } from "react-toastify";
+import Wishlist from "../../assets/icon/wishlist.png";
+
 
 const QuickViewModal = ({ isOpen, onClose, product }) => {
   const [quantity, setQuantity] = useState(1);
-  const [scrollPosition, setScrollPosition] = useState(0);
   const { addToCart } = useContext(CartContext);
   const user = useContext(UserContext);
   const navigate = useNavigate();
@@ -23,10 +25,8 @@ const QuickViewModal = ({ isOpen, onClose, product }) => {
 
   const handleAddToCart = (e) => {
     e.preventDefault(); // Prevent the default form submission
-    console.log(user);
 
     if (user) {
-      console.log("view", product);
       addToCart(product, quantity); // Call addToCart with the product and quantity
     } else {
       localStorage.setItem(
@@ -37,27 +37,45 @@ const QuickViewModal = ({ isOpen, onClose, product }) => {
     }
   };
 
+  const handleAddToWishlist = async () => {
+    if (user) {
+      try {
+        // Prepare the product data to be sent to the API
+        const productData = {
+          product: product._id, // Product ID
+          productName: product.ProductName, // Product name
+          price: product.Price, // Product price
+          image: product.ImageURLs[0], // Product image URL
+        };
+        
+
+        // Call the API to add the product to the wishlist
+        const response = await addToWishlist(productData);
+        toast.success(response.message)
+      } catch (error) {
+        console.error(error);
+        toast.error(error);
+      }
+    } else {
+      console.error("User  ID is not defined");
+      localStorage.setItem("redirectAfterLogin", JSON.stringify({ product }));
+      navigate("/login");
+    }
+  };
+
   return (
     <div
       id="quickview"
       className="modal fade show"
-      style={{ display: "block", top: `${scrollPosition}px` }}
+      style={{ display: "block" }}
       tabIndex="-1"
       role="dialog"
       aria-labelledby="quickview"
       aria-hidden="true"
     >
-      <div
-        className="modal-dialog modal-lg modal-dialog-centered"
-        role="document"
-      >
+      <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div className="modal-content">
-          <button
-            type="button"
-            className="close btn"
-            onClick={onClose}
-            aria-label="Close"
-          >
+          <button type="button" className="close btn" onClick={onClose} aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
 
@@ -86,7 +104,7 @@ const QuickViewModal = ({ isOpen, onClose, product }) => {
                         ))}
                       </div>
                       <h5 className="price">
-                      Rs. {product.Price} <span>Rs. {product.originalPrice}</span>
+                        Rs. {product.Price} <span>Rs. {product.originalPrice}</span>
                       </h5>
                       <p>{product.Description}</p>
                       <a href={`/product/${product._id}`}>
@@ -131,10 +149,10 @@ const QuickViewModal = ({ isOpen, onClose, product }) => {
                       >
                         Add to cart
                       </button>
-                      <div className="modal_pro_wishlist">
-                        <a href="wishlist.html" target="_blank">
-                          <i className="ti-heart"></i>
-                        </a>
+                      <div className="modal_pro_wishlist wishlist-btn">
+                       
+                          <img  onClick={handleAddToWishlist} src={Wishlist} className="wishlist-btn" />
+                        
                       </div>
                     </form>
                   </div>
