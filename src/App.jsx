@@ -107,7 +107,8 @@ function App() {
         setCart(res.data);
       })
       .catch((err) => {
-        toast.error("Something went wrong!");
+        //toast.error("Something went wrong!");
+        console.log(err);
       });
   };
 

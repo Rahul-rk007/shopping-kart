@@ -5,6 +5,8 @@ import Layout from "../Layout/Layout";
 import { Link } from "react-router-dom";
 import { getAllShippingAddresses } from "../../api/shippingAddressApi"; // Import the API function
 import { getCartApi } from "../../api/cartApi"; // Import the API function to get cart details
+import { checkout } from "../../api/orderApi";
+import { toast } from "react-toastify";
 
 const Checkout = () => {
   const location = useLocation(); // Get location to access state
@@ -20,6 +22,8 @@ const Checkout = () => {
   const [shippingMethod, setShippingMethod] = useState(
     localStorage.getItem("shippingMethod") || ""
   ); // State to hold shipping method
+  const [paymentMethod, setPaymentMethod] = useState("Cash on delivery"); // Default payment method
+  const [phoneNumber, setPhoneNumber] = useState(""); // State to hold phone number
 
   useEffect(() => {
     const fetchShippingAddresses = async () => {
@@ -45,22 +49,75 @@ const Checkout = () => {
   }, []);
 
   const handleAddressChange = (event) => {
-    setSelectedAddress(event.target.value);
+    const selectedId = event.target.value;
+
+    const selectedAddress = shippingAddresses.find(
+      (address) => address._id === selectedId
+    );
+
+    if (selectedAddress) {
+      setSelectedAddress(selectedId);
+      setPhoneNumber(selectedAddress.phoneNumber); // Set phone number from selected address
+    }
   };
 
   const calculateSubtotal = () => {
-    return cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    return cartItems
+      .reduce((acc, item) => acc + item.price * item.quantity, 0)
+      .toFixed(2);
   };
 
   const calculateTotal = () => {
-    const subtotal = calculateSubtotal();
+    const subtotal = parseFloat(calculateSubtotal());
     const shippingCost =
       shippingMethod === "nextDay"
         ? 100
         : shippingMethod === "standard"
         ? 50
         : 0;
-    return subtotal - discountAmount + shippingCost; // Total = Subtotal - Discount + Shipping
+    return (subtotal - discountAmount + shippingCost).toFixed(2); // Total = Subtotal - Discount + Shipping
+  };
+
+  const handleCheckout = async () => {
+    const subtotal = parseFloat(calculateSubtotal());
+    const shippingCost =
+      shippingMethod === "nextDay"
+        ? 100
+        : shippingMethod === "standard"
+        ? 50
+        : 0;
+
+    const total = (subtotal - discountAmount + shippingCost).toFixed(2); // Total formatted to 2 decimal places
+
+    if (!selectedAddress) {
+      toast.error("Please select shipping address.");
+    }
+
+    const orderData = {
+      shippingAddressId: selectedAddress, // Use the selected address ID
+      paymentMethod: paymentMethod, // Payment method selected
+      couponCode: couponCode, // Coupon code applied
+      couponDetails:
+        discountAmount > 0
+          ? {
+              value: discountAmount.toFixed(2), // Discount formatted to 2 decimal places
+              type: "amount", // Assuming fixed amount discount
+            }
+          : null,
+      phoneNumber: phoneNumber, // Use the phone number from state
+      shippingMethod: shippingMethod, // Shipping method selected
+      shippingCharges: shippingCost.toFixed(2), // Shipping charges formatted to 2 decimal places
+      subtotal: subtotal.toFixed(2), // Subtotal formatted to 2 decimal places
+      total: total, // Total already formatted
+    };
+
+    try {
+      const response = await checkout(orderData); // Call the checkout API
+      window.location.href = "/order-success";
+    } catch (error) {
+      console.error("Checkout failed:", error);
+      toast.error(error);
+    }
   };
 
   return (
@@ -96,10 +153,7 @@ const Checkout = () => {
                               id={`address_${index}`}
                               name="shippingAddress"
                               className="custom-control-input"
-                              value={address.id}
-                              checked={
-                                selectedAddress === address.id?.toString()
-                              }
+                              value={address._id}
                               onChange={handleAddressChange}
                             />
                             <label
@@ -152,7 +206,14 @@ const Checkout = () => {
                   {cartItems.length > 0 ? (
                     cartItems.map((item, index) => (
                       <li key={index}>
-                        <span>{item.productName}</span>{" "}
+                        <span>
+                          <img
+                            className=""
+                            src={item.image}
+                            alt={item.productName}
+                          />
+                          {item.productName}
+                        </span>{" "}
                         <span>
                           Rs. {(item.price * item.quantity).toFixed(2)}
                         </span>
@@ -164,8 +225,7 @@ const Checkout = () => {
                     </li>
                   )}
                   <li>
-                    <span>Subtotal</span>{" "}
-                    <span>Rs. {calculateSubtotal().toFixed(2)}</span>
+                    <span>Subtotal</span> <span>Rs. {calculateSubtotal()}</span>
                   </li>
                   {discountAmount > 0 && (
                     <li>
@@ -185,140 +245,68 @@ const Checkout = () => {
                     </span>
                   </li>
                   <li>
-                    <span>Total</span>{" "}
-                    <span>Rs. {calculateTotal().toFixed(2)}</span>
+                    <span>Total</span> <span>Rs. {calculateTotal()}</span>
                   </li>
                 </ul>
 
-                <div id="accordion" role="tablist" className="mb-4">
-                  <div className="card">
-                    <div className="card-header" role="tab" id="headingOne">
-                      <h6 className="mb-0">
-                        <a
-                          data-toggle="collapse"
-                          href="#collapseOne"
-                          aria-expanded="false"
-                          aria-controls="collapseOne"
-                        >
-                          <i className="fa fa-circle-o mr-3"></i>Paypal
-                        </a>
-                      </h6>
-                    </div>
-
-                    <div
-                      id="collapseOne"
-                      className="collapse"
-                      role="tabpanel"
-                      aria-labelledby="headingOne"
-                      data-parent="#accordion"
-                    >
-                      <div className="card-body">
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Proin pharetra tempor sodales. Phasellus
-                          sagittis auctor gravida. Integer bibendum sodales arcu
-                          id tempus. Ut consectetur lacus.
-                        </p>
-                      </div>
-                    </div>
+                <div
+                  id="accordion"
+                  role="tablist"
+                  className="mb-4 payment-section"
+                >
+                  <div className="payment-section-label">Payment Method</div>
+                  <div className="payment-method">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="paymentMethod"
+                      id="payment_cod"
+                      checked
+                      onChange={() => setPaymentMethod("cash_on_delivery")} // Update state on change
+                    />
+                    <label className="form-check-label" htmlFor="payment_cod">
+                      Cash on delivery
+                    </label>
                   </div>
-                  <div className="card">
-                    <div className="card-header" role="tab" id="headingTwo">
-                      <h6 className="mb-0">
-                        <a
-                          className="collapsed"
-                          data-toggle="collapse"
-                          href="#collapseTwo"
-                          aria-expanded="false"
-                          aria-controls="collapseTwo"
-                        >
-                          <i className="fa fa-circle-o mr-3"></i>Cash on
-                          delivery
-                        </a>
-                      </h6>
-                    </div>
-                    <div
-                      id="collapseTwo"
-                      className="collapse"
-                      role="tabpanel"
-                      aria-labelledby="headingTwo"
-                      data-parent="#accordion"
+                  <div className="payment-method">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="paymentMethod"
+                      id="payment_paypal"
+                      onChange={() => setPaymentMethod("paypal")} // Update state on change
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="payment_paypal"
                     >
-                      <div className="card-body">
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit. Explicabo quis in veritatis officia inventore,
-                          tempore provident dignissimos.
-                        </p>
-                      </div>
-                    </div>
+                      Paypal
+                    </label>
                   </div>
-                  <div className="card">
-                    <div className="card-header" role="tab" id="headingThree">
-                      <h6 className="mb-0">
-                        <a
-                          className="collapsed"
-                          data-toggle="collapse"
-                          href="#collapseThree"
-                          aria-expanded="false"
-                          aria-controls="collapseThree"
-                        >
-                          <i className="fa fa-circle-o mr-3"></i>Credit card
-                        </a>
-                      </h6>
-                    </div>
-                    <div
-                      id="collapseThree"
-                      className="collapse"
-                      role="tabpanel"
-                      aria-labelledby="headingThree"
-                      data-parent="#accordion"
+                  <div className="payment-method">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="paymentMethod"
+                      id="payment_credit_card"
+                      onChange={() => setPaymentMethod("credit_card")} // Update state on change
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="payment_credit_card"
                     >
-                      <div className="card-body">
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit. Esse quo sint repudiandae suscipit ab soluta
-                          delectus voluptate, vero vitae.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card">
-                    <div className="card-header" role="tab" id="headingFour">
-                      <h6 className="mb-0">
-                        <a
-                          className="collapsed"
-                          data-toggle="collapse"
-                          href="#collapseFour"
-                          aria-expanded="true"
-                          aria-controls="collapseFour"
-                        >
-                          <i className="fa fa-circle-o mr-3"></i>Direct bank
-                          transfer
-                        </a>
-                      </h6>
-                    </div>
-                    <div
-                      id="collapseFour"
-                      className="collapse show"
-                      role="tabpanel"
-                      aria-labelledby="headingFour"
-                      data-parent="#accordion"
-                    >
-                      <div className="card-body">
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit. Est cum autem eveniet saepe fugit, impedit
-                          magni.
-                        </p>
-                      </div>
-                    </div>
+                      Credit Card
+                    </label>
                   </div>
                 </div>
 
-                <a href="#" className="btn karl-checkout-btn btn-red">
+                <button
+                  href="#"
+                  className="btn karl-checkout-btn btn-red"
+                  onClick={handleCheckout}
+                >
                   Place Order
-                </a>
+                </button>
               </div>
             </div>
           </div>

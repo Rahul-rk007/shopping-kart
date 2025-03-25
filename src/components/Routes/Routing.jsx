@@ -17,6 +17,7 @@ import ChangePassword from "../MyAccount/ChangePassword/ChangePassword";
 import OrderDetails from "../MyAccount/OrderDetails/OrderDetails";
 import Logout from "../Logout/Logout";
 import PrivateRoute from "./PrivateRoute";
+import OrderSuccess from "../Checkout/OrderSuccess";
 
 const Routing = ({ setUser }) => {
   // Accept setUser  as a prop
@@ -40,6 +41,7 @@ const Routing = ({ setUser }) => {
         <Route path="/myaccount/changepassword" element={<ChangePassword />} />
         <Route path="/myaccount/orderdetails" element={<OrderDetails />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/order-success" element={<OrderSuccess />} />
       </Route>
     </Routes>
   );
