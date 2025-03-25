@@ -4,7 +4,7 @@ import Layout from "../Layout/Layout";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { signupUser } from "../../api/userApi";
+import { signupUser, getJwt } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -38,7 +38,7 @@ const Signup = () => {
   const onSubmit = async (formData) => {
     try {
       const response = await signupUser(formData);
-      localStorage.setItem("token", response);
+      getJwt();
       window.location = "/";
     } catch (error) {
       toast.error("Something went wrong!");

@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState } from "react";
 import "./Login.css";
 import Layout from "../Layout/Layout";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
@@ -33,6 +33,8 @@ const Login = ({ setUser }) => {
   } = useForm({
     resolver: zodResolver(schema),
   });
+
+  const [cart, setCart] = useState([]);
 
   const onSubmit = async (data) => {
     try {
@@ -122,7 +124,7 @@ const Login = ({ setUser }) => {
             </button>
             <div className="loginFooter w-100">
               <div className="text-center w-50">
-                <Link to="#" className="btnSignUp">
+                <Link to="/forgotpassword" className="btnSignUp">
                   Forgot password?
                 </Link>
               </div>
