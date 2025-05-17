@@ -36,7 +36,7 @@
   border: 2px solid #c8e6c9; /* Dark Green */
 }
 
-.status-processing {
+.status-pending {
   background-color: #f57f17; /* Light Yellow */
   border: 2px solid #fff9c4 ; /* Dark Yellow */
 }
@@ -62,13 +62,13 @@
 }
 
 .status-returned {
-  background-color:#b71c1c; /* Light Red */
+  background-color:#bc1818; /* Light Red */
   border: 2px solid #ef9a9a;; /* Dark Red */
 }
 
-.status-canceled {
-  background-color:#424242 ; /* Light Grey */
-  border: 2px solid #e0e0e0; /* Dark Grey */
+.status-Cancelled {
+  background-color:#eb3737 ; /* Light Grey */
+  border: 2px solid #e8cccc; /* Dark Grey */
 }
 
 .status-refunded {
@@ -98,9 +98,18 @@
   border: 0.5px solid gray;
   border-radius: 10px;
   box-shadow: 1px 1px 2px gray;
-  padding: 2px;
-  width: 30%;
+  padding: 4px;
+  width: 55%;
   display: flex;
   justify-content: center;
 }
 
+.myorder-delete-btn{
+  background-color: none !important;
+}
+
+.myorder-scroll-container {
+ height: 400px; /* Set a maximum height for the container */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 20px; /* Optional: Add some padding */
+}

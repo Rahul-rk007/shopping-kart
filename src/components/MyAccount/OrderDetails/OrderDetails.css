@@ -1,9 +1,9 @@
-.orderdetails-top-most-container {
+.orderdetails-top-most-container{
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.orderdetails-inner-container {
+.orderdetails-inner-container{
   border: 1px solid #fff;
   border-radius: 6px;
   background-color: #fff;
@@ -57,10 +57,22 @@
   border-right: none; /* No right border for the last item in each row */
 }
 
+.orderdetails-table{
+  border-top: none !important; 
+}
+
 .orderdetails-text-right {
   text-align: right;
 }
 
+.orderdetails-text-center {
+  text-align: center;
+}
+
 .orderdetails-font-weight-bold {
   font-weight: bold;
+}
+
+.orderdetail-border-bottom{
+  border-bottom: 1px solid #dee2e6;
 }

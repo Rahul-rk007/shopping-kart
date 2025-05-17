@@ -41,8 +41,10 @@
 }
 
 .myaccount-list-link.active {
-  background-color: #efbbca; /* Background color for active link */
+  background-color: #f4c5d2; /* Background color for active link */
   color: #fff; /* Change text color for active link */
+  border-radius: 18px;
+  border:0.2px solid #f6b0c4;
 }
 
 .myaccount-logout-btn {

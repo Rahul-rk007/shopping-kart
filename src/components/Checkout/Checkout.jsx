@@ -1,35 +1,37 @@
+// Checkout.js
+
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom"; // Import useLocation
+import { useLocation, Link } from "react-router-dom";
 import "./Checkout.css";
 import Layout from "../Layout/Layout";
-import { Link } from "react-router-dom";
-import { getAllShippingAddresses } from "../../api/shippingAddressApi"; // Import the API function
-import { getCartApi } from "../../api/cartApi"; // Import the API function to get cart details
+import { getAllShippingAddresses } from "../../api/shippingAddressApi";
+import { getCartApi } from "../../api/cartApi";
+import { createPayPalPayment } from "../../api/checkoutApi"; // Import the new API functions
 import { checkout } from "../../api/orderApi";
 import { toast } from "react-toastify";
 
 const Checkout = () => {
-  const location = useLocation(); // Get location to access state
-  const [selectedAddress, setSelectedAddress] = useState(""); // Initialize selectedAddress
-  const [shippingAddresses, setShippingAddresses] = useState([]); // State to hold shipping addresses
-  const [cartItems, setCartItems] = useState([]); // State to hold cart items
+  const location = useLocation();
+  const [selectedAddress, setSelectedAddress] = useState("");
+  const [shippingAddresses, setShippingAddresses] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
   const [discountAmount, setDiscountAmount] = useState(
     Number(localStorage.getItem("discount")) || 0
-  ); // State to hold discount amount
+  );
   const [couponCode, setCouponCode] = useState(
     localStorage.getItem("couponCode") || ""
-  ); // State to hold coupon code
+  );
   const [shippingMethod, setShippingMethod] = useState(
     localStorage.getItem("shippingMethod") || ""
-  ); // State to hold shipping method
-  const [paymentMethod, setPaymentMethod] = useState("Cash on delivery"); // Default payment method
-  const [phoneNumber, setPhoneNumber] = useState(""); // State to hold phone number
+  );
+  const [paymentMethod, setPaymentMethod] = useState("cash_on_delivery");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   useEffect(() => {
     const fetchShippingAddresses = async () => {
       try {
         const addresses = await getAllShippingAddresses();
-        setShippingAddresses(addresses.data || []); // Set the fetched addresses to state
+        setShippingAddresses(addresses.data || []);
       } catch (error) {
         console.error("Failed to fetch shipping addresses:", error);
       }
@@ -37,8 +39,8 @@ const Checkout = () => {
 
     const fetchCartDetails = async () => {
       try {
-        const response = await getCartApi(); // Fetch cart details from the API
-        setCartItems(response.data.products); // Set the fetched cart items to state
+        const response = await getCartApi();
+        setCartItems(response.data.products);
       } catch (error) {
         console.error("Failed to fetch cart details:", error);
       }
@@ -50,14 +52,13 @@ const Checkout = () => {
 
   const handleAddressChange = (event) => {
     const selectedId = event.target.value;
-
     const selectedAddress = shippingAddresses.find(
       (address) => address._id === selectedId
     );
 
     if (selectedAddress) {
       setSelectedAddress(selectedId);
-      setPhoneNumber(selectedAddress.phoneNumber); // Set phone number from selected address
+      setPhoneNumber(selectedAddress.phoneNumber);
     }
   };
 
@@ -75,9 +76,8 @@ const Checkout = () => {
         : shippingMethod === "standard"
         ? 50
         : 0;
-    return (subtotal - discountAmount + shippingCost).toFixed(2); // Total = Subtotal - Discount + Shipping
+    return (subtotal - discountAmount + shippingCost).toFixed(2);
   };
-
   const handleCheckout = async () => {
     const subtotal = parseFloat(calculateSubtotal());
     const shippingCost =
@@ -86,39 +86,70 @@ const Checkout = () => {
         : shippingMethod === "standard"
         ? 50
         : 0;
-
-    const total = (subtotal - discountAmount + shippingCost).toFixed(2); // Total formatted to 2 decimal places
-
+  
+    // const total = (subtotal - discountAmount + shippingCost).toFixed(2);
+    const total = (subtotal - discountAmount + shippingCost).toFixed(2).toString();
+  
     if (!selectedAddress) {
-      toast.error("Please select shipping address.");
+      toast.error("Please select a shipping address.");
+      return;
     }
-
+  
+    // Handle PayPal payment
+    if (paymentMethod === "paypal") {
+      try {
+        const paymentData = await createPayPalPayment(total);
+        console.log("Payment Data:", paymentData); // Log the payment data for debugging
+      
+        // Check if paymentData and paymentData.links are defined
+        if (paymentData && paymentData.links) {
+          const approvalUrl = paymentData.links.find(
+            (link) => link.rel === "approval_url"
+          )?.href; // Use optional chaining to avoid errors
+            console.log(approvalUrl);
+          if (approvalUrl) {
+            window.location.href = approvalUrl; // Redirect to PayPal
+          } else {
+            toast.error("Approval URL not found in payment data.");
+          }
+        } else {
+          toast.error("Invalid payment data received.");
+        }
+      } catch (error) {
+        toast.error("Error creating PayPal payment. Please try again later.");
+        console.error("PayPal Payment Error:", error);
+      }
+      return; // Exit function after redirection
+    }
+  
+    // Proceed with normal checkout API call for other payment methods
     const orderData = {
-      shippingAddressId: selectedAddress, // Use the selected address ID
-      paymentMethod: paymentMethod, // Payment method selected
-      couponCode: couponCode, // Coupon code applied
+      shippingAddressId: selectedAddress,
+      paymentMethod: paymentMethod,
+      couponCode: couponCode,
       couponDetails:
         discountAmount > 0
           ? {
-              value: discountAmount.toFixed(2), // Discount formatted to 2 decimal places
-              type: "amount", // Assuming fixed amount discount
+              value: discountAmount.toFixed(2),
+              type: "amount",
             }
           : null,
-      phoneNumber: phoneNumber, // Use the phone number from state
-      shippingMethod: shippingMethod, // Shipping method selected
-      shippingCharges: shippingCost.toFixed(2), // Shipping charges formatted to 2 decimal places
-      subtotal: subtotal.toFixed(2), // Subtotal formatted to 2 decimal places
-      total: total, // Total already formatted
+      phoneNumber: phoneNumber,
+      shippingMethod: shippingMethod,
+      shippingCharges: shippingCost.toFixed(2),
+      subtotal: subtotal.toFixed(2),
+      total: total,
     };
-
+  
     try {
-      const response = await checkout(orderData); // Call the checkout API
-      window.location.href = "/order-success";
+      const response = await checkout(orderData);
+      window.location.href = "/order-success"; // Redirect on success
     } catch (error) {
       console.error("Checkout failed:", error);
-      toast.error(error);
+      toast.error("Checkout process failed. Please try again later.");
     }
   };
+  
 
   return (
     <Layout>
@@ -147,7 +178,7 @@ const Checkout = () => {
                     <div className="row address-scrollable">
                       {shippingAddresses.map((address, index) => (
                         <div className="col-12 mb-3" key={index}>
-                          <div className="custom-control custom-radio">
+                          <div className="custom-control custom-radio address-box">
                             <input
                               type="radio"
                               id={`address_${index}`}
@@ -261,8 +292,8 @@ const Checkout = () => {
                       type="radio"
                       name="paymentMethod"
                       id="payment_cod"
-                      checked
-                      onChange={() => setPaymentMethod("cash_on_delivery")} // Update state on change
+                      checked={paymentMethod === "cash_on_delivery"}
+                      onChange={() => setPaymentMethod("cash_on_delivery")}
                     />
                     <label className="form-check-label" htmlFor="payment_cod">
                       Cash on delivery
@@ -274,7 +305,8 @@ const Checkout = () => {
                       type="radio"
                       name="paymentMethod"
                       id="payment_paypal"
-                      onChange={() => setPaymentMethod("paypal")} // Update state on change
+                      checked={paymentMethod === "paypal"}
+                      onChange={() => setPaymentMethod("paypal")}
                     />
                     <label
                       className="form-check-label"
@@ -289,14 +321,15 @@ const Checkout = () => {
                       type="radio"
                       name="paymentMethod"
                       id="payment_credit_card"
-                      onChange={() => setPaymentMethod("credit_card")} // Update state on change
+                      checked={paymentMethod === "credit_card"}
+                      onChange={() => setPaymentMethod("credit_card")}
                     />
-                    <label
+                    {/* <label
                       className="form-check-label"
                       htmlFor="payment_credit_card"
                     >
                       Credit Card
-                    </label>
+                    </label> */}
                   </div>
                 </div>
 
@@ -317,3 +350,5 @@ const Checkout = () => {
 };
 
 export default Checkout;
+
+

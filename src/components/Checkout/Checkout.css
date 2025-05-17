@@ -16,7 +16,7 @@
 }
 
 .order-details-confirmation {
-  width: 100%;
+  width: 120%;
   border: 2px solid #ebebeb;
   padding: 40px;
 }
@@ -86,7 +86,7 @@
 
 .checkout-left-section {
   border: 2px solid #ebebeb;
-  width: 40%;
+  width: 38%;
   height: 50%;
 }
 
@@ -114,9 +114,7 @@
   transition: background-color 0.3s, border-color 0.3s; /* Smooth transition */
 }
 
-/* Style for the custom radio button when checked */
 .custom-control-input:checked + .custom-control-label {
-  background-color: #d1e7dd; /* Light green background for active state */
   border: 2px solid #ff084e; /* Darker green border for active state */
   color: #ff084e; /* Darker green text color for active state */
   font-weight: bold; /* Make text bold for emphasis */
@@ -129,7 +127,7 @@
 
 /* Active state for selected address */
 .custom-control-input:checked + .custom-control-label {
-  background-color: #eff4f2; /* Light green background for active state */
+  /* Light green background for active state */
   border-color: #6bb894; /* Darker green border for active state */
   color: #1b392b; /* Darker green text color for active state */
 }

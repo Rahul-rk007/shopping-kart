@@ -247,7 +247,7 @@ const Cart = () => {
                     onChange={handleShippingChange}
                   />
                   <label
-                    className="custom-control-label d-flex align-items-center justify-content-between"
+                    className="custom-control-label d-flex align-items-center justify-content-between cart-radio-btn "
                     htmlFor="customRadio1"
                   >
                     <span>Expedited shipping</span>
@@ -267,7 +267,7 @@ const Cart = () => {
                     onChange={handleShippingChange}
                   />
                   <label
-                    className="custom-control-label d-flex align-items-center justify-content-between"
+                    className="custom-control-label d-flex align-items-center justify-content-between  cart-radio-btn"
                     htmlFor="customRadio2"
                   >
                     <span>Standard shipping</span>
@@ -287,7 +287,7 @@ const Cart = () => {
                     onChange={handleShippingChange}
                   />
                   <label
-                    className="custom-control-label d-flex align-items-center justify-content-between"
+                    className="custom-control-label d-flex align-items-center justify-content-between  cart-radio-btn"
                     htmlFor="customRadio3"
                   >
                     <span>Free shipping</span>

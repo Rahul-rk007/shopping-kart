@@ -29,7 +29,7 @@ const Contactus = () => {
   const onSubmit = async (formData) => {
     console.log('Form Data:', formData); // Log the form data
     try {
-        // const response = await addContact(formData);
+        //  const response = await addContact(formData);
         // console.log("Form submitted:", response);
         toast.success("Your message has been sent!");
         reset(); // Reset the form after successful submission

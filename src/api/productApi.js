@@ -85,3 +85,15 @@ export const fetchColorCounts = async ({
     throw error; // Rethrow the error for further handling if needed
   }
 };
+
+
+// Function to fetch products based on search term
+export const fetchProducts = async (searchTerm) => {
+  try {
+    const response = await apiClient.get(`/product/admin/products?search=${searchTerm}`); // Adjust the endpoint as needed
+    return response.data; // Return the fetched products
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error; // Rethrow the error for handling in the calling function
+  }
+};

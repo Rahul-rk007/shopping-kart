@@ -112,7 +112,7 @@ const Wishlist = () => {
                                   </div>
                                   <div className="wishlist-price wishlist-price wishlist-product-details">
                                     Rs. {item.price}{" "}
-                                    <span>Rs. {item.originalPrice}</span>
+                                    <span> {item.originalPrice}</span>
                                   </div>
                                 </td>
                                 <td className="col-md-2">

@@ -1,12 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-
 import "./ProductDetails.css";
 import Layout from "../Layout/Layout";
-import Product2 from "../../assets/product-img/product-2.jpg";
-import Product3 from "../../assets/product-img/product-3.jpg";
-import Product4 from "../../assets/product-img/product-4.jpg";
-import Product1 from "../../assets/product-img/product-1.jpg";
-import Product5 from "../../assets/product-img/product-5.jpg";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProductDetails } from "../../api/productApi";
 import CartContext from "../../context/CartContext";
@@ -29,10 +23,8 @@ const ProductDetails = () => {
   };
 
   useEffect(() => {
-    console.log("Product ID:", id); // Log the ID to see if it's defined
     const fetchProductDetails = async () => {
       if (id) {
-        // Check if id is defined
         try {
           const data = await getProductDetails(id); // Fetch product details by ID
           setProduct(data); // Set the product details in state
@@ -53,8 +45,6 @@ const ProductDetails = () => {
   const handleAddToCart = (e) => {
     e.preventDefault(); // Prevent the default form submission
     if (user) {
-      console.log("detail", product);
-
       addToCart(product, quantity); // Call addToCart with the product and quantity
     } else {
       localStorage.setItem(
@@ -83,12 +73,16 @@ const ProductDetails = () => {
                 <li className="breadcrumb-item">
                   <a href="#">Home</a>
                 </li>
-                <li className="breadcrumb-item">
-                  <a href="#">{product.CategoryID.CategoryName}</a>
-                </li>
-                <li className="breadcrumb-item active">
-                  {product.SubcategoryID.SubcategoryName}
-                </li>
+                {product.CategoryID && (
+                  <li className="breadcrumb-item">
+                    <a href="#">{product.CategoryID.CategoryName}</a>
+                  </li>
+                )}
+                {product.SubcategoryID && (
+                  <li className="breadcrumb-item active">
+                    {product.SubcategoryID.SubcategoryName}
+                  </li>
+                )}
               </ol>
 
               <a href="#" className="backToHome d-block">
@@ -121,11 +115,9 @@ const ProductDetails = () => {
                   </ol>
 
                   <div className="carousel-inner">
-                    {product.ImageURLs.map((image, index) => (
+                  {product.ImageURLs.map((image, index) => (
                       <div
-                        className={`carousel-item ${
-                          index === 0 ? "active" : ""
-                        }`}
+                        className={`carousel-item ${index === 0 ? "active" : ""}`}
                         key={index}
                       >
                         <a className="gallery_img" href={image}>
@@ -159,19 +151,6 @@ const ProductDetails = () => {
                   <i className="fa fa-star" aria-hidden="true"></i>
                   <i className="fa fa-star-o" aria-hidden="true"></i>
                 </div>
-
-                {/* <div className="widget size mb-50">
-                  <h6 className="widget-title">Size</h6>
-                  <div className="widget-desc">
-                    <ul>
-                      {[32, 34, 36, 38, 40, 42].map((size) => (
-                        <li key={size}>
-                          <a href="#">{size}</a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div> */}
 
                 <form
                   className="cart clearfix mb-50 d-flex"
@@ -278,8 +257,7 @@ const ProductDetails = () => {
                         <p>
                           Lorem ipsum dolor sit amet, consectetur adipisicing
                           elit. Explicabo quis in veritatis officia inventore,
-                          tempore provident dignissimos nemo, nulla quaerat.
-                          Quibusdam non, eos, voluptatem reprehenderit hic nam!
+                          tempore provident dignissimos nemo,nulla quaerat. Quibusdam non, eos, voluptatem reprehenderit hic nam!
                           Laboriosam, sapiente! Praesentium.
                         </p>
                         <p>

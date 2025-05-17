@@ -23,7 +23,7 @@ const OrderSuccess = () => {
                   Thank you for your order! You can view your order details in
                   your account.
                 </p>
-                <Link to="/myaccount/myorders" className="btn btn-primary">
+                <Link to="/myaccount/myorders" className="btn btn-primary btn-red">
                   Go to My Orders
                 </Link>
               </div>

@@ -17,12 +17,11 @@ import ChangePassword from "../MyAccount/ChangePassword/ChangePassword";
 import OrderDetails from "../MyAccount/OrderDetails/OrderDetails";
 import Logout from "../Logout/Logout";
 import PrivateRoute from "./PrivateRoute";
-<<<<<<< HEAD
 import OrderSuccess from "../Checkout/OrderSuccess";
-=======
 import ForgotPassword from "../ForgotPassword/ForgotPassword";
 import ResetPassword from "../ResetPassword/ResetPassword";
->>>>>>> feature/forgot-password
+import PaymentSuccessfull from "../Checkout/PaymentSuccessfull";
+import PaymentCancel from "../Checkout/PaymentCancel";
 
 const Routing = ({ setUser }) => {
   // Accept setUser  as a prop
@@ -46,13 +45,11 @@ const Routing = ({ setUser }) => {
         <Route path="/myaccount/wishlist" element={<Wishlist />} />
         <Route path="/myaccount/address" element={<Address />} />
         <Route path="/myaccount/changepassword" element={<ChangePassword />} />
-        <Route path="/myaccount/orderdetails" element={<OrderDetails />} />
+        <Route path="/myaccount/orderdetails/:orderId" element={<OrderDetails />} />
         <Route path="/logout" element={<Logout />} />
-<<<<<<< HEAD
         <Route path="/order-success" element={<OrderSuccess />} />
-=======
-        
->>>>>>> feature/forgot-password
+        <Route path="/success" element={<PaymentSuccessfull />} />
+        <Route path="/cancel" element={<PaymentCancel />} />
       </Route>
     </Routes>
   );
